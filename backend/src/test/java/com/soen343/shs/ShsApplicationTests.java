@@ -1,13 +1,13 @@
-package com.soen343.soen343;
+package com.soen343.shs;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Soen343ApplicationTests {
+class ShsApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
