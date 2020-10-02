@@ -4,18 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class Door {
-    enum Type {
-        INDOOR,
-        OUTDOOR
-    }
-
-    private double height;
-    private double width;
-    private Type type;
     private boolean open;
-    private Room location;
+    private List<Room>  room;
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,13 +20,13 @@ public class Room {
     @Column(name = "name")
     private String name;
     @Column(name = "doors")
-    private ArrayList<Door>  doors;
+    private List<Door> doors;
     @Column(name = "lights")
-    private ArrayList<Light> lights;
+    private List<Light> lights;
     @Column(name = "userIds")
-    private ArrayList<Long> userIds;
+    private List<Long> userIds;
     @Column(name = "windows")
-    private ArrayList<Window> windows;
+    private List<Window> windows;
     @Column(name = "temperature")
     private double temperature;
 }

@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,9 +15,9 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class RoomDTO {
     private String name;
-    private ArrayList<Door> doors;
-    private ArrayList<Window> windows;
-    private ArrayList<Light> lights;
+    private List<Door> doors;
+    private List<Window> windows;
+    private List<Light> lights;
     private double temperature;
-    private ArrayList<Long> userIds;
+    private List<Long> userIds;
 }
