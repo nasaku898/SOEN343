@@ -9,7 +9,7 @@ public class UserToUserDTOConverter implements Converter<User, UserDTO> {
     public UserDTO convert(User user) {
         return UserDTO.builder()
                 .username(user.getUsername())
-                .location(user.getLocation())
+                .roomId(user.getLocation().getId())
                 .build();
     }
 }

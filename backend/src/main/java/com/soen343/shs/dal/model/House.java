@@ -11,6 +11,6 @@ public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name = "rooms")
+    @OneToMany
     private Set<Room> rooms;
 }

@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public class UserDTO {
     private String username;
-    private Long roomId;
+    private long roomId;
 }
