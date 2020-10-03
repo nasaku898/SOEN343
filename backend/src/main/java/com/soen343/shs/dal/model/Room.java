@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,14 +20,14 @@ public class Room {
     private long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "doors")
-    private List<Door> doors;
-    @Column(name = "lights")
-    private List<Light> lights;
-    @Column(name = "userIds")
-    private List<Long> userIds;
-    @Column(name = "windows")
-    private List<Window> windows;
     @Column(name = "temperature")
     private double temperature;
+    @Transient
+    private List<Door> doors;
+    @Transient
+    private List<Light> lights;
+    @Transient
+    private Set<Long> userIds;
+    @Transient
+    private List<Window> windows;
 }
