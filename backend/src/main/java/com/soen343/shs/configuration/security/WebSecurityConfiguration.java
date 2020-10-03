@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         http.authorizeRequests()
                 .antMatchers("/parent").hasRole(PARENT)
                 .antMatchers("/user").hasAnyRole(PARENT, CHILD, GUEST)
-                .antMatchers("/all").permitAll()
+                .antMatchers("/all", "/register").permitAll()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()
