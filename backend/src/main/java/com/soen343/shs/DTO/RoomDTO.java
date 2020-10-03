@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,5 +20,5 @@ public class RoomDTO {
     private List<Window> windows;
     private List<Light> lights;
     private double temperature;
-    private List<Long> userIds;
+    private Set<Long> userIds;
 }
