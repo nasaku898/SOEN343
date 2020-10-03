@@ -20,6 +20,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     private static final String CHILD = "CHILD";
     private static final String GUEST = "GUEST";
 
+    @Autowired
     public WebSecurityConfiguration(BeanConfiguration ENCODER, SHSUserDetailsService USER_DETAILS_SERVICE) {
         this.ENCODER = ENCODER;
         this.USER_DETAILS_SERVICE = USER_DETAILS_SERVICE;
