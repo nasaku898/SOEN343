@@ -16,6 +16,12 @@ public class User {
     private long id;
     @Column(unique = true, name = "username")
     private String username;
+    @Column(unique = true, name = "first_name")
+    private String firstName;
+    @Column(unique = true, name = "last_name")
+    private String lastName;
+    @Column(unique = true, name = "email")
+    private String email;
     @Column(name = "password")
     private String password;
     @OneToOne
