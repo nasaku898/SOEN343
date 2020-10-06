@@ -3,7 +3,9 @@ package com.soen343.shs.converters;
 import com.soen343.shs.DTO.RoomDTO;
 import com.soen343.shs.dal.model.Room;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
     @Override
     public RoomDTO convert(Room room){
