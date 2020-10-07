@@ -13,10 +13,10 @@ public class ExteriorDoorToDoorDTOConverter implements Converter<ExteriorDoor, D
     @Override
     public DoorDTO convert(ExteriorDoor door) {
         return DoorDTO.builder()
-                      .id(door.getId())
-                      .open(door.isOpen())
-                      .roomIds(door.getRooms().stream().map(Room::getId).collect(Collectors.toSet()))
-                      .locked(door.isLocked())
-                      .build();
+                .id(door.getId())
+                .open(door.isOpen())
+                .roomIds(door.getRooms().stream().map(Room::getId).collect(Collectors.toSet()))
+                .locked(door.isLocked())
+                .build();
     }
 }

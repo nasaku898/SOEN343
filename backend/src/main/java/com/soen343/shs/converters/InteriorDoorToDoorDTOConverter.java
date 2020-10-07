@@ -11,9 +11,9 @@ public class InteriorDoorToDoorDTOConverter implements Converter<InteriorDoor, D
     @Override
     public DoorDTO convert(InteriorDoor door) {
         return DoorDTO.builder()
-                      .id(door.getId())
-                      .open(door.isOpen())
-                      .roomIds(door.getRooms().stream().map(r -> r.getId()).collect(Collectors.toSet()))
-                      .build();
+                .id(door.getId())
+                .open(door.isOpen())
+                .roomIds(door.getRooms().stream().map(r -> r.getId()).collect(Collectors.toSet()))
+                .build();
     }
 }
