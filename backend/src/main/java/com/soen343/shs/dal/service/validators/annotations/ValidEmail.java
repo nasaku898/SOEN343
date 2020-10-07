@@ -1,6 +1,6 @@
-package com.soen343.shs.dal.service.Annotations;
+package com.soen343.shs.dal.service.validators.annotations;
 
-import com.soen343.shs.dal.service.Annotations.Validators.EmailValidator;
+import com.soen343.shs.dal.service.validators.EmailValidator;
 
 import java.lang.annotation.Target;
 

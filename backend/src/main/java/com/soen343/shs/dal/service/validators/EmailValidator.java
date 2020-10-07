@@ -1,6 +1,6 @@
-package com.soen343.shs.dal.service.Annotations.Validators;
+package com.soen343.shs.dal.service.validators;
 
-import com.soen343.shs.dal.service.Annotations.ValidEmail;
+import com.soen343.shs.dal.service.validators.annotations.ValidEmail;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -18,12 +18,9 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        return (validateEmail(email));
-    }
-
-    private boolean validateEmail(String email) {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
 }

@@ -1,6 +1,6 @@
 package com.soen343.shs.converters;
 
-import com.soen343.shs.DTO.RoomDTO;
+import com.soen343.shs.dto.RoomDTO;
 import com.soen343.shs.dal.model.Room;
 import org.springframework.core.convert.converter.Converter;
 

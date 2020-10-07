@@ -1,7 +1,7 @@
-package com.soen343.shs.dal.service.Annotations;
+package com.soen343.shs.dal.service.validators.annotations;
 
 
-import com.soen343.shs.dal.service.Annotations.Validators.PasswordMatchesValidator;
+import com.soen343.shs.dal.service.validators.PasswordMatchesValidator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

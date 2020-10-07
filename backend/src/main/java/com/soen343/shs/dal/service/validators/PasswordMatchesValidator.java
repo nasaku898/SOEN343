@@ -1,7 +1,7 @@
-package com.soen343.shs.dal.service.Annotations.Validators;
+package com.soen343.shs.dal.service.validators;
 
-import com.soen343.shs.DTO.RegistrationDTO;
-import com.soen343.shs.dal.service.Annotations.PasswordMatches;
+import com.soen343.shs.dto.RegistrationDTO;
+import com.soen343.shs.dal.service.validators.annotations.PasswordMatches;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

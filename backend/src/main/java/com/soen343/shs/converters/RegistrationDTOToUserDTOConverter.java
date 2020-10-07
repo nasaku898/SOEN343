@@ -1,7 +1,7 @@
 package com.soen343.shs.converters;
 
-import com.soen343.shs.DTO.RegistrationDTO;
-import com.soen343.shs.DTO.UserDTO;
+import com.soen343.shs.dto.RegistrationDTO;
+import com.soen343.shs.dto.UserDTO;
 import org.springframework.core.convert.converter.Converter;
 
 public class RegistrationDTOToUserDTOConverter implements Converter<RegistrationDTO, UserDTO> {
