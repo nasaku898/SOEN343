@@ -13,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class RoomDTO {
     private String name;
-    private Set<DoorDTO> doors;
-    private Set<Window> windows;
+    private Set<Long> doorIds;
+    private Set<Long> windowIds;
     private Set<Long> lightIds;
     private double temperature;
     private Set<Long> userIds;

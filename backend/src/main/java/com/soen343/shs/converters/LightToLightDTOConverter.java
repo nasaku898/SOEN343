@@ -1,0 +1,13 @@
+package com.soen343.shs.converters;
+
+import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.dto.LightDTO;
+import org.springframework.core.convert.converter.Converter;
+
+public class LightToLightDTOConverter implements Converter<Light, LightDTO> {
+
+    @Override
+    public LightDTO convert(Light light) {
+        return LightDTO.builder().id(light.getId()).isLightOn(light.isLightOn()).build();
+    }
+}
