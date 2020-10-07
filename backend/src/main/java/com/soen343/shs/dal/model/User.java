@@ -16,15 +16,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(unique = true, name = "username")
+    @Column(unique = true)
     private String username;
-    @Column(unique = true, name = "first_name")
     private String firstName;
-    @Column(unique = true, name = "last_name")
     private String lastName;
-    @Column(unique = true, name = "email")
+    @Column(unique = true)
     private String email;
-    @Column(name = "password")
     private String password;
     @OneToOne
     private Room location;

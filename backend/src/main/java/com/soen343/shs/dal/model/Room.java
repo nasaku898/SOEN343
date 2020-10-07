@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,16 +17,14 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "temperature")
     private double temperature;
-    @Transient
-    private List<Door> doors;
-    @Transient
-    private List<Light> lights;
-    @Transient
+    @ManyToMany
+    private Set<Door> doors;
+    @OneToMany
+    private Set<Light> lights;
+    @ElementCollection
     private Set<Long> userIds;
-    @Transient
-    private List<Window> windows;
+    @OneToMany
+    private Set<Window> windows;
 }
