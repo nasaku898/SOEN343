@@ -30,4 +30,27 @@ public class HouseService {
         // Return only the temperatureOutside of the HouseDTO
         return houseDTO.getTemperatureOutside();
     }
+
+    public String setTemperatureOutside(long houseId, double temperature) {
+        // Find house by id
+        Optional<House> optionalHouse = houseRepository.findById(houseId);
+
+        // Return error code if house does not exist
+        if (!optionalHouse.isPresent()) {
+            return "Error: House does not exist";
+        }
+
+        try {
+            // Edit temperatureOutside of house
+            House house = optionalHouse.get();
+            house.setTemperatureOutside(temperature);
+
+            // Save the updated house
+            houseRepository.save(house);
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+
+        return null;
+    }
 }
