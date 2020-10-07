@@ -30,4 +30,7 @@ public class Room {
     private Set<Long> userIds;
     @Transient
     private List<Window> windows;
+
+    public Room() {
+    }
 }
