@@ -26,6 +26,5 @@ public class Door {
     private long id;
     private boolean open;
     @OneToMany
-    private List<Room> room;
-
+    private List<Room> rooms;
 }

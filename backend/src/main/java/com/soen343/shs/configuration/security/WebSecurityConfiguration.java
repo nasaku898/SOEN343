@@ -29,11 +29,11 @@ import static com.soen343.shs.dal.model.ROLE.PARENT;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     // Dependencies
+    @Autowired
     private final SHSUserDetailsService userDetailsService;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
         auth.authenticationProvider(authProvider());
     }
 

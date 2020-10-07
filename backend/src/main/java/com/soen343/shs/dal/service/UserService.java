@@ -78,8 +78,9 @@ public class UserService {
         return userDTO;
     }
 
+
     public UserDTO getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username); //This might not work...test please
+        User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Username doesn't exist");
