@@ -1,9 +1,6 @@
 package com.soen343.shs.converters;
 
-import com.soen343.shs.dal.model.Door;
-import com.soen343.shs.dal.model.Light;
-import com.soen343.shs.dal.model.Room;
-import com.soen343.shs.dal.model.Window;
+import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dto.RoomDTO;
 import org.springframework.core.convert.converter.Converter;
 
@@ -18,7 +15,7 @@ public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
                 .lightIds(room.getLights().stream().map(Light::getId).collect(Collectors.toSet()))
                 .name(room.getName())
                 .temperature(room.getTemperature())
-                .windowIds(room.getWindows().stream().map(Window::getId).collect(Collectors.toSet()))
+                .windowIds(room.getHouseWindows().stream().map(HouseWindow::getId).collect(Collectors.toSet()))
                 .userIds(room.getUserIds())
                 .build();
     }
