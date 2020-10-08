@@ -7,7 +7,10 @@ import org.springframework.core.convert.converter.Converter;
 public class LightToLightDTOConverter implements Converter<Light, LightDTO> {
 
     @Override
-    public LightDTO convert(Light light) {
-        return LightDTO.builder().id(light.getId()).isLightOn(light.isLightOn()).build();
+    public LightDTO convert(final Light light) {
+        return LightDTO.builder()
+                .id(light.getId())
+                .isLightOn(light.isLightOn())
+                .build();
     }
 }

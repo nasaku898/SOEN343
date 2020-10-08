@@ -1,8 +1,6 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.UserService;
-import com.soen343.shs.dal.service.exceptions.InvalidFieldException;
-import com.soen343.shs.dal.service.exceptions.SHSUserAlreadyExistsException;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +15,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 
 @Controller
-@RequestMapping(path="api/users")
+@RequestMapping(path = "api/users")
 public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(final UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping(path="/register")
+    @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody
-    UserDTO addNewUser (HttpServletRequest request, @NotNull String username, @NotNull String email, @NotNull String firstName,
-                        @NotNull String lastName, @NotNull String password, @NotNull String matchingPassword) {
+    UserDTO addNewUser(final HttpServletRequest request,
+                       @NotNull final String username,
+                       @NotNull final String email,
+                       @NotNull final String firstName,
+                       @NotNull final String lastName,
+                       @NotNull final String password,
+                       @NotNull final String matchingPassword) {
 
-        try {
-            return userService.createUser(new RegistrationDTO(email, username, firstName, lastName, password, matchingPassword));
-        } catch (SHSUserAlreadyExistsException | InvalidFieldException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return userService.createUser(
+                new RegistrationDTO(
+                        email,
+                        username,
+                        firstName,
+                        lastName,
+                        password,
+                        matchingPassword
+                )
+        );
     }
 
-    @PostMapping(path="/login")
-    public @ResponseBody UserDTO loginUser(HttpServletRequest request, @NotNull String email, @NotNull String password) {
+    @PostMapping(path = "/login")
+    public @ResponseBody
+    UserDTO loginUser(final HttpServletRequest request,
+                      @NotNull final String email,
+                      @NotNull final String password) {
+
         return userService.login(request, email, password);
     }
 }

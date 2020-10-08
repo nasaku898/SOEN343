@@ -1,14 +1,6 @@
 package com.soen343.shs.configuration.security;
 
-import com.soen343.shs.converters.ExteriorDoorToDoorDTOConverter;
-import com.soen343.shs.converters.InteriorDoorToDoorDTOConverter;
-import com.soen343.shs.converters.LightToLightDTOConverter;
-import com.soen343.shs.converters.RegistrationDTOToUserConverter;
-import com.soen343.shs.converters.RegistrationDTOToUserDTOConverter;
-import com.soen343.shs.converters.RoomToRoomDTOConverter;
-import com.soen343.shs.converters.UserDTOtoUserConverter;
-import com.soen343.shs.converters.UserToUserDTOConverter;
-import com.soen343.shs.converters.WindowToWindowDTOConverter;
+import com.soen343.shs.converters.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,9 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.soen343.shs.dal.model.ROLE.CHILD;
-import static com.soen343.shs.dal.model.ROLE.GUEST;
-import static com.soen343.shs.dal.model.ROLE.PARENT;
+import static com.soen343.shs.dal.model.UserRole.CHILD;
+import static com.soen343.shs.dal.model.UserRole.GUEST;
+import static com.soen343.shs.dal.model.UserRole.PARENT;
 
 @Configuration
 @EnableWebSecurity
@@ -37,12 +29,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     private final SHSUserDetailsService userDetailsService;
 
     @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    public void configAuthentication(final AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/parent").hasRole(PARENT.name())
                 .antMatchers("/user").hasAnyRole(PARENT.name(), CHILD.name(), GUEST.name())
@@ -68,14 +60,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 
     @Bean
     public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(encoder());
         authProvider.setUserDetailsService(userDetailsService);
         return authProvider;
     }
 
     @Override
-    public void addFormatters(FormatterRegistry registry) {
+    public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new RegistrationDTOToUserConverter());
         registry.addConverter(new RegistrationDTOToUserDTOConverter());
         registry.addConverter(new UserDTOtoUserConverter());

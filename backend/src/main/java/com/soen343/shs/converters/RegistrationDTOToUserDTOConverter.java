@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 
 public class RegistrationDTOToUserDTOConverter implements Converter<RegistrationDTO, UserDTO> {
     @Override
-    public UserDTO convert(RegistrationDTO registrationDTO) {
+    public UserDTO convert(final RegistrationDTO registrationDTO) {
         return UserDTO.builder()
                 .username(registrationDTO.getUsername())
                 .firstName(registrationDTO.getFirstName())
