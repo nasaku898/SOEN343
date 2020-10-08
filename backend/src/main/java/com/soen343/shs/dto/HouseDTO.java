@@ -12,6 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class HouseDTO {
     private long id;
-    private Set<RoomDTO> rooms;
+    private Set<Long> roomIds;
     private double temperatureOutside;
 }

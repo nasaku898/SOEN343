@@ -1,24 +1,24 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.DTO.HouseDTO;
-import com.soen343.shs.converters.HouseToHouseDTOConverter;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.service.exceptions.HouseNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Service
 public class TemperatureService {
-    @Autowired
     private final HouseRepository houseRepository;
-    @Autowired
-    private final HouseToHouseDTOConverter houseToHouseDTOConverter;
+    private final ConversionService mvcConversionService;
+
+    public TemperatureService(final HouseRepository houseRepository,final ConversionService mvcConversionService) {
+        this.houseRepository = houseRepository;
+        this.mvcConversionService = mvcConversionService;
+    }
 
     public double getTemperatureInside(long houseId) {
         // Find house by id
@@ -50,7 +50,7 @@ public class TemperatureService {
         }
 
         // Convert House to HouseDTO
-        HouseDTO houseDTO = houseToHouseDTOConverter.convert(house.get());
+        HouseDTO houseDTO = mvcConversionService.convert(house.get(), HouseDTO.class);
 
         // Return only the temperatureOutside of the HouseDTO
         return houseDTO.getTemperatureOutside();
