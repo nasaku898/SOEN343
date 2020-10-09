@@ -7,13 +7,20 @@ const INITIAL_STATE = {
     password=""
 };
 
-const LoginForm = () => {
+const RegistrationForm = () => {
     const [loggedIn, setLoggedIn] = useState(false);
-    const { username, password } = values; 
+    const { username,
+            password,
+            matchingPassword,
+            firstName,
+            lastName,
+            email,
+            role    
+        } = values; 
 
     const auhtenticate = async () => { 
         try {
-            const apiRes = await fetch("http://127.0.01:8080/api/login", {
+            const apiRes = await fetch("http://127.0.01:8080/api/register", {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -51,12 +58,12 @@ const LoginForm = () => {
             )};
 
             <FormInput
-                label="Username"
-                name="username"
+                label="Email"
+                name="email"
                 type="text"
-                className={errors.username && "error-input"}
+                className={errors.email && "error-input"}
                 className="form-control"
-                value={values.username}
+                value={values.email}
                 onChange={handleChange}
                 placeholder="Email address"
             />
@@ -80,7 +87,53 @@ const LoginForm = () => {
                 placeholder="Password"
             />
 
+            <FormInput
+                type="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                name="matchingPassword"
+                className={errors.matchingPassword && "error-input"}
+                className="form-control"
+                value={values.matchingPassword}
+                placeholder="Matching password"
+            />
+
             <br></br>
+            
+            <FormInput
+                label="Username"
+                name="username"
+                type="text"
+                className={errors.username && "error-input"}
+                className="form-control"
+                value={values.username}
+                onChange={handleChange}
+                placeholder="Username"
+            />
+
+            <br></br>
+            
+            <FormInput
+                label="FirstName"
+                name="firstName"
+                type="text"
+                className={errors.firstName && "error-input"}
+                className="form-control"
+                value={values.firstName}
+                onChange={handleChange}
+                placeholder="First Name"
+            />
+
+            <FormInput
+                label="LastName"
+                name="firstName"
+                type="text"
+                className={errors.firstName && "error-input"}
+                className="form-control"
+                value={values.firstName}
+                onChange={handleChange}
+                placeholder="First Name"
+            />
 
             <Button
                 type="submit"
