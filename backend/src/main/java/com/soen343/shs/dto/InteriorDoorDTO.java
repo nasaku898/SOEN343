@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,5 +12,4 @@ import java.util.Set;
 public class InteriorDoorDTO {
     private long id;
     private boolean open;
-    private Set<RoomDTO> rooms;
 }
