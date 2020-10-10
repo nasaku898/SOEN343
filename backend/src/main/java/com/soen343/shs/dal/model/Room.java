@@ -17,12 +17,15 @@ public class Room {
     private long id;
     private String name;
     private double temperature;
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Set<Door> doors;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Light> lights;
     @ElementCollection
     private Set<Long> userIds;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<HouseWindow> houseWindows;
 }

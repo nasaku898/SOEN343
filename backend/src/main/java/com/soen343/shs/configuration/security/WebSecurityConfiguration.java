@@ -15,9 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.soen343.shs.dal.model.UserRole.CHILD;
-import static com.soen343.shs.dal.model.UserRole.GUEST;
-import static com.soen343.shs.dal.model.UserRole.PARENT;
+import static com.soen343.shs.dal.model.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -77,7 +75,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new InteriorDoorToDoorDTOConverter());
         registry.addConverter(new LightToLightDTOConverter());
         registry.addConverter(new HouseWindowToHouseWindowDTOConverter());
-        registry.addConverter(new RoomToRoomLayoutDTOConverter());
     }
 
 }
