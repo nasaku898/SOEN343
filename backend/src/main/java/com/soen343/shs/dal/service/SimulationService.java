@@ -1,9 +1,6 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseMember;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.Room;
+import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.HouseMemberRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
@@ -11,13 +8,14 @@ import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
-import com.soen343.shs.dto.HouseLayoutDTO;
-import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class SimulationService {
@@ -40,7 +38,7 @@ public class SimulationService {
         this.mvcConversionService = mvcConversionService;
     }
 
-    public HouseLayoutDTO findHouseLayout(final long houseId) {
+    public House findHouse(final long houseId) {
         Optional<House> houseOptional = houseRepository.findById(houseId);
 
         if (!houseOptional.isPresent()) {
@@ -49,7 +47,7 @@ public class SimulationService {
 
         House house = houseOptional.get();
 
-        return mvcConversionService.convert(house, HouseLayoutDTO.class);
+        return house;
     }
 
     public void moveUserToRoom(final String name, final long roomId) {
@@ -73,7 +71,7 @@ public class SimulationService {
         houseWindowRepository.save(houseWindow);
     }
 
-    public void createNewHouseMember(final HouseMemberDTO houseMemberDTO ) {
+    public void createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
         Room room = findRoom(houseMemberDTO.getRoomId());
 
         HouseMember houseMember = new HouseMember();
@@ -83,7 +81,7 @@ public class SimulationService {
         houseMemberRepository.save(houseMember);
     }
 
-    private Room findRoom(final long roomId){
+    private Room findRoom(final long roomId) {
         Optional<Room> roomOptional = roomRepository.findById(roomId);
 
         if (!roomOptional.isPresent()) {
@@ -91,5 +89,65 @@ public class SimulationService {
         }
 
         return roomOptional.get();
+    }
+
+    public void loadHouse(final LoadHouseDTO loadHouseDTO) {
+        Set<LoadRoomDTO> rooms = loadHouseDTO.getRooms();
+        Set<Room> roomsToAdd = new HashSet<Room>();
+        House house = new House();
+
+        for (LoadRoomDTO room : rooms) {
+            Room roomToAdd = new Room();
+            Set<LoadDoorDTO> doors = room.getDoors();
+            Set<LoadLightDTO> lights = room.getLights();
+            Set<LoadHouseWindowDTO> windows = room.getHouseWindows();
+
+            roomToAdd.setDoors(loadDoors(doors));
+            roomToAdd.setLights(loadLights(lights));
+            roomToAdd.setHouseWindows(loadHouseWindow(windows));
+            roomToAdd.setName(room.getName());
+            //roomToAdd.setUserIds(new HashSet<Long>());
+            roomsToAdd.add(roomToAdd);
+        }
+
+        house.setRooms(roomsToAdd);
+        houseRepository.save(house);
+    }
+
+    private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {
+        Set<Door> doorsToAdd = new HashSet<Door>();
+
+        for (LoadDoorDTO door : doors) {
+            Door doorToAdd = new Door();
+            doorToAdd.setOpen(door.isOpen());
+            doorsToAdd.add(doorToAdd);
+        }
+
+        return doorsToAdd;
+    }
+
+    private Set<Light> loadLights(final Set<LoadLightDTO> lights) {
+        Set<Light> lightsToAdd = new HashSet<Light>();
+
+        for (LoadLightDTO light : lights) {
+            Light lightToAdd = new Light();
+            lightToAdd.setLightOn(light.isLightOn());
+            lightsToAdd.add(lightToAdd);
+        }
+
+        return lightsToAdd;
+    }
+
+    private Set<HouseWindow> loadHouseWindow(final Set<LoadHouseWindowDTO> windows) {
+        Set<HouseWindow> houseWindowsToAdd = new HashSet<HouseWindow>();
+
+        for (LoadHouseWindowDTO houseWindow : windows) {
+            HouseWindow houseWindowToAdd = new HouseWindow();
+            houseWindowToAdd.setOpen(houseWindow.isOpen());
+            houseWindowToAdd.setBlocked(houseWindow.isBlocked());
+            houseWindowsToAdd.add(houseWindowToAdd);
+        }
+
+        return houseWindowsToAdd;
     }
 }

@@ -4,8 +4,7 @@ import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.*;
 import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
-import com.soen343.shs.dto.HouseLayoutDTO;
-import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -27,6 +26,7 @@ public class SimulationController {
     private final LightRepository lightRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final HouseMemberRepository houseMemberRepository;
+
     @Autowired
     public SimulationController(SimulationService simulationService, HouseWindowRepository houseWindowRepository, RoomRepository roomRepository, HouseRepository houseRepository, LightRepository lightRepository, ExteriorDoorRepository exteriorDoorRepository, HouseMemberRepository houseMemberRepository) {
         this.simulationService = simulationService;
@@ -40,8 +40,8 @@ public class SimulationController {
 
     @GetMapping(value = "/house/houseLayout/{houseId}")
     @ResponseBody
-    public HouseLayoutDTO getHouseLayout(@PathVariable final long houseId) {
-        return simulationService.findHouseLayout(houseId);
+    public House getHouseLayout(@PathVariable final long houseId) {
+        return simulationService.findHouse(houseId);
     }
 
     @PutMapping(value = "/room/newRoom/{roomId}")
@@ -63,31 +63,10 @@ public class SimulationController {
         simulationService.createNewHouseMember(houseMemberDTO);
     }
 
-/*
-    @PostMapping(value = "/window")
+    @PostMapping(value = "/houseLayout")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createWindowTest(){
-        HouseWindow houseWindow = new HouseWindow();
-        houseWindow.setBlocked(false);
-        houseWindow.setOpen(true);
-        houseWindowRepository.save(houseWindow);
+    public void loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO){
+        simulationService.loadHouse(loadHouseDTO);
     }
 
-
-    @PostMapping(value = "/light")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void createLightTest(){
-        Light light =  new Light();
-        light.setLightOn(true);
-        lightRepository.save(light);
-    }
-    @PostMapping(value = "/door")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void createDoor(){
-        ExteriorDoor door = new ExteriorDoor();
-        door.setOpen(true);
-        door.setRooms(null);
-        exteriorDoorRepository.save(door);
-    }
-    */
 }
