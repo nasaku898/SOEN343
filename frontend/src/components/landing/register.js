@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FormInput } from "./form_components/FormInput.js";
 import { Button } from "./form_components/Button.js";
+import { register } from "../../modules/login_registration.js"
+import { Redirect } from "react-router-dom";
+import { ValidateRegistration } from "./validators/validateRegistration.js"
+
 
 const INITIAL_STATE = {
     username="",
@@ -8,7 +12,8 @@ const INITIAL_STATE = {
 };
 
 const RegistrationForm = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [registered, setRegistered] = useState(false);
+    
     const { username,
             password,
             matchingPassword,
@@ -18,33 +23,19 @@ const RegistrationForm = () => {
             role    
         } = values; 
 
-    const auhtenticate = async () => { 
-        try {
-            const apiRes = await fetch("http://127.0.01:8080/api/register", {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify(values)
-        });
-
-        const resJSON = await apiRes.json();
-        const authTokens = apiRes.token;
-        setLoggedIn(authTokens);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     const {
         handleSubmit,
         handleChange,
         handleBlur,
         values,
         errors,
-        isSubmitting
-      } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser);
+        isSubmitting,
+        role
+    } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser);
+
+    if (isRegister) {
+        return <Redirect to="/login"></Redirect>;
+      }
 
     return ( 
         <form

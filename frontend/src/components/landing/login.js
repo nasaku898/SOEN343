@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FormInput } from "./form_components/FormInput.js";
 import { Button } from "./form_components/Button.js";
+import useFormValidation from "./validators/useFormValidation";
+import { ValidateAuthentication } from "./validators/validateAuthentication";
 
 const INITIAL_STATE = {
     username="",
@@ -10,25 +12,6 @@ const INITIAL_STATE = {
 const LoginForm = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     const { username, password } = values; 
-
-    const auhtenticate = async () => { 
-        try {
-            const apiRes = await fetch("http://127.0.01:8080/api/login", {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify(values)
-        });
-
-        const resJSON = await apiRes.json();
-        const authTokens = apiRes.token;
-        setLoggedIn(authTokens);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const {
         handleSubmit,
