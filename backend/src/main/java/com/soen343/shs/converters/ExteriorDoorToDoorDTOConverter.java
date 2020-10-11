@@ -12,6 +12,7 @@ public class ExteriorDoorToDoorDTOConverter implements Converter<ExteriorDoor, D
                 .id(door.getId())
                 .open(door.isOpen())
                 .locked(door.isLocked())
+                .rooms(door.getRooms())
                 .build();
     }
 }

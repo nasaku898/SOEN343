@@ -11,6 +11,7 @@ public class InteriorDoorToDoorDTOConverter implements Converter<InteriorDoor, D
         return DoorDTO.builder()
                 .id(door.getId())
                 .open(door.isOpen())
+                .rooms(door.getRooms())
                 .build();
     }
 }

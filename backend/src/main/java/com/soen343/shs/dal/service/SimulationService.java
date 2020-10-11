@@ -27,10 +27,10 @@ public class SimulationService {
     private final ConversionService mvcConversionService;
 
     @Autowired
-    public SimulationService(HouseRepository houseRepository,
-                             HouseMemberRepository houseMemberRepository,
-                             RoomRepository roomRepository,
-                             HouseWindowRepository houseWindowRepository, final ConversionService mvcConversionService) {
+    public SimulationService(final HouseRepository houseRepository,
+                             final HouseMemberRepository houseMemberRepository,
+                             final RoomRepository roomRepository,
+                             final HouseWindowRepository houseWindowRepository, final ConversionService mvcConversionService) {
         this.houseMemberRepository = houseMemberRepository;
         this.houseRepository = houseRepository;
         this.roomRepository = roomRepository;
@@ -98,6 +98,7 @@ public class SimulationService {
 
         for (LoadRoomDTO room : rooms) {
             Room roomToAdd = new Room();
+
             Set<LoadDoorDTO> doors = room.getDoors();
             Set<LoadLightDTO> lights = room.getLights();
             Set<LoadHouseWindowDTO> windows = room.getHouseWindows();
@@ -105,8 +106,8 @@ public class SimulationService {
             roomToAdd.setDoors(loadDoors(doors));
             roomToAdd.setLights(loadLights(lights));
             roomToAdd.setHouseWindows(loadHouseWindow(windows));
+
             roomToAdd.setName(room.getName());
-            //roomToAdd.setUserIds(new HashSet<Long>());
             roomsToAdd.add(roomToAdd);
         }
 
@@ -120,6 +121,7 @@ public class SimulationService {
         for (LoadDoorDTO door : doors) {
             Door doorToAdd = new Door();
             doorToAdd.setOpen(door.isOpen());
+            doorToAdd.setRooms(door.getRooms());
             doorsToAdd.add(doorToAdd);
         }
 

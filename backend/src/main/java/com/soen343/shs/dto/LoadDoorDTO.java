@@ -2,6 +2,8 @@ package com.soen343.shs.dto;
 
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,4 +11,5 @@ import lombok.*;
 @Builder
 public class LoadDoorDTO {
     private boolean open;
+    private Set<String> rooms;
 }
