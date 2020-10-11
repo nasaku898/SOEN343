@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { FormInput } from "./form_components/FormInput.js";
-import { Button } from "./form_components/Button.js";
-import { register } from "../../modules/login_registration.js"
+import FormInput from "./form_components/FormInput.js";
+import { Button }  from "./form_components/Button.js";
+import { register } from "../../modules/login_registration/authenticationService.js"
 import { Redirect } from "react-router-dom";
-import { ValidateRegistration } from "./validators/validateRegistration.js"
+import validateRegistration, { ValidateRegistration } from "./validators/validateRegistration.js";
+import  useFormValidation  from "./validators/useFormValidation.js";
+import  validate  from "./validators/useFormValidation.js";
 
 
 const INITIAL_STATE = {
-    username="",
-    password=""
+    username:"",
+    password:""
 };
 
-const RegistrationForm = () => {
+export const RegistrationForm = () => {
     const [registered, setRegistered] = useState(false);
     
     const { username,
@@ -30,10 +32,9 @@ const RegistrationForm = () => {
         values,
         errors,
         isSubmitting,
-        role
-    } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser);
+    } = useFormValidation(INITIAL_STATE, validateRegistration, registered);
 
-    if (isRegister) {
+    if (registered) {
         return <Redirect to="/login"></Redirect>;
       }
 
@@ -126,15 +127,22 @@ const RegistrationForm = () => {
                 placeholder="First Name"
             />
 
+            <select>
+                <option value="Parent">Parent</option>
+                <option value="Child">Child</option>
+                <option value="Guest">Guest</option>
+            </select>
+        
             <Button
                 type="submit"
                 label="Submit"
                 className="button"
-                handleClick={onSubmit}
+                disabled={isSubmitting}
             />
-        
+
+
         </form>
      );
 }
  
-export default LoginForm;
+export default RegistrationForm;

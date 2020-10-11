@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FormInput } from "./form_components/FormInput.js";
-import { Button } from "./form_components/Button.js";
+import FormInput from "./form_components/FormInput.js";
+import {Button} from "./form_components/Button.js";
 import useFormValidation from "./validators/useFormValidation";
-import { ValidateAuthentication } from "./validators/validateAuthentication";
+import ValidateAuthentication from "./validators/validateAuthentication";
+import { authenticate } from "../../modules/login_registration/authenticationService.js"
 
 const INITIAL_STATE = {
-    username="",
-    password=""
+    username:"",
+    password:""
 };
 
 const LoginForm = () => {
@@ -20,7 +21,7 @@ const LoginForm = () => {
         values,
         errors,
         isSubmitting
-      } = useFormValidation(INITIAL_STATE, validateAuth, authenticateUser);
+      } = useFormValidation(INITIAL_STATE, ValidateAuthentication, authenticate);
 
     return ( 
         <form
@@ -69,7 +70,7 @@ const LoginForm = () => {
                 type="submit"
                 label="Submit"
                 className="button"
-                handleClick={onSubmit}
+                disabled={isSubmitting}
             />
         
         </form>

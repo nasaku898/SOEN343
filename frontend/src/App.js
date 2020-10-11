@@ -4,9 +4,10 @@ import {
   Switch,
   Route,
   Link
-} from "react-router-dom";
-import { LoginForm } from "./components/landing/login.js"; 
+} from "react-router-dom.js";
+import LoginForm from "./components/landing/login.js"; 
 import { RegistrationForm } from "./components/landing/register.js";
+import { AuthContext } from "./context/auth.js";
 
 const App = () => {
   // we will use this to get/fetch authentication token

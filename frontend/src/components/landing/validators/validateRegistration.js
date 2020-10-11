@@ -1,13 +1,14 @@
 const validateRegistration = values => {
   const errors = [];
-  const requiredFields = [
-    "username",
-    "password",
-    "firstName",
-    "lastName",
-    "email",
-    "role"
-  ];
+  const requiredFields = {
+    username: values.username,
+    password: values.password,
+    matchingPassword: values.matchingPassword,
+    firstName: values.firstName,
+    lastName: values.lastName,
+    email: values.email,
+    role: values.role
+  };
 
   errors
     .concat([
@@ -31,7 +32,7 @@ const checkPassword = password => {
 };
 
 const checkEmail = email => {
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email))
+  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email))
     return "Invalid email address";
   return true;
 };
