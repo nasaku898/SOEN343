@@ -51,7 +51,17 @@ public class SimulationService {
 
         return mvcConversionService.convert(house, HouseLayoutDTO.class);
     }
+    public House findHouse(final long houseId) {
+        Optional<House> houseOptional = houseRepository.findById(houseId);
 
+        if (!houseOptional.isPresent()) {
+            throw new HouseNotFoundException();
+        }
+
+        House house = houseOptional.get();
+
+        return house;
+    }
     public void moveUserToRoom(final String name, final long roomId) {
         Room room = findRoom(roomId);
 
