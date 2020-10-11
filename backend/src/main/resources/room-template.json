@@ -1,0 +1,51 @@
+{
+  "rooms": [
+    {
+      "name": "kitchen",
+      "doors": [
+
+        {
+          "open": true,
+          "rooms":[
+            "kitchen",
+            "toilet"
+          ]
+        }
+      ],
+      "lights": [
+        {
+          "isLightOn": true
+        }
+      ],
+      "houseWindows": [
+        {
+          "blocked": true,
+          "open": true
+        }
+      ]
+    },
+    {
+      "name": "toilet",
+      "doors": [
+        {
+          "open": true,
+          "rooms":[
+            "kitchen",
+            "toilet"
+          ]
+        }
+      ],
+      "lights": [
+        {
+          "isLightOn": true
+        }
+      ],
+      "houseWindows": [
+        {
+          "blocked": false,
+          "open": true
+        }
+      ]
+    }
+  ]
+}
