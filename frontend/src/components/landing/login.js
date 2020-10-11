@@ -45,7 +45,7 @@ const LoginForm = () => {
                 placeholder="Email address"
             />
             
-            <br></br>
+            <br/>
                 
             {errors.password && (
                 <p className="error-text" class="alert alert-danger">
@@ -64,7 +64,7 @@ const LoginForm = () => {
                 placeholder="Password"
             />
 
-            <br></br>
+            <br/>
 
             <Button
                 type="submit"
