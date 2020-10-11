@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import FormInput from "./form_components/FormInput.js";
-import { Button }  from "./form_components/Button.js";
-import { register } from "../../modules/login_registration/authenticationService.js"
-import { Redirect } from "react-router-dom";
-import validateRegistration, { ValidateRegistration } from "./validators/validateRegistration.js";
-import  useFormValidation  from "./validators/useFormValidation.js";
-import  validate  from "./validators/useFormValidation.js";
-
+import {Button} from "./form_components/Button.js";
+import {register} from "../../modules/login_registration/authenticationService.js"
+import {Redirect} from "react-router-dom";
+import validateRegistration from "./validators/validateRegistration.js";
+import useFormValidation from "./validators/useFormValidation.js";
 
 const INITIAL_STATE = {
-    username:"",
-    password:""
+    username: "",
+    password: ""
 };
 
 export const RegistrationForm = () => {
     const [registered, setRegistered] = useState(false);
-    
-    const { username,
-            password,
-            matchingPassword,
-            firstName,
-            lastName,
-            email,
-            role    
-        } = values; 
+
+    const {
+        username,
+        password,
+        matchingPassword,
+        firstName,
+        lastName,
+        email,
+        role
+    } = values;
 
     const {
         handleSubmit,
@@ -32,16 +31,16 @@ export const RegistrationForm = () => {
         values,
         errors,
         isSubmitting,
-    } = useFormValidation(INITIAL_STATE, validateRegistration, registered);
+    } = useFormValidation(INITIAL_STATE, validateRegistration, register(values));
 
     if (registered) {
-        return <Redirect to="/login"></Redirect>;
-      }
+        return <Redirect to="/login"/>;
+    }
 
-    return ( 
+    return (
         <form
-        onSubmit={handleSubmit}
-        className="form-signin"
+            onSubmit={handleSubmit}
+            className="form-signin"
         >
             {errors.username && (
                 <p className="error-text" class="alert alert-danger">
@@ -59,9 +58,9 @@ export const RegistrationForm = () => {
                 onChange={handleChange}
                 placeholder="Email address"
             />
-            
-            <br></br>
-                
+
+            <br/>
+
             {errors.password && (
                 <p className="error-text" class="alert alert-danger">
                     {errors.password}
@@ -79,6 +78,8 @@ export const RegistrationForm = () => {
                 placeholder="Password"
             />
 
+            <br/>
+
             <FormInput
                 type="password"
                 onChange={handleChange}
@@ -90,8 +91,8 @@ export const RegistrationForm = () => {
                 placeholder="Matching password"
             />
 
-            <br></br>
-            
+            <br/>
+
             <FormInput
                 label="Username"
                 name="username"
@@ -103,8 +104,8 @@ export const RegistrationForm = () => {
                 placeholder="Username"
             />
 
-            <br></br>
-            
+            <br/>
+
             <FormInput
                 label="FirstName"
                 name="firstName"
@@ -115,6 +116,8 @@ export const RegistrationForm = () => {
                 onChange={handleChange}
                 placeholder="First Name"
             />
+
+            <br/>
 
             <FormInput
                 label="LastName"
@@ -127,12 +130,14 @@ export const RegistrationForm = () => {
                 placeholder="First Name"
             />
 
+            <br/>
+
             <select>
                 <option value="Parent">Parent</option>
                 <option value="Child">Child</option>
                 <option value="Guest">Guest</option>
             </select>
-        
+
             <Button
                 type="submit"
                 label="Submit"
@@ -142,7 +147,7 @@ export const RegistrationForm = () => {
 
 
         </form>
-     );
+    );
 }
- 
+
 export default RegistrationForm;
