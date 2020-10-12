@@ -1,0 +1,398 @@
+Index: src/components/landing/form_components/FormInput.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { Fragment } from \"react\";\r\n\r\n\r\nconst NameField = ({    \r\n    name,\r\n    type,\r\n    placeholder,\r\n    onChange,\r\n    className,\r\n    value,\r\n    error,\r\n    children,\r\n    label,\r\n    ...props\r\n}) => {\r\n    return ( \r\n        <Fragment>\r\n        <label htmlFor={name}>{label}</label>\r\n        <input\r\n            id={name}\r\n            name={name}\r\n            placeholder={placeholder}\r\n            value={value}\r\n            className={className}\r\n            type={type}\r\n        />\r\n        { error && <p>{ error }</p>}\r\n\r\n        </Fragment>\r\n    \r\n     );\r\n}\r\n \r\nexport default NameField;
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/components/landing/form_components/FormInput.js	(revision d3df2b939871b3dff041f0d3373a5fd397064b1a)
++++ src/components/landing/form_components/FormInput.js	(date 1602515451836)
+@@ -1,7 +1,7 @@
+ import React, { Fragment } from "react";
+ 
+ 
+-const NameField = ({    
++const FormInput = ({
+     name,
+     type,
+     placeholder,
+@@ -31,4 +31,4 @@
+      );
+ }
+  
+-export default NameField;
+\ No newline at end of file
++export default FormInput;
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"b993c4c5-0637-44c9-b8be-1beb81aa61e1\" name=\"Default Changelist\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/components/landing/form_components/test.js\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"EXCLUDED_CONVERTED_TO_IGNORED\" value=\"true\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ComposerSettings\">\r\n    <execution>\r\n      <executable />\r\n    </execution>\r\n  </component>\r\n  <component name=\"DefaultGradleProjectSettings\">\r\n    <option name=\"testRunner\" value=\"GRADLE\" />\r\n    <option name=\"delegatedBuild\" value=\"true\" />\r\n  </component>\r\n  <component name=\"FileEditorManager\">\r\n    <leaf>\r\n      <file pinned=\"false\" current-in-tab=\"true\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/components/landing/form_components/useFormValidation.js\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state>\r\n              <caret column=\"26\" selection-start-column=\"26\" selection-end-column=\"26\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"120\">\r\n              <caret line=\"6\" column=\"23\" selection-start-line=\"6\" selection-start-column=\"23\" selection-end-line=\"6\" selection-end-column=\"23\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n    </leaf>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"JavaScript File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"IdeDocumentHistory\">\r\n    <option name=\"CHANGED_PATHS\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js\" />\r\n        <option value=\"$PROJECT_DIR$/src/components/landing/form_components/test.js\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"JsFlowSettings\">\r\n    <service-enabled>true</service-enabled>\r\n    <exe-path />\r\n    <other-services-enabled>true</other-services-enabled>\r\n    <auto-save>true</auto-save>\r\n  </component>\r\n  <component name=\"ProjectConfigurationFiles\">\r\n    <option name=\"files\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/.idea/frontend.iml\" />\r\n        <option value=\"$PROJECT_DIR$/.idea/misc.xml\" />\r\n        <option value=\"$PROJECT_DIR$/.idea/vcs.xml\" />\r\n        <option value=\"$PROJECT_DIR$/.idea/modules.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectFrameBounds\" extendedState=\"6\">\r\n    <option name=\"x\" value=\"-260\" />\r\n    <option name=\"y\" value=\"280\" />\r\n    <option name=\"width\" value=\"2576\" />\r\n    <option name=\"height\" value=\"1416\" />\r\n  </component>\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectView\">\r\n    <navigator proportions=\"\" version=\"1\">\r\n      <foldersAlwaysOnTop value=\"true\" />\r\n    </navigator>\r\n    <panes>\r\n      <pane id=\"ProjectPane\">\r\n        <subPane>\r\n          <expand>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"node_modules\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"node_modules\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"react\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"node_modules\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"react\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"cjs\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"landing\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"frontend\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"frontend\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"components\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"landing\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"form_components\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n          </expand>\r\n          <select />\r\n        </subPane>\r\n      </pane>\r\n      <pane id=\"Scope\" />\r\n      <pane id=\"PackagesPane\" />\r\n    </panes>\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$\" />\r\n    <property name=\"nodejs_interpreter_path.stuck_in_default_project\" value=\"undefined stuck path\" />\r\n    <property name=\"nodejs_npm_path_reset_for_default_project\" value=\"true\" />\r\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Global Libraries\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.0\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.0\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"Settings.JavaScript\" />\r\n  </component>\r\n  <component name=\"RunDashboard\">\r\n    <option name=\"ruleStates\">\r\n      <list>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"ConfigurationTypeDashboardGroupingRule\" />\r\n        </RuleState>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"StatusDashboardGroupingRule\" />\r\n        </RuleState>\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"b993c4c5-0637-44c9-b8be-1beb81aa61e1\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1602236918044</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1602236918044</updated>\r\n      <workItem from=\"1602236919484\" duration=\"828000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TimeTrackingManager\">\r\n    <option name=\"totallyTimeSpent\" value=\"828000\" />\r\n  </component>\r\n  <component name=\"ToolWindowManager\">\r\n    <frame x=\"-8\" y=\"32\" width=\"2576\" height=\"1416\" extended-state=\"6\" />\r\n    <editor active=\"true\" />\r\n    <layout>\r\n      <window_info id=\"Designer\" />\r\n      <window_info id=\"Image Layers\" />\r\n      <window_info id=\"Capture Tool\" />\r\n      <window_info id=\"UI Designer\" />\r\n      <window_info id=\"Favorites\" side_tool=\"true\" />\r\n      <window_info active=\"true\" content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.25\" />\r\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\r\n      <window_info anchor=\"bottom\" id=\"Terminal\" />\r\n      <window_info anchor=\"bottom\" id=\"Docker\" show_stripe_button=\"false\" />\r\n      <window_info anchor=\"bottom\" id=\"Event Log\" side_tool=\"true\" />\r\n      <window_info anchor=\"bottom\" id=\"SonarLint\" />\r\n      <window_info anchor=\"bottom\" id=\"Database Changes\" />\r\n      <window_info anchor=\"bottom\" id=\"Version Control\" />\r\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\r\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" />\r\n      <window_info anchor=\"bottom\" id=\"Run\" order=\"2\" weight=\"0.3293556\" />\r\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\r\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" />\r\n      <window_info anchor=\"right\" id=\"Maven\" />\r\n      <window_info anchor=\"right\" id=\"Palette\" />\r\n      <window_info anchor=\"right\" id=\"Capture Analysis\" />\r\n      <window_info anchor=\"right\" id=\"Database\" />\r\n      <window_info anchor=\"right\" id=\"Palette&#9;\" />\r\n      <window_info anchor=\"right\" id=\"Theme Preview\" />\r\n      <window_info anchor=\"right\" id=\"Mongo Explorer\" />\r\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\r\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\r\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\r\n    </layout>\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"1\" />\r\n  </component>\r\n  <component name=\"editorHistoryManager\">\r\n    <entry file=\"file://$PROJECT_DIR$/src/components/landing/form_components/test.js\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\" />\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"120\">\r\n          <caret line=\"6\" column=\"23\" selection-start-line=\"6\" selection-start-column=\"23\" selection-end-line=\"6\" selection-end-column=\"23\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/node_modules/react/cjs/react.development.js\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"268\">\r\n          <caret line=\"1506\" column=\"9\" selection-start-line=\"1506\" selection-start-column=\"9\" selection-end-line=\"1506\" selection-end-column=\"9\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/components/landing/form_components/useFormValidation.js\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state>\r\n          <caret column=\"26\" selection-start-column=\"26\" selection-end-column=\"26\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n  </component>\r\n  <component name=\"masterDetails\">\r\n    <states>\r\n      <state key=\"GlobalLibrariesConfigurable.UI\">\r\n        <settings>\r\n          <last-edited>javafx.fxml</last-edited>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n      <state key=\"JdkListConfigurable.UI\">\r\n        <settings>\r\n          <last-edited>11</last-edited>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n      <state key=\"ProjectJDKs.UI\">\r\n        <settings>\r\n          <last-edited>11</last-edited>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n      <state key=\"ProjectLibrariesConfigurable.UI\">\r\n        <settings>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n    </states>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision d3df2b939871b3dff041f0d3373a5fd397064b1a)
++++ .idea/workspace.xml	(date 1602515485536)
+@@ -1,10 +1,52 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="BranchesTreeState">
++    <expand>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++      <path>
++        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
++        <item name="GROUP_NODE:temperatureService" type="e8cecc67:BranchNodeDescriptor" />
++      </path>
++    </expand>
++    <select />
++  </component>
+   <component name="ChangeListManager">
+     <list default="true" id="b993c4c5-0637-44c9-b8be-1beb81aa61e1" name="Default Changelist" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/components/landing/form_components/test.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/4/24d16a9fc9c36270ec5f4d4dd6c2756265f71a29" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c7f8b1e5f0104ea963027665dd4d33eca672fb4a" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e55758f5b7b99251427747c2cc899b34b595ae20" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/components/landing/form_components/FormInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/form_components/FormInput.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/components/landing/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/LoginForm.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/components/landing/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/RegistrationForm.js" afterDir="false" />
+     </list>
+-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -18,28 +60,6 @@
+   <component name="DefaultGradleProjectSettings">
+     <option name="testRunner" value="GRADLE" />
+     <option name="delegatedBuild" value="true" />
+-  </component>
+-  <component name="FileEditorManager">
+-    <leaf>
+-      <file pinned="false" current-in-tab="true">
+-        <entry file="file://$PROJECT_DIR$/src/components/landing/form_components/useFormValidation.js">
+-          <provider selected="true" editor-type-id="text-editor">
+-            <state>
+-              <caret column="26" selection-start-column="26" selection-end-column="26" />
+-            </state>
+-          </provider>
+-        </entry>
+-      </file>
+-      <file pinned="false" current-in-tab="false">
+-        <entry file="file://$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js">
+-          <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="120">
+-              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+-            </state>
+-          </provider>
+-        </entry>
+-      </file>
+-    </leaf>
+   </component>
+   <component name="FileTemplateManagerImpl">
+     <option name="RECENT_TEMPLATES">
+@@ -50,14 +70,6 @@
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+-  </component>
+-  <component name="IdeDocumentHistory">
+-    <option name="CHANGED_PATHS">
+-      <list>
+-        <option value="$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js" />
+-        <option value="$PROJECT_DIR$/src/components/landing/form_components/test.js" />
+-      </list>
+-    </option>
+   </component>
+   <component name="JsFlowSettings">
+     <service-enabled>true</service-enabled>
+@@ -75,78 +87,14 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectFrameBounds" extendedState="6">
+-    <option name="x" value="-260" />
+-    <option name="y" value="280" />
+-    <option name="width" value="2576" />
+-    <option name="height" value="1416" />
+-  </component>
++  <component name="ProjectId" id="1imWS6XhCn0gPbeLEErk062ChX7" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+-  <component name="ProjectView">
+-    <navigator proportions="" version="1">
+-      <foldersAlwaysOnTop value="true" />
+-    </navigator>
+-    <panes>
+-      <pane id="ProjectPane">
+-        <subPane>
+-          <expand>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+-              <item name="react" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+-              <item name="react" type="462c0819:PsiDirectoryNode" />
+-              <item name="cjs" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="src" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="src" type="462c0819:PsiDirectoryNode" />
+-              <item name="components" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="src" type="462c0819:PsiDirectoryNode" />
+-              <item name="components" type="462c0819:PsiDirectoryNode" />
+-              <item name="landing" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-            <path>
+-              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+-              <item name="src" type="462c0819:PsiDirectoryNode" />
+-              <item name="components" type="462c0819:PsiDirectoryNode" />
+-              <item name="landing" type="462c0819:PsiDirectoryNode" />
+-              <item name="form_components" type="462c0819:PsiDirectoryNode" />
+-            </path>
+-          </expand>
+-          <select />
+-        </subPane>
+-      </pane>
+-      <pane id="Scope" />
+-      <pane id="PackagesPane" />
+-    </panes>
++  <component name="ProjectViewState">
++    <option name="hideEmptyMiddlePackages" value="true" />
++    <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent">
++    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+     <property name="WebServerToolWindowFactoryState" value="false" />
+     <property name="aspect.path.notification.shown" value="true" />
+     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+@@ -156,20 +104,10 @@
+     <property name="project.structure.last.edited" value="Global Libraries" />
+     <property name="project.structure.proportion" value="0.0" />
+     <property name="project.structure.side.proportion" value="0.0" />
+-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+-  </component>
+-  <component name="RunDashboard">
+-    <option name="ruleStates">
+-      <list>
+-        <RuleState>
+-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+-        </RuleState>
+-        <RuleState>
+-          <option name="name" value="StatusDashboardGroupingRule" />
+-        </RuleState>
+-      </list>
+-    </option>
++    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
++    <property name="vue.rearranger.settings.migration" value="true" />
+   </component>
++  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="SvnConfiguration">
+     <configuration />
+   </component>
+@@ -181,76 +119,41 @@
+       <option name="presentableId" value="Default" />
+       <updated>1602236918044</updated>
+       <workItem from="1602236919484" duration="828000" />
++      <workItem from="1602513246515" duration="501000" />
++      <workItem from="1602513866631" duration="504000" />
++      <workItem from="1602514924548" duration="40000" />
++      <workItem from="1602514977427" duration="102000" />
++      <workItem from="1602515090106" duration="393000" />
+     </task>
+     <servers />
+-  </component>
+-  <component name="TimeTrackingManager">
+-    <option name="totallyTimeSpent" value="828000" />
+-  </component>
+-  <component name="ToolWindowManager">
+-    <frame x="-8" y="32" width="2576" height="1416" extended-state="6" />
+-    <editor active="true" />
+-    <layout>
+-      <window_info id="Designer" />
+-      <window_info id="Image Layers" />
+-      <window_info id="Capture Tool" />
+-      <window_info id="UI Designer" />
+-      <window_info id="Favorites" side_tool="true" />
+-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+-      <window_info anchor="bottom" id="Terminal" />
+-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+-      <window_info anchor="bottom" id="SonarLint" />
+-      <window_info anchor="bottom" id="Database Changes" />
+-      <window_info anchor="bottom" id="Version Control" />
+-      <window_info anchor="bottom" id="Message" order="0" />
+-      <window_info anchor="bottom" id="Find" order="1" />
+-      <window_info anchor="bottom" id="Run" order="2" weight="0.3293556" />
+-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+-      <window_info anchor="bottom" id="TODO" order="6" />
+-      <window_info anchor="right" id="Maven" />
+-      <window_info anchor="right" id="Palette" />
+-      <window_info anchor="right" id="Capture Analysis" />
+-      <window_info anchor="right" id="Database" />
+-      <window_info anchor="right" id="Palette&#9;" />
+-      <window_info anchor="right" id="Theme Preview" />
+-      <window_info anchor="right" id="Mongo Explorer" />
+-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+-    </layout>
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+-    <option name="version" value="1" />
++    <option name="version" value="3" />
+   </component>
+-  <component name="editorHistoryManager">
+-    <entry file="file://$PROJECT_DIR$/src/components/landing/form_components/test.js">
+-      <provider selected="true" editor-type-id="text-editor" />
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/src/components/landing/form_components/validateAuth.js">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="120">
+-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/node_modules/react/cjs/react.development.js">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="268">
+-          <caret line="1506" column="9" selection-start-line="1506" selection-start-column="9" selection-end-line="1506" selection-end-column="9" />
+-        </state>
+-      </provider>
+-    </entry>
+-    <entry file="file://$PROJECT_DIR$/src/components/landing/form_components/useFormValidation.js">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state>
+-          <caret column="26" selection-start-column="26" selection-end-column="26" />
+-        </state>
+-      </provider>
+-    </entry>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
++  <component name="WindowStateProjectService">
++    <state x="781" y="385" key="SettingsEditor" timestamp="1602515342690">
++      <screen x="0" y="40" width="2560" height="1400" />
++    </state>
++    <state x="781" y="385" key="SettingsEditor/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602515342690" />
++    <state x="1152" y="584" key="cloudConfig.SelfSettingsDialog" timestamp="1602513882419">
++      <screen x="0" y="40" width="2560" height="1400" />
++    </state>
++    <state x="1152" y="584" key="cloudConfig.SelfSettingsDialog/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602513882419" />
++    <state x="936" y="352" key="run.anything.popup" timestamp="1602513249811">
++      <screen x="0" y="40" width="2560" height="1400" />
++    </state>
++    <state x="936" y="352" key="run.anything.popup/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602513249811" />
+   </component>
+   <component name="masterDetails">
+     <states>
+Index: src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState } from \"react\";\r\nimport {\r\n  BrowserRouter as Router,\r\n  Switch,\r\n  Route,\r\n  Link\r\n} from \"react-router-dom.js\";\r\nimport LoginForm from \"./components/landing/login.js\"; \r\nimport { RegistrationForm } from \"./components/landing/register.js\";\r\nimport { AuthContext } from \"./context/auth.js\";\r\n\r\nconst App = () => {\r\n  // we will use this to get/fetch authentication token\r\n  const [authTokens, setAuthTokens] = useState(\r\n    localStorage.getItem(\"token\") || \"\"\r\n  );\r\n\r\n  const setTokens = data => {\r\n    localStorage.setItem(\"token\", JSON.stringify(data));\r\n    setAuthTokens(data);\r\n  };\r\n\r\n  return (\r\n    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>\r\n      <Router>\r\n        <div>\r\n        <h1>Welcome to the home page for our SOEN343 project!</h1>\r\n          <Switch>\r\n            <Route path=\"/register\" component={RegistrationForm}/>\r\n            <Route path=\"/login\" component={LoginForm}/>\r\n          </Switch>\r\n        </div>\r\n      </Router>\r\n    </AuthContext.Provider>\r\n\r\n  );\r\n}\r\n\r\nexport default App;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/App.js	(revision d3df2b939871b3dff041f0d3373a5fd397064b1a)
++++ src/App.js	(date 1602515451859)
+@@ -5,8 +5,8 @@
+   Route,
+   Link
+ } from "react-router-dom.js";
+-import LoginForm from "./components/landing/login.js"; 
+-import { RegistrationForm } from "./components/landing/register.js";
++import LoginForm from "./components/landing/LoginForm.js";
++import { RegistrationForm } from "./components/landing/RegistrationForm.js";
+ import { AuthContext } from "./context/auth.js";
+ 
+ const App = () => {
+Index: src/components/landing/register.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState, useEffect } from \"react\";\r\nimport FormInput from \"./form_components/FormInput.js\";\r\nimport { Button }  from \"./form_components/Button.js\";\r\nimport { register } from \"../../modules/login_registration/authenticationService.js\"\r\nimport { Redirect } from \"react-router-dom\";\r\nimport validateRegistration, { ValidateRegistration } from \"./validators/validateRegistration.js\";\r\nimport  useFormValidation  from \"./validators/useFormValidation.js\";\r\nimport  validate  from \"./validators/useFormValidation.js\";\r\n\r\n\r\nconst INITIAL_STATE = {\r\n    username:\"\",\r\n    password:\"\"\r\n};\r\n\r\nexport const RegistrationForm = () => {\r\n    const [registered, setRegistered] = useState(false);\r\n    \r\n    const { username,\r\n            password,\r\n            matchingPassword,\r\n            firstName,\r\n            lastName,\r\n            email,\r\n            role    \r\n        } = values; \r\n\r\n    const {\r\n        handleSubmit,\r\n        handleChange,\r\n        handleBlur,\r\n        values,\r\n        errors,\r\n        isSubmitting,\r\n    } = useFormValidation(INITIAL_STATE, validateRegistration, registered);\r\n\r\n    if (registered) {\r\n        return <Redirect to=\"/login\"></Redirect>;\r\n      }\r\n\r\n    return ( \r\n        <form\r\n        onSubmit={handleSubmit}\r\n        className=\"form-signin\"\r\n        >\r\n            {errors.username && (\r\n                <p className=\"error-text\" class=\"alert alert-danger\">\r\n                    {errors.username}\r\n                </p>\r\n            )};\r\n\r\n            <FormInput\r\n                label=\"Email\"\r\n                name=\"email\"\r\n                type=\"text\"\r\n                className={errors.email && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.email}\r\n                onChange={handleChange}\r\n                placeholder=\"Email address\"\r\n            />\r\n            \r\n            <br></br>\r\n                \r\n            {errors.password && (\r\n                <p className=\"error-text\" class=\"alert alert-danger\">\r\n                    {errors.password}\r\n                </p>\r\n            )};\r\n\r\n            <FormInput\r\n                type=\"password\"\r\n                onChange={handleChange}\r\n                onBlur={handleBlur}\r\n                name=\"password\"\r\n                className={errors.password && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.password}\r\n                placeholder=\"Password\"\r\n            />\r\n\r\n            <FormInput\r\n                type=\"password\"\r\n                onChange={handleChange}\r\n                onBlur={handleBlur}\r\n                name=\"matchingPassword\"\r\n                className={errors.matchingPassword && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.matchingPassword}\r\n                placeholder=\"Matching password\"\r\n            />\r\n\r\n            <br></br>\r\n            \r\n            <FormInput\r\n                label=\"Username\"\r\n                name=\"username\"\r\n                type=\"text\"\r\n                className={errors.username && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.username}\r\n                onChange={handleChange}\r\n                placeholder=\"Username\"\r\n            />\r\n\r\n            <br></br>\r\n            \r\n            <FormInput\r\n                label=\"FirstName\"\r\n                name=\"firstName\"\r\n                type=\"text\"\r\n                className={errors.firstName && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.firstName}\r\n                onChange={handleChange}\r\n                placeholder=\"First Name\"\r\n            />\r\n\r\n            <FormInput\r\n                label=\"LastName\"\r\n                name=\"firstName\"\r\n                type=\"text\"\r\n                className={errors.firstName && \"error-input\"}\r\n                className=\"form-control\"\r\n                value={values.firstName}\r\n                onChange={handleChange}\r\n                placeholder=\"First Name\"\r\n            />\r\n\r\n            <select>\r\n                <option value=\"Parent\">Parent</option>\r\n                <option value=\"Child\">Child</option>\r\n                <option value=\"Guest\">Guest</option>\r\n            </select>\r\n        \r\n            <Button\r\n                type=\"submit\"\r\n                label=\"Submit\"\r\n                className=\"button\"\r\n                disabled={isSubmitting}\r\n            />\r\n\r\n\r\n        </form>\r\n     );\r\n}\r\n \r\nexport default RegistrationForm;
+===================================================================
+--- src/components/landing/register.js	(revision d3df2b939871b3dff041f0d3373a5fd397064b1a)
++++ src/components/landing/RegistrationForm.js	(date 1602515533254)
+@@ -1,4 +1,4 @@
+-import React, { useState, useEffect } from "react";
++import React, { useState} from "react";
+ import FormInput from "./form_components/FormInput.js";
+ import { Button }  from "./form_components/Button.js";
+ import { register } from "../../modules/login_registration/authenticationService.js"
+@@ -32,10 +32,10 @@
+         values,
+         errors,
+         isSubmitting,
+-    } = useFormValidation(INITIAL_STATE, validateRegistration, registered);
++    } = useFormValidation(INITIAL_STATE, validateRegistration, register(values));
+ 
+     if (registered) {
+-        return <Redirect to="/login"></Redirect>;
++        return <Redirect to="/login"/>;
+       }
+ 
+     return ( 
+diff --git src/components/landing/login.js src/components/landing/LoginForm.js
+rename from src/components/landing/login.js
+rename to src/components/landing/LoginForm.js
