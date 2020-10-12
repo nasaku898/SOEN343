@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:feature" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:temperatureService" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b993c4c5-0637-44c9-b8be-1beb81aa61e1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/SOEN343.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/saveactions_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/landing/form_components/Button.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/form_components/Button.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/landing/form_components/FormInput.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/form_components/FormInput.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/landing/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/landing/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/useFormValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/useFormValidation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/validateAuthentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/validateAuthentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/validateRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/validateRegistration.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/context/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/login_registration/authenticationService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login_registration/authenticationService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/landing/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/LoginForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/landing/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/RegistrationForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/useFormValidation.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/UseFormValidation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/validateAuthentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/ValidateAuthentication.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/landing/validators/validateRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/landing/validators/ValidateRegistration.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/Auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/login_registration/authenticationService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/login_registration/AuthenticationService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,8 +109,19 @@
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="npm start " />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="343 " type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -99,15 +145,117 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="738" y="390" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602438582694">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="872" y="398" width="816" height="729" key="#Intentions" timestamp="1602516817478">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state x="872" y="398" width="816" height="729" key="#Intentions/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602516817478" />
+    <state x="1027" y="364" key="#JavaScript" timestamp="1602518149284">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state x="1027" y="364" key="#JavaScript/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602518149284" />
+    <state x="363" y="439" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602522903716">
+      <screen x="0" y="40" width="2560" height="1400" />
     </state>
     <state x="738" y="390" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.2560.1415/2560.0.1920.1080@0.25.2560.1415" timestamp="1602438582694" />
-    <state x="475" y="275" key="SettingsEditor" timestamp="1602440566604">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="363" y="439" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602522903716" />
+    <state width="1236" height="266" key="GridCell.Tab.0.bottom" timestamp="1602523507503">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.0.bottom/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507503" />
+    <state width="1236" height="266" key="GridCell.Tab.0.center" timestamp="1602523507502">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.0.center/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507502" />
+    <state width="1236" height="266" key="GridCell.Tab.0.left" timestamp="1602523507502">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.0.left/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507502" />
+    <state width="1236" height="266" key="GridCell.Tab.0.right" timestamp="1602523507502">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.0.right/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507502" />
+    <state width="1236" height="266" key="GridCell.Tab.1.bottom" timestamp="1602523523563">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.1.bottom/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523523563" />
+    <state width="1236" height="266" key="GridCell.Tab.1.center" timestamp="1602523523563">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.1.center/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523523563" />
+    <state width="1236" height="266" key="GridCell.Tab.1.left" timestamp="1602523523563">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.1.left/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523523563" />
+    <state width="1236" height="266" key="GridCell.Tab.1.right" timestamp="1602523523563">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.1.right/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523523563" />
+    <state width="1236" height="266" key="GridCell.Tab.2.bottom" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.2.bottom/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state width="1236" height="266" key="GridCell.Tab.2.center" timestamp="1602523507370">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.2.center/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507370" />
+    <state width="1236" height="266" key="GridCell.Tab.2.left" timestamp="1602523507370">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.2.left/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507370" />
+    <state width="1236" height="266" key="GridCell.Tab.2.right" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.2.right/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state width="1236" height="266" key="GridCell.Tab.3.bottom" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.3.bottom/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state width="1236" height="266" key="GridCell.Tab.3.center" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.3.center/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state width="1236" height="266" key="GridCell.Tab.3.left" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.3.left/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state width="1236" height="266" key="GridCell.Tab.3.right" timestamp="1602523507371">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state width="1236" height="266" key="GridCell.Tab.3.right/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523507371" />
+    <state x="475" y="287" key="SettingsEditor" timestamp="1602523688576">
+      <screen x="0" y="40" width="2560" height="1400" />
     </state>
     <state x="475" y="275" key="SettingsEditor/0.25.2560.1415/2560.0.1920.1080@0.25.2560.1415" timestamp="1602440566604" />
+    <state x="475" y="287" key="SettingsEditor/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602523688576" />
+    <state x="936" y="350" width="672" height="677" key="run.anything.popup" timestamp="1602518195123">
+      <screen x="0" y="40" width="2560" height="1400" />
+    </state>
+    <state x="936" y="350" width="672" height="677" key="run.anything.popup/0.40.2560.1400/2560.203.1920.1040@0.40.2560.1400" timestamp="1602518195123" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/landing/validators/UseFormValidation.js</url>
+          <line>38</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>
