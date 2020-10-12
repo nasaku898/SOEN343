@@ -15,7 +15,6 @@ const FormInput = ({
                    }) => {
 	return (
 		<Fragment>
-			<label htmlFor={name}>{label}</label>
 			<input
 				id={name}
 				name={name}

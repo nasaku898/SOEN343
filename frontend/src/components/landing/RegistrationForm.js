@@ -42,7 +42,7 @@ const RegistrationForm = () => {
 				<p className="error-text" class="alert alert-danger">
 					{errors.username}
 				</p>
-			)};
+			)}
 
 			<FormInput
 				label="Email"
@@ -61,7 +61,7 @@ const RegistrationForm = () => {
 				<p className="error-text" class="alert alert-danger">
 					{errors.password}
 				</p>
-			)};
+			)}
 
 			<FormInput
 				type="password"

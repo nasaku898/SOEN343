@@ -1,14 +1,14 @@
 const ValidateAuthentication = values => {
 	let errors = []
 	const requiredFields = [
-		"username",
+		"email",
 		"password"
 	];
 
 	errors
 		.concat([
 			...requiredFields.map((field) => checkRequiredField(field)),
-			checkEmail(values.username)
+			checkEmail(values.email)
 		])
 		.filter((value) => value === false)
 

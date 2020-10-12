@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 const LoginForm = () => {
 	const loginUser = async () => {
 		const {
-			username,
+			email,
 			password
 		} = values;
 		await authenticate(values);
@@ -34,17 +34,17 @@ const LoginForm = () => {
 			>
 				{errors.username && (
 					<p className="error-text" className="alert alert-danger">
-						{errors.username}
+						{errors.email}
 					</p>
-				)};
+				)}
 
 				<FormInput
-					label="Username"
-					name="username"
+					label="Email"
+					name="email"
 					type="text"
-					className={errors.username && "error-input"}
+					className={errors.email && "error-input"}
 					className="form-control"
-					value={values.username}
+					value={values.email}
 					onChange={handleChange}
 					placeholder="Email address"
 				/>
@@ -55,7 +55,7 @@ const LoginForm = () => {
 					<p className="error-text" className="alert alert-danger">
 						{errors.password}
 					</p>
-				)};
+				)}
 
 				<FormInput
 					type="password"
