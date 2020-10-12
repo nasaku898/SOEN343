@@ -6,79 +6,75 @@ import ValidateAuthentication from "./validators/ValidateAuthentication";
 import {authenticate} from "../../modules/login_registration/AuthenticationService.js"
 
 const INITIAL_STATE = {
-	username: "",
-	password: ""
+ username: "",
+ password: ""
 };
 
 const LoginForm = () => {
-	const loginUser = async () => {
-		const {
-			email,
-			password
-		} = values;
-		await authenticate(values);
-	}
-	const {
-		handleSubmit,
-		handleChange,
-		handleBlur,
-		values,
-		errors,
-		isSubmitting
-	} = useFormValidation(INITIAL_STATE, ValidateAuthentication, loginUser);
+ const loginUser = async () => {
+  await authenticate(values);
+ }
+ const {
+  handleSubmit,
+  handleChange,
+  handleBlur,
+  values,
+  errors,
+  isSubmitting
+ } = useFormValidation(INITIAL_STATE, ValidateAuthentication, loginUser);
 
-	return (
-		<Fragment>
-			<form
-				onSubmit={handleSubmit}
-			>
-				{errors.username && (
-					<p className="error-text" className="alert alert-danger">
-						{errors.email}
-					</p>
-				)}
+ return (
+     <Fragment>
+      <form
+          onSubmit={handleSubmit}
+      >
+       {errors.username && (
+           <p className="error-text" className="alert alert-danger">
+            {errors.email}
+           </p>
+       )}
 
-				<FormInput
-					label="Email"
-					name="email"
-					type="text"
-					className={errors.email && "error-input"}
-					className="form-control"
-					value={values.email}
-					onChange={handleChange}
-					placeholder="Email address"
-				/>
+       <FormInput
+           label="Email"
+           name="email"
+           type="text"
+           className={errors.email && "error-input"}
+           className="form-control"
+           value={values.email}
+           onChange={handleChange}
+           placeholder="Email address"
+       />
 
-				<br/>
+       <br/>
 
-				{errors.password && (
-					<p className="error-text" className="alert alert-danger">
-						{errors.password}
-					</p>
-				)}
+       {errors.password && (
+           <p className="error-text" className="alert alert-danger">
+            {errors.password}
+           </p>
+       )}
 
-				<FormInput
-					type="password"
-					onChange={handleChange}
-					onBlur={handleBlur}
-					name="password"
-					className={errors.password && "error-input"}
-					className="form-control"
-					value={values.password}
-					placeholder="Password"
-				/>
+       <FormInput
+           type="password"
+           onChange={handleChange}
+           onBlur={handleBlur}
+           name="password"
+           className={errors.password && "error-input"}
+           className="form-control"
+           value={values.password}
+           placeholder="Password"
+       />
 
-				<br/>
+       <br/>
 
-				<Button
-					type="submit"
-					label="Submit"
-					className="button"
-					disabled={isSubmitting}
-				/>
-			</form>
-		</Fragment>
-	);
+       <Button
+           type="submit"
+           label="Submit"
+           className="button"
+           disabled={isSubmitting}
+       />
+      </form>
+     </Fragment>
+ );
 }
 
 export default LoginForm;
