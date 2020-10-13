@@ -1,20 +1,20 @@
 import React from "react";
 import FormInput from "./form_components/FormInput.js";
 import {Button} from "./form_components/Button.js";
-import {register} from "../../modules/login_registration/AuthenticationService.js"
+import {register} from "../../modules/login_and_registration/AuthenticationService.js"
 import ValidateRegistration from "./validators/ValidateRegistration.js";
 import useFormValidation from "./validators/UseFormValidation.js";
 
 const INITIAL_STATE = {
+ email: "",
+ password: "",
+ matchingPassword: "",
  username: "",
- password: ""
+ firstName: "",
+ lastName: ""
 };
 
 const RegistrationForm = () => {
-
- const registerUser = async () => {
-  await register(values);
- }
 
  const {
   handleSubmit,
@@ -23,7 +23,7 @@ const RegistrationForm = () => {
   values,
   errors,
   isSubmitting,
- } = useFormValidation(INITIAL_STATE, ValidateRegistration, registerUser);
+ } = useFormValidation(INITIAL_STATE, ValidateRegistration, register);
 
  return (
      <form
@@ -37,11 +37,11 @@ const RegistrationForm = () => {
       )}
 
       <FormInput
-          label="Email"
           name="email"
           type="text"
           className={errors.email && "error-input"}
           className="form-control"
+          onBlur={handleBlur}
           value={values.email}
           onChange={handleChange}
           placeholder="Email address"
@@ -88,6 +88,7 @@ const RegistrationForm = () => {
           className={errors.username && "error-input"}
           className="form-control"
           value={values.username}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="Username"
       />
@@ -101,6 +102,7 @@ const RegistrationForm = () => {
           className={errors.firstName && "error-input"}
           className="form-control"
           value={values.firstName}
+          onBlur={handleBlur}
           onChange={handleChange}
           placeholder="First Name"
       />
@@ -109,13 +111,14 @@ const RegistrationForm = () => {
 
       <FormInput
           label="LastName"
-          name="firstName"
+          name="lastName"
           type="text"
-          className={errors.firstName && "error-input"}
+          className={errors.lastName && "error-input"}
           className="form-control"
-          value={values.firstName}
+          value={values.lastName}
           onChange={handleChange}
-          placeholder="First Name"
+          onBlur={handleBlur}
+          placeholder="Last Name"
       />
 
       <br/>
@@ -132,7 +135,6 @@ const RegistrationForm = () => {
           className="button"
           disabled={isSubmitting}
       />
-
 
      </form>
  );

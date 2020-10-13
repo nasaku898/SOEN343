@@ -1,3 +1,4 @@
+
 import React, {useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import LoginForm from "./components/landing/LoginForm.js";
@@ -27,7 +28,6 @@ const App = () => {
        </div>
       </Router>
      </AuthContext.Provider>
-
  );
 }
 
