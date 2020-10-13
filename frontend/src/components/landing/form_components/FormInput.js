@@ -10,9 +10,7 @@ const FormInput =
       className,
       value,
       error,
-      children,
-      label,
-      ...props
+      onBlur
      }) => {
      return (
          <Fragment>
@@ -23,6 +21,8 @@ const FormInput =
               value={value}
               className={className}
               type={type}
+              onBlur={onBlur}
+              onChange={onChange}
           />
           {error && <p>{error}</p>}
 

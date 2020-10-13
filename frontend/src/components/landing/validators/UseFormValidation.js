@@ -7,9 +7,8 @@ const useFormValidation = (initialState, validate, authenticate) => {
 
  useEffect(() => {
   if (isSubmitting) {
-   const noErrors = Object.keys(errors).length === 0;
-   if (noErrors) {
-    authenticate();
+   if (errors.length === 0) {
+    authenticate(values);
     setSubmitting(false);
    } else {
     setSubmitting(false);

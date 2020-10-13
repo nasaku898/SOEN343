@@ -2,7 +2,6 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.service.exceptions.InvalidFieldException;
 import com.soen343.shs.dal.service.exceptions.SHSUserAlreadyExistsException;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
@@ -47,10 +46,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO createUser(final RegistrationDTO details) throws SHSUserAlreadyExistsException, InvalidFieldException {
+    public UserDTO createUser(final RegistrationDTO details) {
 
         // check to see if username/email exists already, if so throw exception
-        if (userRepository.findByEmail(details.getEmail()) != null || userRepository.findByUsername(details.getUsername()) == null) {
+        if (userRepository.findByEmail(details.getEmail()).isPresent() || userRepository.findByUsername(details.getUsername()).isPresent()) {
             throw new SHSUserAlreadyExistsException("Username/email already exists!");
         }
 

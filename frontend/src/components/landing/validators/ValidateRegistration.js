@@ -1,4 +1,5 @@
 const ValidateRegistration = values => {
+
  const requiredFields = [
   "username",
   "password",
@@ -9,7 +10,7 @@ const ValidateRegistration = values => {
 
  return [
   ...requiredFields.map((field) => checkRequiredField(field)),
-  checkEmail(values.username),
+  checkEmail(values.email),
   checkPassword(values.password),
   checkPasswordMatches(values.password, values.matchingPassword)
  ].filter((value) => value !== true);

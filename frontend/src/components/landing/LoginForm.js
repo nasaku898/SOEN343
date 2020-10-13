@@ -3,17 +3,28 @@ import FormInput from "./form_components/FormInput.js";
 import {Button} from "./form_components/Button.js";
 import useFormValidation from "./validators/UseFormValidation";
 import ValidateAuthentication from "./validators/ValidateAuthentication";
-import {authenticate} from "../../modules/login_registration/AuthenticationService.js"
+import {authenticate} from "../../modules/login_and_registration/AuthenticationService.js"
+import {useAuth} from "../../context/Auth";
+import {Redirect} from "react-router-dom";
 
 const INITIAL_STATE = {
  username: "",
  password: ""
 };
 
+
 const LoginForm = () => {
- const loginUser = async () => {
-  await authenticate(values);
+ const {setAuthTokens} = useAuth();
+ const {authTokens} = useAuth();
+ const loginUser = async (fields) => {
+  setAuthTokens(await authenticate(fields));
+
+  if (authTokens) {
+   return <Redirect to={"/login"}/>
+  }
+
  }
+
  const {
   handleSubmit,
   handleChange,
@@ -30,17 +41,17 @@ const LoginForm = () => {
       >
        {errors.username && (
            <p className="error-text" className="alert alert-danger">
-            {errors.email}
+            {errors.username}
            </p>
        )}
 
        <FormInput
-           label="Email"
-           name="email"
+           label="Username"
+           name="username"
            type="text"
-           className={errors.email && "error-input"}
+           className={errors.username && "error-input"}
            className="form-control"
-           value={values.email}
+           value={values.username}
            onChange={handleChange}
            placeholder="Email address"
        />
