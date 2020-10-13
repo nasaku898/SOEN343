@@ -16,6 +16,7 @@ const INITIAL_STATE = {
 const LoginForm = () => {
  const {setAuthTokens} = useAuth();
  const {authTokens} = useAuth();
+
  const loginUser = async (fields) => {
   setAuthTokens(await authenticate(fields));
 

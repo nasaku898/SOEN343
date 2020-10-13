@@ -16,10 +16,6 @@ const INITIAL_STATE = {
 
 const RegistrationForm = () => {
 
- // const registerUser = async () => {
- //  await register(values);
- // }
-
  const {
   handleSubmit,
   handleChange,
