@@ -2,7 +2,6 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.service.exceptions.InvalidFieldException;
 import com.soen343.shs.dal.service.exceptions.SHSUserAlreadyExistsException;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
@@ -47,10 +46,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO createUser(final RegistrationDTO details) throws SHSUserAlreadyExistsException, InvalidFieldException {
+    public UserDTO createUser(final RegistrationDTO details) {
 
         // check to see if username/email exists already, if so throw exception
-        if (userRepository.findByEmail(details.getEmail()) != null || userRepository.findByUsername(details.getUsername()) == null) {
+        if (userRepository.findByEmail(details.getEmail()).isPresent() || userRepository.findByUsername(details.getUsername()).isPresent()) {
             throw new SHSUserAlreadyExistsException("Username/email already exists!");
         }
 
@@ -75,11 +74,9 @@ public class UserService {
         final HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
 
-        final UserDTO dto = mvcConversionService.convert(userRepository.findByUsername(username).get(), UserDTO.class);
-        assert dto != null;
         return LoginResponse.builder()
-                .token(session.getId())
-                .user(dto)
+                .token(session.getId()) // return token so we can use for testing in postman
+                .user(getUserByUsername(username))
                 .build();
     }
 
@@ -92,7 +89,7 @@ public class UserService {
     public UserDTO getUserByUsername(final String username) {
         final Optional<User> user = userRepository.findByUsername(username);
 
-        if (user == null) {
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("Username doesn't exist");
         } else {
             return mvcConversionService.convert(user, UserDTO.class);
