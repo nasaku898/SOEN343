@@ -1,9 +1,11 @@
 import React from 'react';
-
+import './App.css';
+import SimulationParameters from './components/SimulationParameters/SimulationParameters';
+import UserProfileList from './components/UserProfileList.js/UserProfileList';
 function App() {
   return (
-    <div>
-      <h1>Welcome to the home page for our SOEN343 project!</h1>
+    <div className="App">
+      <UserProfileList></UserProfileList>
     </div>
   );
 }
