@@ -78,6 +78,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new LightToLightDTOConverter());
         registry.addConverter(new HouseWindowToHouseWindowDTOConverter());
         registry.addConverter(new RoomToRoomLayoutDTOConverter());
+        registry.addConverter(new WindowToWindowDTOConverter());
+        registry.addConverter(new HouseToHouseDTOConverter());
     }
 
 }
