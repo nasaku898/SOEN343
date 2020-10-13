@@ -50,5 +50,5 @@ public class UserController {
                         objectNode.get("username").asText(),
                         objectNode.get("password").asText()
                 );
-    }goit
+    }
 }
