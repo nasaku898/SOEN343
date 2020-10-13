@@ -40,8 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .antMatchers("/user").hasAnyRole(PARENT.name(), CHILD.name(), GUEST.name())
                 .antMatchers("/all", "/register").permitAll()
                 .and()
-                .formLogin().defaultSuccessUrl("/").loginPage("/login").permitAll()
-                .and()
+                .formLogin().disable()
                 .logout().permitAll()
                 .and()
                 .httpBasic();

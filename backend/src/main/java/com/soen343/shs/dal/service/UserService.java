@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -64,8 +65,8 @@ public class UserService {
         return mvcConversionService.convert(details, UserDTO.class); // return the dto object to our user
     }
 
-    public UserDTO login(final HttpServletRequest request, final String username, final String password) {
-        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, passwordEncoder.encode(password));
+    public LoginResponse login(final HttpServletRequest request, final String username, final String password) {
+        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         authProvider.authenticate(authenticationToken);
 
         final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -74,7 +75,12 @@ public class UserService {
         final HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
 
-        return mvcConversionService.convert(userRepository.findByUsername(username), UserDTO.class);
+        final UserDTO dto = mvcConversionService.convert(userRepository.findByUsername(username).get(), UserDTO.class);
+        assert dto != null;
+        return LoginResponse.builder()
+                .token(session.getId())
+                .user(dto)
+                .build();
     }
 
     public UserDTO updateUser(final UserDTO userDTO) {
@@ -84,7 +90,7 @@ public class UserService {
 
 
     public UserDTO getUserByUsername(final String username) {
-        final User user = userRepository.findByUsername(username);
+        final Optional<User> user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("Username doesn't exist");
