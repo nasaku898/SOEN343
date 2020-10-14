@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.rooms;
 
 import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dto.RoomDTO;

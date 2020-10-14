@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.doors;
 
 import com.soen343.shs.dal.model.Door;
 import com.soen343.shs.dto.LoadDoorDTO;

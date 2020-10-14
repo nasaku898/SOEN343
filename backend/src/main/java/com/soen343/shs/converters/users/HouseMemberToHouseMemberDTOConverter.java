@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.users;
 
 import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dto.HouseMemberDTO;
