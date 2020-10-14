@@ -20,4 +20,5 @@ public class RegistrationDTO {
     private String lastName;
     private String password;
     private String matchingPassword;
+    private String role;
 }

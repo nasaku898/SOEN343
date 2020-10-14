@@ -35,7 +35,8 @@ public class UserController {
                         objectNode.get("firstName").asText(),
                         objectNode.get("lastName").asText(),
                         objectNode.get("password").asText(),
-                        objectNode.get("matchingPassword").asText()
+                        objectNode.get("matchingPassword").asText(),
+                        objectNode.get("role").asText()
                 )
         );
     }
