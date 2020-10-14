@@ -123,10 +123,10 @@ const RegistrationForm = () => {
 
       <br/>
 
-      <select>
-       <option value="Parent">Parent</option>
-       <option value="Child">Child</option>
-       <option value="Guest">Guest</option>
+      <select onChange={handleChange} onBlur={handleBlur} defaultValue="GUEST" name="role">
+       <option value="PARENT">Parent</option>
+       <option value="CHILD">Child</option>
+       <option value="GUEST">Guest</option>
       </select>
 
       <Button
