@@ -12,4 +12,5 @@ import lombok.Setter;
 public class HouseMemberDTO {
     private String name;
     private long roomId;
+    private long id;
 }

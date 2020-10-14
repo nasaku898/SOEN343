@@ -17,7 +17,6 @@ public class SimulationController {
 
     private final SimulationService simulationService;
 
-    @Autowired
     public SimulationController(SimulationService simulationService) {
         this.simulationService = simulationService;
     }
@@ -42,8 +41,9 @@ public class SimulationController {
 
     @PostMapping(value = "/houseMember")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {
-        simulationService.createNewHouseMember(houseMemberDTO);
+    @ResponseBody
+    public HouseMemberDTO createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {
+        return simulationService.createNewHouseMember(houseMemberDTO);
     }
 
     @PostMapping(value = "/houseLayout")
