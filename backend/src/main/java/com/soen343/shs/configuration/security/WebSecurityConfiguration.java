@@ -1,6 +1,15 @@
 package com.soen343.shs.configuration.security;
 
-import com.soen343.shs.converters.*;
+import com.soen343.shs.converters.doors.ExteriorDoorToDoorDTOConverter;
+import com.soen343.shs.converters.doors.InteriorDoorToDoorDTOConverter;
+import com.soen343.shs.converters.doors.LoadDoorDTOToDoorConverter;
+import com.soen343.shs.converters.houseWindows.HouseWindowToHouseWindowDTOConverter;
+import com.soen343.shs.converters.houseWindows.LoadHouseWindowDTOToHouseWindowConverter;
+import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
+import com.soen343.shs.converters.lights.LightToLightDTOConverter;
+import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
+import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
+import com.soen343.shs.converters.users.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -79,6 +88,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new LoadDoorDTOToDoorConverter());
         registry.addConverter(new LoadLightDTOToLightConverter());
         registry.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
+        registry.addConverter(new HouseToHouseDTOConverter());
     }
 
 }
