@@ -25,7 +25,7 @@ public class HouseService {
     private final InteriorDoorRepository interiorDoorRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
 
-    public HouseService(LightRepository lightRepository, HouseWindowRepository houseWindowRepository, InteriorDoorRepository interiorDoorRepository, ExteriorDoorRepository exteriorDoorRepository) {
+    public HouseService(final LightRepository lightRepository, final HouseWindowRepository houseWindowRepository, final InteriorDoorRepository interiorDoorRepository, final ExteriorDoorRepository exteriorDoorRepository) {
         this.lightRepository = lightRepository;
         this.houseWindowRepository = houseWindowRepository;
         this.interiorDoorRepository = interiorDoorRepository;
