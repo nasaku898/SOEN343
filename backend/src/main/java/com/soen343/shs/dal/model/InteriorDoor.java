@@ -1,11 +1,9 @@
 package com.soen343.shs.dal.model;
 
-import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
+import java.util.List;
 
-
-@NoArgsConstructor
-@Entity
 public class InteriorDoor extends Door {
-
+    public InteriorDoor(boolean open, List<Room> rooms) {
+        super(open, rooms);
+    }
 }
