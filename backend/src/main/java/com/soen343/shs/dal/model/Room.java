@@ -15,14 +15,18 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(unique = true)
     private String name;
     private double temperature;
-    @ManyToMany
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Set<Door> doors;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Light> lights;
     @ElementCollection
     private Set<Long> userIds;
-    @OneToMany
-    private Set<Window> windows;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<HouseWindow> houseWindows;
 }

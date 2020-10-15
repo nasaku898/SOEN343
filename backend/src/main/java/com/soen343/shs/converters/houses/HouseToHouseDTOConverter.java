@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.houses;
 
 import com.soen343.shs.DTO.HouseDTO;
 import com.soen343.shs.dal.model.House;

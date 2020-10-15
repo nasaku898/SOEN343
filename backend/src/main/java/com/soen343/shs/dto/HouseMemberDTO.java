@@ -5,15 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
-public class DoorDTO {
+public class HouseMemberDTO {
+    private String name;
+    private long roomId;
     private long id;
-    private boolean open;
-    private boolean locked;
-    private Set<String> rooms;
 }

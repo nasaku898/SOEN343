@@ -7,6 +7,7 @@ import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.service.exceptions.HouseNotFoundException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class TemperatureService {
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
 
-    public TemperatureService(final HouseRepository houseRepository,final ConversionService mvcConversionService) {
+    public TemperatureService(final HouseRepository houseRepository, final ConversionService mvcConversionService) {
         this.houseRepository = houseRepository;
         this.mvcConversionService = mvcConversionService;
     }

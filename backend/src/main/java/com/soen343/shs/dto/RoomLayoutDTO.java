@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
-public class InteriorDoorDTO {
-    private long id;
-    private boolean open;
+@AllArgsConstructor
+public class RoomLayoutDTO {
+    private int nbOfWindows;
+    private int nbOfLights;
 }
