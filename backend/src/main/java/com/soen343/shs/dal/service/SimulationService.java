@@ -1,6 +1,11 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.*;
+import com.soen343.shs.dal.model.Door;
+import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.HouseMember;
+import com.soen343.shs.dal.model.HouseWindow;
+import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseMemberRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
@@ -8,7 +13,12 @@ import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
-import com.soen343.shs.dto.*;
+import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.LoadDoorDTO;
+import com.soen343.shs.dto.LoadHouseDTO;
+import com.soen343.shs.dto.LoadHouseWindowDTO;
+import com.soen343.shs.dto.LoadLightDTO;
+import com.soen343.shs.dto.LoadRoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -82,15 +92,15 @@ public class SimulationService {
 
     public void loadHouse(final LoadHouseDTO loadHouseDTO) {
         final Set<LoadRoomDTO> rooms = loadHouseDTO.getRooms();
-        final Set<Room> roomsToAdd = new HashSet<Room>();
+        final Set<Room> roomsToAdd = new HashSet<>();
         final House house = new House();
 
-        for (LoadRoomDTO room : rooms) {
+        for (final LoadRoomDTO room : rooms) {
             final Room roomToAdd = new Room();
 
-            Set<LoadDoorDTO> doors = room.getDoors();
-            Set<LoadLightDTO> lights = room.getLights();
-            Set<LoadHouseWindowDTO> windows = room.getHouseWindows();
+            final Set<LoadDoorDTO> doors = room.getDoors();
+            final Set<LoadLightDTO> lights = room.getLights();
+            final Set<LoadHouseWindowDTO> windows = room.getHouseWindows();
 
             roomToAdd.setDoors(loadDoors(doors));
             roomToAdd.setLights(loadLights(lights));
@@ -105,9 +115,9 @@ public class SimulationService {
     }
 
     private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {
-        final Set<Door> doorsToAdd = new HashSet<Door>();
+        final Set<Door> doorsToAdd = new HashSet<>();
 
-        for (LoadDoorDTO door : doors) {
+        for (final LoadDoorDTO door : doors) {
             final Door doorToAdd = mvcConversionService.convert(door, Door.class);
             doorsToAdd.add(doorToAdd);
         }
@@ -116,9 +126,9 @@ public class SimulationService {
     }
 
     private Set<Light> loadLights(final Set<LoadLightDTO> lights) {
-        final Set<Light> lightsToAdd = new HashSet<Light>();
+        final Set<Light> lightsToAdd = new HashSet<>();
 
-        for (LoadLightDTO light : lights) {
+        for (final LoadLightDTO light : lights) {
             final Light lightToAdd = mvcConversionService.convert(light, Light.class);
             lightsToAdd.add(lightToAdd);
         }
@@ -127,9 +137,9 @@ public class SimulationService {
     }
 
     private Set<HouseWindow> loadHouseWindow(final Set<LoadHouseWindowDTO> windows) {
-        final Set<HouseWindow> houseWindowsToAdd = new HashSet<HouseWindow>();
+        final Set<HouseWindow> houseWindowsToAdd = new HashSet<>();
 
-        for (LoadHouseWindowDTO houseWindow : windows) {
+        for (final LoadHouseWindowDTO houseWindow : windows) {
             final HouseWindow houseWindowToAdd = mvcConversionService.convert(houseWindow, HouseWindow.class);
             houseWindowsToAdd.add(houseWindowToAdd);
         }

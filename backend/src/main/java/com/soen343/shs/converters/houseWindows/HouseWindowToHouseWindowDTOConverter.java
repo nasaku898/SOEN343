@@ -6,7 +6,7 @@ import org.springframework.core.convert.converter.Converter;
 
 public class HouseWindowToHouseWindowDTOConverter implements Converter<HouseWindow, WindowDTO> {
     @Override
-    public WindowDTO convert(HouseWindow houseWindow) {
+    public WindowDTO convert(final HouseWindow houseWindow) {
         return WindowDTO.builder()
                 .id(houseWindow.getId())
                 .blocked(houseWindow.isBlocked())

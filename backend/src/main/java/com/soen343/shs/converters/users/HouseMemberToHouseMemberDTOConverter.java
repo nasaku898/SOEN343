@@ -7,7 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 public class HouseMemberToHouseMemberDTOConverter implements Converter<HouseMember, HouseMemberDTO> {
 
     @Override
-    public HouseMemberDTO convert(HouseMember houseMember) {
+    public HouseMemberDTO convert(final HouseMember houseMember) {
         return HouseMemberDTO.builder()
                 .roomId(houseMember.getLocation().getId())
                 .name(houseMember.getName())
