@@ -3,7 +3,7 @@ import FormInput from "./form_components/FormInput.js";
 import {Button} from "./form_components/Button.js";
 import useFormValidation from "./validators/UseFormValidation";
 import ValidateAuthentication from "./validators/ValidateAuthentication";
-import {authenticate} from "../../modules/login_and_registration/AuthenticationService.js"
+import {authenticate} from "../../modules/login_registration/AuthenticationService.js"
 import {useAuth} from "../../context/Auth";
 import {Redirect} from "react-router-dom";
 
@@ -54,7 +54,7 @@ const LoginForm = () => {
            className="form-control"
            value={values.username}
            onChange={handleChange}
-           placeholder="Email address"
+           placeholder="Username"
        />
 
        <br/>
@@ -88,3 +88,4 @@ const LoginForm = () => {
      </Fragment>
  );
 }
+export default LoginForm;

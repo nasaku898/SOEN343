@@ -2,7 +2,7 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.service.exceptions.SHSUserAlreadyExistsException;
+import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
@@ -92,7 +92,7 @@ public class UserService {
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("Username doesn't exist");
         } else {
-            return mvcConversionService.convert(user, UserDTO.class);
+            return mvcConversionService.convert(user.get(), UserDTO.class);
         }
     }
 

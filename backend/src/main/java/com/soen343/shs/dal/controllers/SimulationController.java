@@ -4,7 +4,6 @@ import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class SimulationController {
 
     private final SimulationService simulationService;
 
-    public SimulationController(SimulationService simulationService) {
+    public SimulationController(final SimulationService simulationService) {
         this.simulationService = simulationService;
     }
 
