@@ -9,7 +9,11 @@ import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
 import com.soen343.shs.converters.lights.LightToLightDTOConverter;
 import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
 import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
-import com.soen343.shs.converters.users.*;
+import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
+import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;
+import com.soen343.shs.converters.users.RegistrationDTOToUserDTOConverter;
+import com.soen343.shs.converters.users.UserDTOtoUserConverter;
+import com.soen343.shs.converters.users.UserToUserDTOConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +30,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import java.util.Arrays;
 import java.util.Collections;
-
-import static com.soen343.shs.dal.model.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -52,9 +55,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/parent").hasRole(PARENT.name())
-                .antMatchers("/user").hasAnyRole(PARENT.name(), CHILD.name(), GUEST.name())
-                .antMatchers("/all", "/register").permitAll()
                 .and()
                 .formLogin().disable()
                 .logout().permitAll()

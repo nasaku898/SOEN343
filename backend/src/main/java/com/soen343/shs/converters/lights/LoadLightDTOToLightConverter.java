@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 public class LoadLightDTOToLightConverter implements Converter<LoadLightDTO, Light> {
 
     @Override
-    public Light convert(LoadLightDTO loadLightDTO) {
+    public Light convert(final LoadLightDTO loadLightDTO) {
         return Light.builder()
                 .isLightOn(loadLightDTO.isLightOn())
                 .build();
