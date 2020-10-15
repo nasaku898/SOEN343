@@ -34,7 +34,7 @@ public class HouseService {
 
     public void openWindow(long windowId) {
         // Get the window from the db
-        Optional<HouseWindow> optionalWindow = houseWindowRepository.findById(windowId);
+        final Optional<HouseWindow> optionalWindow = houseWindowRepository.findById(windowId);
 
         // Check if window exists
         if (!optionalWindow.isPresent()) {
@@ -60,7 +60,7 @@ public class HouseService {
 
     public void closeWindow(long windowId) {
         // Get the window from the db
-        Optional<HouseWindow> optionalWindow = houseWindowRepository.findById(windowId);
+        final Optional<HouseWindow> optionalWindow = houseWindowRepository.findById(windowId);
 
         // Check if window exists
         if (!optionalWindow.isPresent()) {
@@ -86,7 +86,7 @@ public class HouseService {
 
     public void unlockExteriorDoor(long exteriorDoorId) {
         // Get the door from the db
-        Optional<ExteriorDoor>  optionalExteriorDoor = exteriorDoorRepository.findById(exteriorDoorId);
+        final Optional<ExteriorDoor>  optionalExteriorDoor = exteriorDoorRepository.findById(exteriorDoorId);
 
         // Check if door exists
         if (!optionalExteriorDoor.isPresent()) {
@@ -107,7 +107,7 @@ public class HouseService {
 
     public void lockExteriorDoor(long exteriorDoorId) {
         // Get the door from the db
-        Optional<ExteriorDoor>  optionalExteriorDoor = exteriorDoorRepository.findById(exteriorDoorId);
+        final Optional<ExteriorDoor>  optionalExteriorDoor = exteriorDoorRepository.findById(exteriorDoorId);
 
         // Check if door exists
         if (!optionalExteriorDoor.isPresent()) {
@@ -128,7 +128,7 @@ public class HouseService {
 
     public void turnOnLight(long lightId) {
         // Get the light from the db
-        Optional<Light> optionalLight = lightRepository.findById(lightId);
+        final Optional<Light> optionalLight = lightRepository.findById(lightId);
 
         // Check if light exists
         if (!optionalLight.isPresent()) {
@@ -149,7 +149,7 @@ public class HouseService {
 
     public void turnOffLight(long lightId) {
         // Get the light from the db
-        Optional<Light> optionalLight = lightRepository.findById(lightId);
+        final Optional<Light> optionalLight = lightRepository.findById(lightId);
 
         // Check if light exists
         if (!optionalLight.isPresent()) {
