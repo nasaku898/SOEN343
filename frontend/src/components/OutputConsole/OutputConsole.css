@@ -1,0 +1,23 @@
+#outputConsoleContainer {
+  /* width: 300px; TODO (once dashboard components are complete) - update the width and height values so that it fits with the rest of the components on the dashboard */
+  height: 100px;
+  background-color: #424242;
+  color: white;
+  padding: 10px 15px;
+  overflow: auto;
+}
+
+.outputConsoleTitle {
+  padding: 0 0 5px 0;
+  margin: 0;
+}
+
+.outputConsoleList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.outputConsoleListItem {
+  padding: 5px 0;
+}
