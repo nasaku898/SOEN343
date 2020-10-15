@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.lights;
 
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dto.LightDTO;

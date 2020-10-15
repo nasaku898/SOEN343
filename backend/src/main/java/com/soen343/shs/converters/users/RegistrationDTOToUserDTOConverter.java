@@ -1,4 +1,4 @@
-package com.soen343.shs.converters;
+package com.soen343.shs.converters.users;
 
 import com.soen343.shs.dal.model.UserRole;
 import com.soen343.shs.dto.RegistrationDTO;

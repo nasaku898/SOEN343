@@ -1,6 +1,15 @@
 package com.soen343.shs.configuration.security;
 
-import com.soen343.shs.converters.*;
+import com.soen343.shs.converters.doors.ExteriorDoorToDoorDTOConverter;
+import com.soen343.shs.converters.doors.InteriorDoorToDoorDTOConverter;
+import com.soen343.shs.converters.doors.LoadDoorDTOToDoorConverter;
+import com.soen343.shs.converters.houseWindows.HouseWindowToHouseWindowDTOConverter;
+import com.soen343.shs.converters.houseWindows.LoadHouseWindowDTOToHouseWindowConverter;
+import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
+import com.soen343.shs.converters.lights.LightToLightDTOConverter;
+import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
+import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
+import com.soen343.shs.converters.users.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +26,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import java.util.Arrays;
 import java.util.Collections;
 
-import static com.soen343.shs.dal.model.UserRole.CHILD;
-import static com.soen343.shs.dal.model.UserRole.GUEST;
-import static com.soen343.shs.dal.model.UserRole.PARENT;
+import static com.soen343.shs.dal.model.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -48,6 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .antMatchers("/login").permitAll()
                 .antMatchers("/parent").hasRole(PARENT.name())
                 .antMatchers("/user").hasAnyRole(PARENT.name(), CHILD.name(), GUEST.name())
+                .antMatchers("/all", "/register").permitAll()
                 .and()
                 .formLogin().disable()
                 .logout().permitAll()
@@ -82,7 +89,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new ExteriorDoorToDoorDTOConverter());
         registry.addConverter(new InteriorDoorToDoorDTOConverter());
         registry.addConverter(new LightToLightDTOConverter());
-        registry.addConverter(new WindowToWindowDTOConverter());
+        registry.addConverter(new HouseWindowToHouseWindowDTOConverter());
+        registry.addConverter(new HouseMemberToHouseMemberDTOConverter());
+        registry.addConverter(new LoadDoorDTOToDoorConverter());
+        registry.addConverter(new LoadLightDTOToLightConverter());
+        registry.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
+        registry.addConverter(new HouseToHouseDTOConverter());
     }
 
     @Bean

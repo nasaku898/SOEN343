@@ -9,11 +9,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
-public class DoorDTO {
-    private long id;
-    private boolean open;
-    private boolean locked;
-    private Set<String> rooms;
+@AllArgsConstructor
+public class HouseLayoutDTO {
+    private int nbOfRooms;
+    private Set<RoomLayoutDTO> roomLayoutDTOS;
 }
