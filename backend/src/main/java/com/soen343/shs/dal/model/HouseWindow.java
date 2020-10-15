@@ -7,15 +7,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Builder
-public class Light {
+public class HouseWindow {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private boolean isLightOn;
+    private boolean blocked;
+    private boolean open;
 }
