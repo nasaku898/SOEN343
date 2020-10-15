@@ -1,7 +1,7 @@
 import React from "react";
 import FormInput from "./form_components/FormInput.js";
 import {Button} from "./form_components/Button.js";
-import {register} from "../../modules/login_and_registration/AuthenticationService.js"
+import {register} from "../../modules/login_registration/AuthenticationService.js"
 import ValidateRegistration from "./validators/ValidateRegistration.js";
 import useFormValidation from "./validators/UseFormValidation.js";
 
@@ -11,7 +11,8 @@ const INITIAL_STATE = {
  matchingPassword: "",
  username: "",
  firstName: "",
- lastName: ""
+ lastName: "",
+ role: "GUEST"
 };
 
 const RegistrationForm = () => {

@@ -8,7 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 public class LoadDoorDTOToDoorConverter implements Converter<LoadDoorDTO, Door> {
 
     @Override
-    public Door convert(LoadDoorDTO loadDoorDTO) {
+    public Door convert(final LoadDoorDTO loadDoorDTO) {
         return Door.builder()
                 .open(loadDoorDTO.isOpen())
                 .rooms(loadDoorDTO.getRooms())
