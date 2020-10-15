@@ -13,7 +13,7 @@ public class UserToUserDTOConverter implements Converter<User, UserDTO> {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-                .roomId(user.getLocation().getId())
+                .roomId(user.getLocation() == null ? 0 : user.getLocation().getId()) // definitely dont wanna keep it like this but this is good for right now..
                 .build();
     }
 }

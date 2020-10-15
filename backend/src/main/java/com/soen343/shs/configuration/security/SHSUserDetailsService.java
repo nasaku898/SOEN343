@@ -15,16 +15,13 @@ public class SHSUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Autowired
-    public SHSUserDetailsService(UserRepository userRepository) {
+    public SHSUserDetailsService(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));
-
-        user.orElseThrow(() -> new UsernameNotFoundException(username));
-
-        return user.map(SHSUserDetails::new).get();
+    public UserDetails loadUserByUsername(final String username) {
+        final Optional<User> user = userRepository.findByUsername(username);
+        return user.map(SHSUserDetails::new).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

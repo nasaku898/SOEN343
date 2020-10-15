@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 public class User {
     @Id
@@ -24,4 +24,5 @@ public class User {
     private String password;
     @OneToOne
     private Room location;
+    private UserRole role;
 }

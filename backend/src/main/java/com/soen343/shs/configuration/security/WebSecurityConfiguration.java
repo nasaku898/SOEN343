@@ -22,7 +22,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static com.soen343.shs.dal.model.UserRole.*;
 
@@ -42,18 +47,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.cors()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/parent").hasRole(PARENT.name())
                 .antMatchers("/user").hasAnyRole(PARENT.name(), CHILD.name(), GUEST.name())
                 .antMatchers("/all", "/register").permitAll()
                 .and()
-                .formLogin().defaultSuccessUrl("/").loginPage("/login").permitAll()
-                .and()
+                .formLogin().disable()
                 .logout().permitAll()
                 .and()
-                .httpBasic();
-
-        http.csrf().disable(); // will use this for now...
+                .csrf().disable();
 
         // TODO: Add OAuth 2.0 Authorization 8)
         // http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
@@ -91,4 +97,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new HouseToHouseDTOConverter());
     }
 
+    @Bean
+    static CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
+        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+        configuration.setAllowCredentials(true);
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

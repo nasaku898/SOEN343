@@ -2,7 +2,6 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.service.exceptions.InvalidFieldException;
 import com.soen343.shs.dal.service.exceptions.SHSUserAlreadyExistsException;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -46,10 +46,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO createUser(final RegistrationDTO details) throws SHSUserAlreadyExistsException, InvalidFieldException {
+    public UserDTO createUser(final RegistrationDTO details) {
 
         // check to see if username/email exists already, if so throw exception
-        if (userRepository.findByEmail(details.getEmail()) != null || userRepository.findByUsername(details.getUsername()) == null) {
+        if (userRepository.findByEmail(details.getEmail()).isPresent() || userRepository.findByUsername(details.getUsername()).isPresent()) {
             throw new SHSUserAlreadyExistsException("Username/email already exists!");
         }
 
@@ -64,8 +64,8 @@ public class UserService {
         return mvcConversionService.convert(details, UserDTO.class); // return the dto object to our user
     }
 
-    public UserDTO login(final HttpServletRequest request, final String username, final String password) {
-        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, passwordEncoder.encode(password));
+    public LoginResponse login(final HttpServletRequest request, final String username, final String password) {
+        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         authProvider.authenticate(authenticationToken);
 
         final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -74,7 +74,10 @@ public class UserService {
         final HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
 
-        return mvcConversionService.convert(userRepository.findByUsername(username), UserDTO.class);
+        return LoginResponse.builder()
+                .token(session.getId()) // return token so we can use for testing in postman
+                .user(getUserByUsername(username))
+                .build();
     }
 
     public UserDTO updateUser(final UserDTO userDTO) {
@@ -84,9 +87,9 @@ public class UserService {
 
 
     public UserDTO getUserByUsername(final String username) {
-        final User user = userRepository.findByUsername(username);
+        final Optional<User> user = userRepository.findByUsername(username);
 
-        if (user == null) {
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException("Username doesn't exist");
         } else {
             return mvcConversionService.convert(user, UserDTO.class);
