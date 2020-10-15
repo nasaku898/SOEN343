@@ -5,6 +5,7 @@ import UserProfileList from './components/UserProfileList.js/UserProfileList';
 function App() {
   return (
     <div className="App">
+      <SimulationParameters></SimulationParameters>
       <UserProfileList></UserProfileList>
     </div>
   );

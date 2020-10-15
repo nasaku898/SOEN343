@@ -141,7 +141,6 @@ const UserProfileList = () => {
     const createUser = (
         <div className={classes.modal}>
             <form>
-                
                 <TextField id="standard-basic" label="Name" />
                 <br></br>
                 <FormControl>
@@ -163,6 +162,7 @@ const UserProfileList = () => {
             </form>
         </div>
     );
+
     return (
         <div>
             <Typography>User Profiles</Typography>
