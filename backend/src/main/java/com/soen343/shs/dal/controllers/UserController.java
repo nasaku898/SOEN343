@@ -1,7 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.soen343.shs.dal.service.LoginResponse;
+import com.soen343.shs.dal.service.Login.LoginRequest;
+import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.UserService;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
@@ -27,29 +27,18 @@ public class UserController {
     @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody
-    UserDTO addNewUser(final HttpServletRequest request, @RequestBody final ObjectNode objectNode) {
-        return userService.createUser(
-                new RegistrationDTO(
-                        objectNode.get("email").asText(),
-                        objectNode.get("username").asText(),
-                        objectNode.get("firstName").asText(),
-                        objectNode.get("lastName").asText(),
-                        objectNode.get("password").asText(),
-                        objectNode.get("matchingPassword").asText(),
-                        objectNode.get("role").asText()
-                )
-        );
+    UserDTO addNewUser(final HttpServletRequest request, @RequestBody final RegistrationDTO registrationDTO) {
+        return userService.createUser(registrationDTO);
     }
 
     @PostMapping(path = "/login")
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    LoginResponse loginUser(final HttpServletRequest request, @RequestBody final ObjectNode objectNode) {
+    LoginResponse loginUser(final HttpServletRequest request, @RequestBody final LoginRequest loginRequest) {
         return userService
                 .login(
                         request,
-                        objectNode.get("username").asText(),
-                        objectNode.get("password").asText()
+                        loginRequest
                 );
     }
 }
