@@ -15,10 +15,8 @@ const App = () => {
 
   const [outputData, setOutputData] = useState([{id:1, date: new Date(), data: "This is a sample action log."}]);
 
-
   const appendOutputData = (data) => {
     setOutputData(outputData => [...outputData, data]);
-    console.log(outputData)
   }
   
  const setTokens = data => {

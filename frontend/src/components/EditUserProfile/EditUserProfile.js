@@ -12,7 +12,7 @@ const EditUserProfile = () => {
 
                 <MenuItem >
                     <form>
-                        <TextField id="standard-basic" label="Name" />
+                        <TextField label="Name" />
                     </form>
                 </MenuItem>
                 <MenuItem>
@@ -32,7 +32,7 @@ const EditUserProfile = () => {
                 </MenuItem>
                 <MenuItem>
                     <form>
-                        <TextField id="standard-basic" label="Location" />
+                        <TextField label="Location" />
                     </form>
                 </MenuItem>
             </Menu>

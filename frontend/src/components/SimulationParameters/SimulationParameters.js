@@ -37,7 +37,7 @@ const SimulationParameters = () => {
 
     const editSimulationParameter = (
         <div className={classes.modal}>
-            <TextField id="standard-basic" label="User"></TextField>
+            <TextField label="User"></TextField>
             <br/>
             <Input type="date"></Input>
             <br/>
@@ -46,7 +46,7 @@ const SimulationParameters = () => {
             {
                 //Add location
             }
-            <TextField type="number" id="standard-basic" label="Outside Temperature"></TextField>
+            <TextField type="number" label="Outside Temperature"></TextField>
         </div>
     )
 
