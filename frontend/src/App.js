@@ -4,6 +4,7 @@ import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
+import SHCPanel from "./components/SHCPanel/SHCPanel";
 
 const App = () => {
  // we will use this to get/fetch authentication token
@@ -16,7 +17,6 @@ const App = () => {
 
   const appendOutputData = (data) => {
     setOutputData(outputData => [...outputData, data]);
-    console.log(outputData)
   }
   
  const setTokens = data => {
@@ -32,6 +32,9 @@ const App = () => {
         <Switch>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
+         
+         <SHCPanel />
+         
          <OutputConsole 
           outputData={outputData}
           />

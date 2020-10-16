@@ -1,0 +1,36 @@
+{
+  "windows": [
+    {
+      "id": 1,
+      "blocked": false,
+      "open": false
+    },
+    {
+      "id": 2,
+      "blocked": true,
+      "open": true
+    }
+  ],
+  "doors": [
+    {
+      "id": 1,
+      "open": false,
+      "locked": false
+    },
+    {
+      "id": 2,
+      "open": true,
+      "locked": true
+    }
+  ],
+  "lights": [
+    {
+      "id": 1,
+      "lightOn": false
+    },
+    {
+      "id": 2,
+      "lightOn": true
+    }
+  ]
+}
