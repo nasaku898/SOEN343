@@ -1,15 +1,21 @@
 package com.soen343.shs.dal.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 public class Door {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private boolean open;
-    private List<Room>  room;
+    @ElementCollection
+    Set<String> rooms;
 }

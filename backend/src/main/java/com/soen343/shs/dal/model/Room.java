@@ -1,32 +1,32 @@
 package com.soen343.shs.dal.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name = "name")
+    @Column(unique = true)
     private String name;
-    @Column(name = "doors")
-    private List<Door> doors;
-    @Column(name = "lights")
-    private List<Light> lights;
-    @Column(name = "userIds")
-    private List<Long> userIds;
-    @Column(name = "windows")
-    private List<Window> windows;
-    @Column(name = "temperature")
     private double temperature;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    private Set<Door> doors;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Light> lights;
+    @ElementCollection
+    private Set<Long> userIds;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<HouseWindow> houseWindows;
 }

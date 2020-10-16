@@ -1,11 +1,17 @@
 package com.soen343.shs.dal.model;
 
-import java.util.Collections;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
 public class ExteriorDoor extends Door {
     private boolean locked;
-    public ExteriorDoor(boolean open, Room room, boolean locked) {
-        super(open, Collections.singletonList(room)); // ensures this class will satisfy the parent classes requirement of a list, but that this list will only have 1 single element
-        this.locked = locked;
-    }
 }

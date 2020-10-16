@@ -7,6 +7,11 @@
 
 # testing
 /coverage
+.idea
+.idea
+*.iws
+*.iml
+*.ipr
 
 # production
 /build
