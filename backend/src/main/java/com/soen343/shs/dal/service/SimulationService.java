@@ -1,11 +1,6 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.Door;
-import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseMember;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.Light;
-import com.soen343.shs.dal.model.Room;
+import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.HouseMemberRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
@@ -13,19 +8,12 @@ import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
-import com.soen343.shs.dto.HouseMemberDTO;
-import com.soen343.shs.dto.LoadDoorDTO;
-import com.soen343.shs.dto.LoadHouseDTO;
-import com.soen343.shs.dto.LoadHouseWindowDTO;
-import com.soen343.shs.dto.LoadLightDTO;
-import com.soen343.shs.dto.LoadRoomDTO;
+import com.soen343.shs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SimulationService {
@@ -53,13 +41,14 @@ public class SimulationService {
         return Optional.of(houseRepository.findById(houseId).get()).orElseThrow(HouseNotFoundException::new);
     }
 
-    public void moveUserToRoom(final String name, final long roomId) {
+    public HouseMemberDTO moveUserToRoom(final String name, final long roomId) {
         final Room room = findRoom(roomId);
 
         final HouseMember houseMember = houseMemberRepository.findByName(name);
         houseMember.setLocation(room);
 
         houseMemberRepository.save(houseMember);
+        return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
     }
 
     public void addObjectToWindow(final long windowId) {
@@ -100,6 +89,17 @@ public class SimulationService {
 
         house.setRooms(roomsToAdd);
         houseRepository.save(house);
+    }
+
+    public List<RoomDTO> findAllRoom() {
+        List<Room> rooms = roomRepository.findAll();
+        List<RoomDTO> roomDTOS = new LinkedList<RoomDTO>();
+
+        for (Room room : rooms) {
+            roomDTOS.add(mvcConversionService.convert(room, RoomDTO.class));
+        }
+
+        return roomDTOS;
     }
 
     private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {

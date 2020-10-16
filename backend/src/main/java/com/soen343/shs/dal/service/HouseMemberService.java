@@ -32,7 +32,6 @@ public class HouseMemberService {
 
     public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
         final Room room = findRoom(houseMemberDTO.getRoomId());
-
         final HouseMember houseMember = new HouseMember();
 
         houseMember.setName(houseMemberDTO.getName());

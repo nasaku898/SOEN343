@@ -1,13 +1,17 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.repository.HouseMemberRepository;
 import com.soen343.shs.dal.service.HouseMemberService;
 import com.soen343.shs.dal.service.SimulationService;
+import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
+import com.soen343.shs.dto.RoomDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/simulation")
@@ -15,10 +19,12 @@ public class SimulationController {
 
     private final SimulationService simulationService;
     private final HouseMemberService houseMemberService;
+    private final HouseMemberRepository houseMemberRepository;
 
-    public SimulationController(final SimulationService simulationService, HouseMemberService houseMemberService) {
+    public SimulationController(final SimulationService simulationService, HouseMemberService houseMemberService, HouseMemberRepository houseMemberRepository) {
         this.simulationService = simulationService;
         this.houseMemberService = houseMemberService;
+        this.houseMemberRepository = houseMemberRepository;
     }
 
     @GetMapping(value = "/house/houseLayout/{houseId}")
@@ -28,8 +34,8 @@ public class SimulationController {
 
     @PutMapping(value = "/room/newRoom/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public void moveUserToRoom(@NotNull @RequestParam final String name, @PathVariable final long roomId) {
-        simulationService.moveUserToRoom(name, roomId);
+    public HouseMemberDTO moveUserToRoom(@NotNull @RequestParam final String name, @PathVariable final long roomId) {
+        return simulationService.moveUserToRoom(name, roomId);
     }
 
     @PutMapping(value = "/window/windowObject/{windowId}")
@@ -42,5 +48,11 @@ public class SimulationController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public void loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO) {
         simulationService.loadHouse(loadHouseDTO);
+    }
+
+    @GetMapping(value = "/room/all")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public List<RoomDTO> findAllRoom() {
+        return simulationService.findAllRoom();
     }
 }
