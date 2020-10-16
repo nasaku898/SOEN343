@@ -14,7 +14,7 @@ const useFormValidation = (initialState, validate, authenticate) => {
     setSubmitting(false);
    }
   }
- }, [errors]);
+ }, [errors, values,errors,isSubmitting]);
 
  const handleChange = (event) => {
   setValues({

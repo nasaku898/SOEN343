@@ -32,7 +32,7 @@ const RegistrationForm = () => {
          className="form-signin"
      >
       {errors.username && (
-          <p className="error-text" class="alert alert-danger">
+          <p className="error-text alert alert-danger">
            {errors.username}
           </p>
       )}
@@ -40,8 +40,7 @@ const RegistrationForm = () => {
       <FormInput
           name="email"
           type="text"
-          className={errors.email && "error-input"}
-          className="form-control"
+          className={`${errors.email}  ${"error-input"}  ${"form-control"}`}
           onBlur={handleBlur}
           value={values.email}
           onChange={handleChange}
@@ -51,7 +50,7 @@ const RegistrationForm = () => {
       <br/>
 
       {errors.password && (
-          <p className="error-text" class="alert alert-danger">
+          <p className="error-text alert alert-danger">
            {errors.password}
           </p>
       )}
@@ -61,8 +60,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           name="password"
-          className={errors.password && "error-input"}
-          className="form-control"
+          className={`${errors.password}  ${"error-input"} ${"form-control"}`}
           value={values.password}
           placeholder="Password"
       />
@@ -74,8 +72,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           name="matchingPassword"
-          className={errors.matchingPassword && "error-input"}
-          className="form-control"
+          className={`${errors.matchingPassword} ${"error-input"} ${"form-control"}`}
           value={values.matchingPassword}
           placeholder="Matching password"
       />
@@ -86,8 +83,7 @@ const RegistrationForm = () => {
           label="Username"
           name="username"
           type="text"
-          className={errors.username && "error-input"}
-          className="form-control"
+          className={`${errors.username}  ${"error-input"} ${"form-control"}`}
           value={values.username}
           onBlur={handleBlur}
           onChange={handleChange}
@@ -100,8 +96,7 @@ const RegistrationForm = () => {
           label="FirstName"
           name="firstName"
           type="text"
-          className={errors.firstName && "error-input"}
-          className="form-control"
+          className={`${errors.firstName} ${"error-input"} ${"form-control"}`}
           value={values.firstName}
           onBlur={handleBlur}
           onChange={handleChange}
@@ -114,8 +109,7 @@ const RegistrationForm = () => {
           label="LastName"
           name="lastName"
           type="text"
-          className={errors.lastName && "error-input"}
-          className="form-control"
+          className={`${errors.lastName} ${"error-input"} ${"form-control"}`}
           value={values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
