@@ -9,14 +9,14 @@ import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
 const UserProfileList = () => {
     const [editMode, SetEditMode] = useState(true)
-
+    const [refresh, setRefresh] = useState(true)
     const classes = useStyles()
+
     const [userProfileList, setUserProfileList] = useState([])
     const [name, setName] = useState("")
     const [role, setRole] = useState("")
     const [roomId, setRoomId] = useState(null)
     const [rooms, setRooms] = useState([])
-    const [refresh, setRefresh] = useState(true)
 
     useEffect(() => {
         const fetchHouseMember = () => {
@@ -32,6 +32,7 @@ const UserProfileList = () => {
                     setRooms(response.data)
                 })
         }
+        
         fetchHouseMember()
         fetchRooms()
     }, [refresh])
@@ -89,7 +90,7 @@ const UserProfileList = () => {
             <Typography>User Profiles</Typography>
             <div className={classes.userProfileListWrapper}>
                 {
-                    userProfileList.slice().map(userProfile => <UserProfile key={userProfile.id} userProfile={userProfile} editMode={editMode} rooms={rooms}/>)
+                    userProfileList.slice().map(userProfile => <UserProfile key={userProfile.id} userProfile={userProfile} editMode={editMode} rooms={rooms} />)
                 }
             </div>
 

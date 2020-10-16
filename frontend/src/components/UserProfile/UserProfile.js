@@ -6,7 +6,7 @@ import Axios from 'axios';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-const UserProfile = ({ userProfile, editMode, rooms}) => {
+const UserProfile = ({ userProfile, editMode, rooms }) => {
 
     const classes = useStyles()
 
@@ -16,13 +16,11 @@ const UserProfile = ({ userProfile, editMode, rooms}) => {
     const [room, setRoom] = useState(userProfile.roomName)
     const [roomId, setRoomId] = useState(userProfile.roomId)
 
-
-    const [nameField, setNameField] = useState(userProfile.name)
-    const [roleField, setRoleField] = useState(userProfile.role)
-
-
     const userProfileId = userProfile.id
 
+    //Temporary state when typing or selecting a role
+    const [nameField, setNameField] = useState(userProfile.name)
+    const [roleField, setRoleField] = useState(userProfile.role)
 
     const handleNameModification = (event) => {
         event.preventDefault()
@@ -30,7 +28,6 @@ const UserProfile = ({ userProfile, editMode, rooms}) => {
             .then((response) => {
                 setName(response.data.name)
             }).catch(() => {
-                //Might change to a more specific message
                 alert("Unexpected error has occured")
             })
     }
@@ -41,20 +38,19 @@ const UserProfile = ({ userProfile, editMode, rooms}) => {
             .then((response) => {
                 setRole(response.data.role);
             }).catch(() => {
-                //Might change to a more specific message
                 alert("Unexpected error has occured")
             })
     }
 
-    const handleLocationChange = (event) =>{
+    const handleLocationChange = (event) => {
         event.preventDefault()
         Axios.put(global.config.BACKEND_URL + `/api/simulation/room/newRoom/${roomId}?name=${name}`)
-            .then((response)=>{
+            .then((response) => {
                 setName(response.data.name)
                 setRole(response.data.role)
                 setRoom(response.data.roomName)
                 setRoomId(response.data.roomId)
-            }).catch(()=>{
+            }).catch(() => {
                 alert("Unexpected error has occured")
             })
     }
@@ -101,7 +97,7 @@ const UserProfile = ({ userProfile, editMode, rooms}) => {
                                     onClose={handleCloseEdit}>
 
                                     <MenuItem >
-                                        <TextField  label="Name" value={nameField} onChange={handleNameTyping} autoComplete="off" />
+                                        <TextField label="Name" value={nameField} onChange={handleNameTyping} autoComplete="off" />
                                         <Button onClick={handleNameModification}>
                                             <UpdateIcon></UpdateIcon>
                                         </Button>

@@ -34,7 +34,6 @@ const App = () => {
          <OutputConsole 
           outputData={outputData}
           />
-          
         </Switch>
        </div>
       </Router>

@@ -5,11 +5,10 @@ import App from './App';
 import theme from './Assets/theme';
 
 ReactDOM.render(
-
-    <ThemeProvider theme={theme}>
-      <Paper style={{ height: "100vh", minHeight:"100vh" }}>
-        <App />
-      </Paper>
-    </ThemeProvider>,
+  <ThemeProvider theme={theme}>
+    <Paper style={{ height: "100vh", minHeight: "100vh" }}>
+      <App />
+    </Paper>
+  </ThemeProvider>,
   document.getElementById('root')
 );
