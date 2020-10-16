@@ -74,18 +74,6 @@ public class SimulationService {
         houseWindowRepository.save(houseWindow);
     }
 
-    public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
-        final Room room = findRoom(houseMemberDTO.getRoomId());
-
-        final HouseMember houseMember = new HouseMember();
-
-        houseMember.setName(houseMemberDTO.getName());
-        houseMember.setLocation(room);
-        houseMemberRepository.save(houseMember);
-
-        return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
-    }
-
     private Room findRoom(final long roomId) {
         return Optional.of(roomRepository.findById(roomId).get()).orElseThrow(RoomNotFoundException::new);
     }

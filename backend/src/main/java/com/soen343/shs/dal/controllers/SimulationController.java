@@ -1,27 +1,27 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.service.HouseMemberService;
 import com.soen343.shs.dal.service.SimulationService;
-import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
-@Controller
+@RestController
 @RequestMapping(path = "api/simulation")
 public class SimulationController {
 
     private final SimulationService simulationService;
+    private final HouseMemberService houseMemberService;
 
-    public SimulationController(final SimulationService simulationService) {
+    public SimulationController(final SimulationService simulationService, HouseMemberService houseMemberService) {
         this.simulationService = simulationService;
+        this.houseMemberService = houseMemberService;
     }
 
     @GetMapping(value = "/house/houseLayout/{houseId}")
-    @ResponseBody
     public House getHouseLayout(@PathVariable final long houseId) {
         return simulationService.findHouse(houseId);
     }
@@ -36,13 +36,6 @@ public class SimulationController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void addObjectToWindow(@PathVariable final long windowId) {
         simulationService.addObjectToWindow(windowId);
-    }
-
-    @PostMapping(value = "/houseMember")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @ResponseBody
-    public HouseMemberDTO createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {
-        return simulationService.createNewHouseMember(houseMemberDTO);
     }
 
     @PostMapping(value = "/houseLayout")
