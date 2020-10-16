@@ -16,9 +16,9 @@ public class UserTestHelper {
         return User.builder()
                 .username(USERNAME)
                 .email(EMAIL)
-                .firstName("Daddy")
-                .lastName("Chill")
-                .password("password")
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
+                .password(PASSWORD)
                 .role(PARENT)
                 .build();
     }
@@ -27,8 +27,8 @@ public class UserTestHelper {
         return UserDTO.builder()
                 .username(USERNAME)
                 .email(EMAIL)
-                .firstName("Daddy")
-                .lastName("Chill")
+                .firstName(FIRST_NAME)
+                .lastName(LAST_NAME)
                 .role(PARENT)
                 .build();
     }

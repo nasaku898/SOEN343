@@ -75,6 +75,7 @@ public class UserService {
      */
     public LoginResponse login(final HttpServletRequest request, final LoginRequest loginRequest) {
         final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+        System.out.println(authenticationToken);
         authProvider.authenticate(authenticationToken);
 
         final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -95,7 +96,10 @@ public class UserService {
     }
 
     public UserDTO getUserByUsername(final String username) {
-        final User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username: %s doesn't exist", username)));
+        final User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Username: %s doesn't exist", username))
+        );
+
         return mvcConversionService.convert(user, UserDTO.class);
     }
 

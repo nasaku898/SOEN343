@@ -2,10 +2,12 @@ package com.soen343.shs.dto;
 
 import com.soen343.shs.dal.model.UserRole;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class UserDTO {
     private final long id;
     private final String username;

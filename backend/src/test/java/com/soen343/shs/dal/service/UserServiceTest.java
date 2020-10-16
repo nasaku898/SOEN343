@@ -2,6 +2,8 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
+import com.soen343.shs.dal.service.Login.LoginRequest;
+import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
@@ -11,12 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.soen343.shs.dal.model.UserRole.PARENT;
@@ -26,10 +29,10 @@ import static com.soen343.shs.dal.service.helpers.UserTestHelper.LAST_NAME;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.PASSWORD;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.createUser;
+import static com.soen343.shs.dal.service.helpers.UserTestHelper.createUserDTO;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@PrepareForTest(SecurityContextHolder.class)
 class UserServiceTest {
 
     @Mock
@@ -50,7 +53,6 @@ class UserServiceTest {
     private static final RegistrationDTO REGISTRATION_DTO = buildRegistrationDTO();
     private static final String ENCODED_PASSWORD = "encodedString";
     private static final String REGISTRATION_ERR_MSG = "Username/email already exists!";
-
 
     @Test
     void testCreateUser_givenUserDoesntAlreadyExist() {
@@ -74,6 +76,23 @@ class UserServiceTest {
         Assertions.assertEquals(REGISTRATION_ERR_MSG, exception.getMessage());
     }
 
+    @Test
+    void testLogin_givenValidCredentials() {
+        final LoginRequest loginRequest = buildLoginRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+
+        final User u = createUser();
+        when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.ofNullable(u));
+        when(mvcConversionService.convert(u, UserDTO.class)).thenReturn(createUserDTO());
+
+        final HttpSession session = request.getSession(true);
+        final LoginResponse response = classUnderTest.login(request, loginRequest);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(createUserDTO(), response.getUser());
+        Assertions.assertEquals(Objects.requireNonNull(session).getId(), response.getToken());
+    }
+
     private static RegistrationDTO buildRegistrationDTO() {
         return RegistrationDTO.builder()
                 .username(USERNAME)
@@ -83,6 +102,13 @@ class UserServiceTest {
                 .password(PASSWORD)
                 .matchingPassword(PASSWORD)
                 .role(PARENT.name())
+                .build();
+    }
+
+    private static LoginRequest buildLoginRequest() {
+        return LoginRequest.builder()
+                .username(USERNAME)
+                .password(PASSWORD)
                 .build();
     }
 }
