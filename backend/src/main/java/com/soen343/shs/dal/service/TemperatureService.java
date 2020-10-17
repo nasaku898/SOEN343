@@ -17,7 +17,7 @@ public class TemperatureService {
 
     public double getTemperatureInside(final long houseId) {
         return houseRepository.findById(houseId)
-                .orElseThrow(() -> new com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
                 .getRooms()
                 .stream()
                 .mapToDouble(Room::getTemperature)
@@ -27,7 +27,7 @@ public class TemperatureService {
 
     public double getTemperatureOutside(final long houseId) {
         return houseRepository.findById(houseId)
-                .orElseThrow(() -> new com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
                 .getTemperatureOutside();
     }
 
