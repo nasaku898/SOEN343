@@ -6,7 +6,6 @@ import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
-import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
 import com.soen343.shs.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +18,22 @@ import java.util.*;
 public class SimulationService {
 
     private final HouseRepository houseRepository;
-    private final RoomRepository roomRepository;
     private final HouseMemberRepository houseMemberRepository;
     private final HouseWindowRepository houseWindowRepository;
     private final ConversionService mvcConversionService;
+    private final ModelFetchHandler modelFetchHandler;
 
     @Autowired
     public SimulationService(final HouseRepository houseRepository,
                              final HouseMemberRepository houseMemberRepository,
-                             final RoomRepository roomRepository,
                              final HouseWindowRepository houseWindowRepository,
-                             final ConversionService mvcConversionService) {
+                             final ConversionService mvcConversionService,
+                             final ModelFetchHandler modelFetchHandler) {
         this.houseMemberRepository = houseMemberRepository;
         this.houseRepository = houseRepository;
-        this.roomRepository = roomRepository;
         this.houseWindowRepository = houseWindowRepository;
         this.mvcConversionService = mvcConversionService;
+        this.modelFetchHandler = modelFetchHandler;
     }
 
     public House findHouse(final long houseId) {
@@ -42,7 +41,7 @@ public class SimulationService {
     }
 
     public HouseMemberDTO moveUserToRoom(final String name, final long roomId) {
-        final Room room = findRoom(roomId);
+        final Room room = modelFetchHandler.findRoom(roomId);
 
         final HouseMember houseMember = houseMemberRepository.findByName(name);
         houseMember.setLocation(room);
@@ -52,13 +51,7 @@ public class SimulationService {
     }
 
     public void addObjectToWindow(final long windowId) {
-        final Optional<HouseWindow> houseWindowOptional = houseWindowRepository.findById(windowId);
-
-        if (!houseWindowOptional.isPresent()) {
-            throw new HouseWindowNotFoundException();
-        }
-
-        final HouseWindow houseWindow = houseWindowOptional.get();
+        final HouseWindow houseWindow = modelFetchHandler.findHouseWindow(windowId);
         houseWindow.setBlocked(true);
         houseWindowRepository.save(houseWindow);
     }
@@ -96,10 +89,6 @@ public class SimulationService {
         }
 
         return roomDTOS;
-    }
-
-    private Room findRoom(final long roomId) {
-        return Optional.of(roomRepository.findById(roomId).get()).orElseThrow(RoomNotFoundException::new);
     }
 
     private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {
