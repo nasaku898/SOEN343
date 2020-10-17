@@ -13,7 +13,7 @@ const LocationSelector = ({ rooms, setRoomId }) => {
     return (
         <div>
             <FormControl>
-                <InputLabel id="demo-customized-select-label">Location</InputLabel>
+                <InputLabel>Location</InputLabel>
                 <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"

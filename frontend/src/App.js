@@ -4,7 +4,6 @@ import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
-import UserProfileList from './components/UserProfileList/UserProfileList'
 import './App.css';
 
 const App = () => {
@@ -37,7 +36,6 @@ const App = () => {
         </Switch>
        </div>
       </Router>
-      <UserProfileList></UserProfileList>
      </AuthContext.Provider>
  );
 }

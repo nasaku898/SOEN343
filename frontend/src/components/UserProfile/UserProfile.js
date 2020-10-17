@@ -112,12 +112,10 @@ const UserProfile = ({ userProfile, editMode, rooms }) => {
                                     </MenuItem>
 
                                     <MenuItem>
-                                        <form>
-                                            <LocationSelector rooms={rooms} setRoomId={setRoomId}></LocationSelector>
-                                            <Button onClick={handleLocationChange}>
-                                                <UpdateIcon></UpdateIcon>
-                                            </Button>
-                                        </form>
+                                        <LocationSelector rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                                        <Button onClick={handleLocationChange}>
+                                            <UpdateIcon></UpdateIcon>
+                                        </Button>
                                     </MenuItem>
 
                                 </Menu>

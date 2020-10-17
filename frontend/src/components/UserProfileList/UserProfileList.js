@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Typography, TextField } from '@material-ui/core'
+import { Box, Button, Modal, Typography, TextField, MenuItem } from '@material-ui/core'
 import React, { useState, useEffect } from 'react'
 import UserProfile from '../UserProfile/UserProfile'
 import useStyles from './UserProfileListStyle'
@@ -32,7 +32,7 @@ const UserProfileList = () => {
                     setRooms(response.data)
                 })
         }
-        
+
         fetchHouseMember()
         fetchRooms()
     }, [refresh])
@@ -73,15 +73,21 @@ const UserProfileList = () => {
 
     const createUser = (
         <div className={classes.modal}>
-            <form>
+            <MenuItem>
                 <TextField label="Name" value={name} onChange={handleNameTyping} />
-                <br></br>
-                <RoleSelector role={role} setRole={setRole}></RoleSelector>
-                <br></br>
+            </MenuItem>
 
+            <br></br>
+            <MenuItem>
+                <RoleSelector role={role} setRole={setRole}></RoleSelector>
+            </MenuItem>
+
+            <br></br>
+            <MenuItem>
                 <LocationSelector rooms={rooms} setRoomId={setRoomId}></LocationSelector>
-                <Button onClick={createNewHouseMember}>Create</Button>
-            </form>
+            </MenuItem>
+
+            <Button onClick={createNewHouseMember}>Create</Button>
         </div>
     );
 
