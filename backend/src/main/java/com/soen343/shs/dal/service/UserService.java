@@ -75,7 +75,6 @@ public class UserService {
      */
     public LoginResponse login(final HttpServletRequest request, final LoginRequest loginRequest) {
         final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-        System.out.println(authenticationToken);
         authProvider.authenticate(authenticationToken);
 
         final SecurityContext securityContext = SecurityContextHolder.getContext();

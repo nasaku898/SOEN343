@@ -1,8 +1,10 @@
 package com.soen343.shs.dal.service.exceptions.user;
 
-public class UserIdDoesntExist extends RuntimeException {
-    private static final long serialVersionUID = 1092408746088563215L;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+public class UserIdDoesntExist extends RuntimeException {
     public UserIdDoesntExist(final String msg) {
         super(msg);
     }
