@@ -18,4 +18,5 @@ public class HouseMember {
     private String name;
     @OneToOne
     private Room location;
+    private UserRole role;
 }
