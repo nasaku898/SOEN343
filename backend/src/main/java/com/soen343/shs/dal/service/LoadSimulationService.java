@@ -29,12 +29,14 @@ public class LoadSimulationService {
     }
 
     private Set<Room> loadRooms(final Set<LoadRoomDTO> rooms) {
-        return rooms.stream().map(room -> Room.builder()
-                .doors(loadData(room.getDoors(), Door.class))
-                .houseWindows(loadData(room.getHouseWindows(), HouseWindow.class))
-                .lights(loadData(room.getLights(), Light.class))
-                .name(room.getName())
-                .build()).collect(Collectors.toSet());
+        return rooms.stream()
+                .map(room -> Room.builder()
+                        .doors(loadData(room.getDoors(), Door.class))
+                        .houseWindows(loadData(room.getHouseWindows(), HouseWindow.class))
+                        .lights(loadData(room.getLights(), Light.class))
+                        .name(room.getName())
+                        .build())
+                .collect(Collectors.toSet());
     }
 
     private <DTO, Entity> Set<Entity> loadData(final Set<DTO> dtoSet, final Class<Entity> classType) {
