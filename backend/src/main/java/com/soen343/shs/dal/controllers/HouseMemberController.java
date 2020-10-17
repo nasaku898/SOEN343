@@ -15,7 +15,7 @@ public class HouseMemberController {
 
     private final HouseMemberService houseMemberService;
 
-    public HouseMemberController(HouseMemberService houseMemberService) {
+    public HouseMemberController(final HouseMemberService houseMemberService) {
         this.houseMemberService = houseMemberService;
     }
 

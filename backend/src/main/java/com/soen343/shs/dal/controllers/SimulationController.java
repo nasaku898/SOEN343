@@ -18,13 +18,9 @@ import java.util.List;
 public class SimulationController {
 
     private final SimulationService simulationService;
-    private final HouseMemberService houseMemberService;
-    private final HouseMemberRepository houseMemberRepository;
 
-    public SimulationController(final SimulationService simulationService, HouseMemberService houseMemberService, HouseMemberRepository houseMemberRepository) {
+    public SimulationController(final SimulationService simulationService) {
         this.simulationService = simulationService;
-        this.houseMemberService = houseMemberService;
-        this.houseMemberRepository = houseMemberRepository;
     }
 
     @GetMapping(value = "/house/houseLayout/{houseId}")
