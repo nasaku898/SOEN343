@@ -46,9 +46,9 @@ public class SimulationController {
         simulationService.loadHouse(loadHouseDTO);
     }
 
-    @GetMapping(value = "/room/all")
+    @GetMapping(value = "/house/{houseId}/room/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public List<RoomDTO> findAllRoom() {
-        return simulationService.findAllRoom();
+    public List<RoomDTO> findAllRoom(@PathVariable final long houseId) {
+        return simulationService.findAllRooms(houseId);
     }
 }

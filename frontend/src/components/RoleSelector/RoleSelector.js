@@ -8,8 +8,8 @@ const RoleSelector = ({ role, setRole }) => {
 
     return (
         <div>
+            <InputLabel>Role</InputLabel>
             <FormControl>
-                <InputLabel>Role</InputLabel>
                 <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"

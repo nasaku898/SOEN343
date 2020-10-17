@@ -63,10 +63,6 @@ public class SimulationService {
         houseWindowRepository.save(houseWindow);
     }
 
-    private Room findRoom(final long roomId) {
-        return Optional.of(roomRepository.findById(roomId).get()).orElseThrow(RoomNotFoundException::new);
-    }
-
     public void loadHouse(final LoadHouseDTO loadHouseDTO) {
         final Set<LoadRoomDTO> rooms = loadHouseDTO.getRooms();
         final Set<Room> roomsToAdd = new HashSet<>();
@@ -91,15 +87,19 @@ public class SimulationService {
         houseRepository.save(house);
     }
 
-    public List<RoomDTO> findAllRoom() {
-        List<Room> rooms = roomRepository.findAll();
+    public List<RoomDTO> findAllRooms(final long houseId) {
+        House house = findHouse(houseId);
         List<RoomDTO> roomDTOS = new LinkedList<RoomDTO>();
 
-        for (Room room : rooms) {
+        for (Room room : house.getRooms()) {
             roomDTOS.add(mvcConversionService.convert(room, RoomDTO.class));
         }
 
         return roomDTOS;
+    }
+
+    private Room findRoom(final long roomId) {
+        return Optional.of(roomRepository.findById(roomId).get()).orElseThrow(RoomNotFoundException::new);
     }
 
     private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {

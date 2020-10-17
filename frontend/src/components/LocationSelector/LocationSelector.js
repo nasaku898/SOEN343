@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 
-const LocationSelector = ({ rooms, setRoomId }) => {
+const LocationSelector = ({ rooms, setRoomId, currentRoom }) => {
 
     const [location, setLocation] = useState("")
-
     const handleChange = (event) => {
         setRoomId(event.target.value)
         setLocation(event.target.value)
@@ -12,8 +11,8 @@ const LocationSelector = ({ rooms, setRoomId }) => {
 
     return (
         <div>
+            <InputLabel>Location</InputLabel>
             <FormControl>
-                <InputLabel>Location</InputLabel>
                 <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"

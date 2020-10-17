@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react'
 import UserProfile from '../UserProfile/UserProfile'
 import useStyles from './UserProfileListStyle'
 import AddIcon from '@material-ui/icons/Add';
-import Axios from 'axios';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
+import { fetchHouseMember, fetchRooms, createNewHouseMember } from '../../modules/UserProfileList/UserProfileAPI';
+
 const UserProfileList = () => {
     const [editMode, SetEditMode] = useState(true)
     const [refresh, setRefresh] = useState(true)
@@ -19,42 +20,42 @@ const UserProfileList = () => {
     const [rooms, setRooms] = useState([])
 
     useEffect(() => {
-        const fetchHouseMember = () => {
-            Axios.get(global.config.BACKEND_URL + `/api/simulation/houseMember/all`)
-                .then((response) => {
-                    setUserProfileList(response.data)
-                })
-        }
 
-        const fetchRooms = () => {
-            Axios.get(global.config.BACKEND_URL + `/api/simulation/room/all`)
-                .then((response) => {
-                    setRooms(response.data)
-                })
-        }
+        fetchHouseMember().then(response => {
+            setUserProfileList(response)
+        }).catch(error => {
+            alert(`Status: ${error.status}: ${error.message}`)
+        })
 
-        fetchHouseMember()
-        fetchRooms()
+        fetchRooms().then(response => {
+            setRooms(response)
+        }).catch(error => {
+            alert(`Status: ${error.status}: ${error.message}`)
+        })
+
     }, [refresh])
 
     const handleNameTyping = (event) => {
         setName(event.target.value)
     }
 
-    const createNewHouseMember = () => {
-        Axios.post(global.config.BACKEND_URL + `/api/simulation/houseMember`, { name, role, roomId })
+    const handleCreateNewHouseMember = () => {
+
+        if (!name || !role || !roomId) {
+            alert("Cannot leave field empty")
+            return
+        }
+
+        createNewHouseMember(name, role, roomId)
             .then(() => {
                 setRefresh(!refresh)
                 setName("")
                 setRole("")
                 setRoomId(null)
                 handleCloseModal()
-            }).catch(
-                (response) => {
-                    console.log(response)
-                    alert("Unexpected error")
-                }
-            )
+            }).catch(error => {
+                alert(`Status: ${error.status}: ${error.message}`)
+            })
     }
 
     //Modal Handling
@@ -84,10 +85,9 @@ const UserProfileList = () => {
 
             <br></br>
             <MenuItem>
-                <LocationSelector rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                <LocationSelector currentRoom = {2} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
             </MenuItem>
-
-            <Button onClick={createNewHouseMember}>Create</Button>
+            <Button onClick={handleCreateNewHouseMember}>Create</Button>
         </div>
     );
 

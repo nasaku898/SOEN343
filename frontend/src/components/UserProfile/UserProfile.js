@@ -2,10 +2,10 @@ import { Box, Grid, Menu, Typography, MenuItem, Button, TextField } from '@mater
 import React, { useState } from 'react'
 import useStyles from './UserProfileStyle'
 import UpdateIcon from '@material-ui/icons/Update';
-import Axios from 'axios';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
+import { houseMemberNameModification, houseMemberRoleModification, houseMemberLocationChange } from '../../modules/UserProfileList/UserProfileAPI';
 const UserProfile = ({ userProfile, editMode, rooms }) => {
 
     const classes = useStyles()
@@ -24,35 +24,33 @@ const UserProfile = ({ userProfile, editMode, rooms }) => {
 
     const handleNameModification = (event) => {
         event.preventDefault()
-        Axios.put(global.config.BACKEND_URL + `/api/simulation/houseMember/nameModification/${userProfileId}?newName=${nameField}`)
-            .then((response) => {
-                setName(response.data.name)
-            }).catch(() => {
-                alert("Unexpected error has occured")
-            })
+
+        houseMemberNameModification(userProfileId, nameField).then(response => {
+            setName(response.name)
+        }).catch(error => {
+            alert(`Status: ${error.status}: ${error.message}`)
+        })
     }
 
     const handleRoleModification = (event) => {
         event.preventDefault()
-        Axios.put(global.config.BACKEND_URL + `/api/simulation/houseMember/roleModification/${userProfileId}?newRole=${roleField}`)
-            .then((response) => {
-                setRole(response.data.role);
-            }).catch(() => {
-                alert("Unexpected error has occured")
-            })
+        houseMemberRoleModification(userProfileId, roleField).then(response => {
+            setRole(response.role)
+        }).catch(error => {
+            alert(`Status: ${error.status}: ${error.message}`)
+        })
     }
 
     const handleLocationChange = (event) => {
         event.preventDefault()
-        Axios.put(global.config.BACKEND_URL + `/api/simulation/room/newRoom/${roomId}?name=${name}`)
-            .then((response) => {
-                setName(response.data.name)
-                setRole(response.data.role)
-                setRoom(response.data.roomName)
-                setRoomId(response.data.roomId)
-            }).catch(() => {
-                alert("Unexpected error has occured")
-            })
+        houseMemberLocationChange(roomId, name).then(response => {
+            setName(response.name)
+            setRole(response.role)
+            setRoom(response.roomName)
+            setRoomId(response.roomId)
+        }).catch(error => {
+            alert(`Status: ${error.status}: ${error.message}`)
+        })
     }
 
     const handleNameTyping = (event) => {
@@ -112,7 +110,7 @@ const UserProfile = ({ userProfile, editMode, rooms }) => {
                                     </MenuItem>
 
                                     <MenuItem>
-                                        <LocationSelector rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                                        <LocationSelector currentRoom={roomId} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
                                         <Button onClick={handleLocationChange}>
                                             <UpdateIcon></UpdateIcon>
                                         </Button>
