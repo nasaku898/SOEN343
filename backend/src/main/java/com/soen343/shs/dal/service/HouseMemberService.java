@@ -28,6 +28,7 @@ public class HouseMemberService {
                 HouseMember.builder()
                         .name(houseMemberDTO.getName())
                         .location(modelFetchHandler.findRoom(houseMemberDTO.getRoomId()))
+                        .role(UserRole.valueOf(houseMemberDTO.getRole()))
                         .build())
                 , HouseMemberDTO.class);
     }
