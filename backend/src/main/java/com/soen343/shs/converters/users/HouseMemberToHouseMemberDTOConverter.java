@@ -12,6 +12,8 @@ public class HouseMemberToHouseMemberDTOConverter implements Converter<HouseMemb
                 .roomId(houseMember.getLocation().getId())
                 .name(houseMember.getName())
                 .id(houseMember.getId())
+                .role(houseMember.getRole().toString())
+                .roomName(houseMember.getLocation().getName())
                 .build();
     }
 }

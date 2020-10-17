@@ -41,7 +41,7 @@ const LoginForm = () => {
           onSubmit={handleSubmit}
       >
        {errors.username && (
-           <p className="error-text" className="alert alert-danger">
+           <p className="error-text alert alert-danger">
             {errors.username}
            </p>
        )}
@@ -50,8 +50,8 @@ const LoginForm = () => {
            label="Username"
            name="username"
            type="text"
-           className={errors.username && "error-input"}
-           className="form-control"
+           className={`${errors.username} ${"error-input"} ${"form-control"}`}
+           
            value={values.username}
            onChange={handleChange}
            placeholder="Username"
@@ -60,7 +60,7 @@ const LoginForm = () => {
        <br/>
 
        {errors.password && (
-           <p className="error-text" className="alert alert-danger">
+           <p className="error-text alert alert-danger">
             {errors.password}
            </p>
        )}
@@ -70,8 +70,7 @@ const LoginForm = () => {
            onChange={handleChange}
            onBlur={handleBlur}
            name="password"
-           className={errors.password && "error-input"}
-           className="form-control"
+           className={`${errors.password}  ${"error-input"} ${"form-control"}`}
            value={values.password}
            placeholder="Password"
        />

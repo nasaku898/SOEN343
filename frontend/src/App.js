@@ -4,6 +4,7 @@ import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
+import './App.css';
 
 const App = () => {
  // we will use this to get/fetch authentication token
@@ -11,12 +12,10 @@ const App = () => {
      localStorage.getItem("token") || ""
  );
 
-  const [outputData, setOutputData] = useState([{date: new Date(), data: "This is a sample action log."}]);
-
+  const [outputData, setOutputData] = useState([{id:1, date: new Date(), data: "This is a sample action log."}]);
 
   const appendOutputData = (data) => {
     setOutputData(outputData => [...outputData, data]);
-    console.log(outputData)
   }
   
  const setTokens = data => {
@@ -28,7 +27,6 @@ const App = () => {
      <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Router>
        <div>
-        <h1>Welcome to the home page for our SOEN343 project!</h1>
         <Switch>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
