@@ -1,4 +1,4 @@
-package com.soen343.shs.DTO;
+package com.soen343.shs.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

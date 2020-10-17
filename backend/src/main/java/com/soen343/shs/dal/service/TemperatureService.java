@@ -1,76 +1,43 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.DTO.HouseDTO;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
-import com.soen343.shs.dal.service.exceptions.HouseNotFoundException;
+import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
+import com.soen343.shs.dto.HouseDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
-
 @Service
+@RequiredArgsConstructor
 public class TemperatureService {
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
 
-    public TemperatureService(final HouseRepository houseRepository, final ConversionService mvcConversionService) {
-        this.houseRepository = houseRepository;
-        this.mvcConversionService = mvcConversionService;
+    public double getTemperatureInside(final long houseId) {
+        return houseRepository.findById(houseId)
+                .orElseThrow(() -> new com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .getRooms()
+                .stream()
+                .mapToDouble(Room::getTemperature)
+                .average()
+                .orElse(0);
     }
 
-    public double getTemperatureInside(long houseId) {
-        // Find house by id
-        Optional<House> house = houseRepository.findById(houseId);
-
-        // Return error code if house does not exist
-        if (!house.isPresent()) {
-            throw new HouseNotFoundException("Error: House with ID " + houseId + " does not exist. Please enter a valid house ID.");
-        }
-
-        // Get the average temperature of all the House's Rooms
-        double averageTemperatureInside = 0;
-        Set<Room> rooms = house.get().getRooms();
-        for (Room room : rooms) {
-            averageTemperatureInside += room.getTemperature();
-        }
-        averageTemperatureInside /= rooms.size();
-
-        return averageTemperatureInside;
+    public double getTemperatureOutside(final long houseId) {
+        return houseRepository.findById(houseId)
+                .orElseThrow(() -> new com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .getTemperatureOutside();
     }
 
-    public double getTemperatureOutside(long houseId) {
-        // Find house by id
-        Optional<House> house = houseRepository.findById(houseId);
-
-        // Return error code if house does not exist
-        if (!house.isPresent()) {
-            throw new HouseNotFoundException("Error: House with ID " + houseId + " does not exist. Please enter a valid house ID.");
-        }
-
-        // Convert House to HouseDTO
-        HouseDTO houseDTO = mvcConversionService.convert(house.get(), HouseDTO.class);
-
-        // Return only the temperatureOutside of the HouseDTO
-        return houseDTO.getTemperatureOutside();
-    }
-
-    public void setTemperatureOutside(long houseId, double temperature) {
-        // Find house by id
-        Optional<House> optionalHouse = houseRepository.findById(houseId);
-
-        // Return error code if house does not exist
-        if (!optionalHouse.isPresent()) {
-            throw new HouseNotFoundException("Error: House with ID " + houseId + " does not exist. Please enter a valid house ID.");
-        }
-
-        // Edit temperatureOutside of house
-        House house = optionalHouse.get();
+    public HouseDTO setTemperatureOutside(final long houseId, final double temperature) {
+        final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)));
         house.setTemperatureOutside(temperature);
+        return mvcConversionService.convert(houseRepository.save(house), HouseDTO.class);
+    }
 
-        // Save the updated house
-        houseRepository.save(house);
+    private static String getHouseNotFoundErrorMessage(final long houseId) {
+        return String.format("Cannot find house with houseId: %d", houseId);
     }
 }
