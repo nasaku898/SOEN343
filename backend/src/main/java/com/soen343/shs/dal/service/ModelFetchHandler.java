@@ -9,31 +9,25 @@ import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
 import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
 import com.soen343.shs.dal.service.exceptions.user.HouseMemberNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
+@RequiredArgsConstructor
 public class ModelFetchHandler {
     private final HouseMemberRepository houseMemberRepository;
     private final RoomRepository roomRepository;
     private final HouseWindowRepository houseWindowRepository;
 
-    public ModelFetchHandler(final HouseMemberRepository houseMemberRepository, final RoomRepository roomRepository, HouseWindowRepository houseWindowRepository) {
-        this.houseMemberRepository = houseMemberRepository;
-        this.roomRepository = roomRepository;
-        this.houseWindowRepository = houseWindowRepository;
-    }
-
     public Room findRoom(final long roomId) {
-        return Optional.of(roomRepository.findById(roomId).get()).orElseThrow(RoomNotFoundException::new);
+        return roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
     }
 
     public HouseMember findHouseMember(final long houseMemberId) {
-        return Optional.of(houseMemberRepository.findById(houseMemberId).get()).orElseThrow(HouseMemberNotFoundException::new);
+        return houseMemberRepository.findById(houseMemberId).orElseThrow(HouseMemberNotFoundException::new);
     }
 
     public HouseWindow findHouseWindow(final long houseWindowId) {
-        return Optional.of(houseWindowRepository.findById(houseWindowId).get()).orElseThrow(HouseWindowNotFoundException::new);
+        return houseWindowRepository.findById(houseWindowId).orElseThrow(HouseWindowNotFoundException::new);
     }
 }

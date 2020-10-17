@@ -1,14 +1,17 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.repository.HouseMemberRepository;
-import com.soen343.shs.dal.service.HouseMemberService;
 import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dto.HouseMemberDTO;
-import com.soen343.shs.dto.LoadHouseDTO;
 import com.soen343.shs.dto.RoomDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -38,12 +41,6 @@ public class SimulationController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void addObjectToWindow(@PathVariable final long windowId) {
         simulationService.addObjectToWindow(windowId);
-    }
-
-    @PostMapping(value = "/houseLayout")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO) {
-        simulationService.loadHouse(loadHouseDTO);
     }
 
     @GetMapping(value = "/house/{houseId}/room/all")
