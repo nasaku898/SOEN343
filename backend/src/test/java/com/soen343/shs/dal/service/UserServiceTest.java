@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ import static com.soen343.shs.dal.service.helpers.UserTestHelper.PASSWORD;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.createUser;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.createUserDTO;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,6 +93,19 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(createUserDTO(), response.getUser());
         Assertions.assertEquals(Objects.requireNonNull(session).getId(), response.getToken());
+    }
+
+    @Test
+    void testLogin_givenInvalidCredentials() {
+        final LoginRequest loginRequest = buildLoginRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+
+        when(authProvider.authenticate(any())).thenThrow(BadCredentialsException.class);
+
+        Assertions.assertThrows(BadCredentialsException.class, () -> {
+                    classUnderTest.login(request, loginRequest);
+                }
+        );
     }
 
     private static RegistrationDTO buildRegistrationDTO() {
