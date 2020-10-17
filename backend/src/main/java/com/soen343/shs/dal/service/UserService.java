@@ -31,6 +31,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authProvider;
 
+
     public UserService(final ConversionService mvcConversionService,
                        final UserRepository userRepository,
                        final PasswordEncoder passwordEncoder,
@@ -94,6 +95,10 @@ public class UserService {
         return userDTO;
     }
 
+    /**
+     * @param username String value used to fetch from repository by username
+     * @return UserDTO corresponding to the unique given username, or throw UsernameNotFoundException
+     */
     public UserDTO getUserByUsername(final String username) {
         final User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("Username: %s doesn't exist", username))
@@ -102,8 +107,13 @@ public class UserService {
         return mvcConversionService.convert(user, UserDTO.class);
     }
 
+    /**
+     * @param id long value used to fetch from repository by userId
+     * @return UserDTO corresponding to the unique given userId, or throw UserIdDoesntExistException
+     */
     private UserDTO getUserById(final Long id) {
-        final User user = userRepository.findById(id).orElseThrow(() -> new UserIdDoesntExist(String.format("UserId: %d doesn't exist", id)));
+        final User user = userRepository.findById(id).orElseThrow(() ->
+                new UserIdDoesntExist(String.format("UserId: %d doesn't exist", id)));
         return mvcConversionService.convert(user, UserDTO.class);
     }
 }

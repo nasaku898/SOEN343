@@ -30,7 +30,7 @@ public class UserController {
     UserDTO addNewUser(final HttpServletRequest request, @RequestBody final RegistrationDTO registrationDTO) {
         return userService.createUser(registrationDTO);
     }
-
+    
     @PostMapping(path = "/login")
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
