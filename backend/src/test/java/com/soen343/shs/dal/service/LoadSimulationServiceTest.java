@@ -6,12 +6,7 @@ import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
-import com.soen343.shs.dto.HouseDTO;
-import com.soen343.shs.dto.LoadDoorDTO;
-import com.soen343.shs.dto.LoadHouseDTO;
-import com.soen343.shs.dto.LoadHouseWindowDTO;
-import com.soen343.shs.dto.LoadLightDTO;
-import com.soen343.shs.dto.LoadRoomDTO;
+import com.soen343.shs.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,17 +38,18 @@ public class LoadSimulationServiceTest {
 
     @Test
     void testLoadHouse() {
-        final LoadHouseDTO houseDTO = LoadHouseDTO
-                .builder()
-                .rooms(createLoadRooms())
-                .build();
         final House house = House.builder().rooms(createRooms()).build();
 
-        when(mvcConversionService.convert(any(), any())).thenReturn(new Object());
+        when(mvcConversionService.convert(any(LoadDoorDTO.class), any())).thenReturn(DoorDTO.builder().build());
+        when(mvcConversionService.convert(any(LoadHouseWindowDTO.class), any())).thenReturn(WindowDTO.builder().build());
+        when(mvcConversionService.convert(any(LoadLightDTO.class), any())).thenReturn(LightDTO.builder().build());
         when(houseRepository.save(any(House.class))).thenReturn(house);
         when(mvcConversionService.convert(eq(house), eq(HouseDTO.class))).thenReturn(HouseDTO.builder().build());
 
-        final HouseDTO dto = classUnderTest.loadHouse(houseDTO);
+        final HouseDTO dto = classUnderTest.loadHouse(LoadHouseDTO
+                .builder()
+                .rooms(createLoadRooms())
+                .build());
 
         Assertions.assertNotNull(dto);
     }
