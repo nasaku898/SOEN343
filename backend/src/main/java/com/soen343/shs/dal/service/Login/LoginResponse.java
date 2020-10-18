@@ -1,4 +1,4 @@
-package com.soen343.shs.dal.service;
+package com.soen343.shs.dal.service.Login;
 
 import com.soen343.shs.dto.UserDTO;
 import lombok.Builder;

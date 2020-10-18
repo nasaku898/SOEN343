@@ -1,4 +1,3 @@
-import { Divider } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import './OutputConsole.css';
 import { animateScroll } from "react-scroll";
@@ -22,7 +21,7 @@ const OutputConsole = (props) => {
       <ul className="outputConsoleList">
         {
           props.outputData.map(item => {
-            return <li className="outputConsoleListItem">{`Log[${item.date.getHours()}:${item.date.getMinutes()}]: ${item.data}`}</li>
+            return <li key={item.id} className="outputConsoleListItem">{`Log[${item.date.getHours()}:${item.date.getMinutes()}]: ${item.data}`}</li>
           })
         }
       </ul>
