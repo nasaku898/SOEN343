@@ -46,10 +46,8 @@ public class SimulationService {
         final HouseWindow houseWindow = houseWindowRepository.findById(windowId).orElseThrow(HouseWindowNotFoundException::new);
 
         houseWindow.setBlocked(true);
-        houseWindowRepository.save(houseWindow);
         return mvcConversionService.convert(houseWindowRepository.save(houseWindow), WindowDTO.class);
     }
-
 
     public List<RoomDTO> findAllRooms(final Long houseId) {
         return houseRepository.findById(houseId)
