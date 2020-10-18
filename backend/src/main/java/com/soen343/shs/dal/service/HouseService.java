@@ -7,22 +7,18 @@ import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.InteriorDoorRepository;
 import com.soen343.shs.dal.repository.LightRepository;
-import com.soen343.shs.dal.service.exceptions.exteriorDoor.ExteriorDoorAlreadyLockedException;
-import com.soen343.shs.dal.service.exceptions.exteriorDoor.ExteriorDoorAlreadyUnlockedException;
-import com.soen343.shs.dal.service.exceptions.exteriorDoor.ExteriorDoorNotFoundException;
-import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowAlreadyClosedException;
-import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowAlreadyOpenedException;
 import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowBlockedException;
-import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
-import com.soen343.shs.dal.service.exceptions.light.LightIsAlreadyOffException;
-import com.soen343.shs.dal.service.exceptions.light.LightIsAlreadyOnException;
-import com.soen343.shs.dal.service.exceptions.light.LightNotFoundException;
+import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
+import com.soen343.shs.dal.service.exceptions.state.SHSSameStateException;
 import com.soen343.shs.dto.DoorDTO;
 import com.soen343.shs.dto.LightDTO;
 import com.soen343.shs.dto.WindowDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -33,61 +29,75 @@ public class HouseService {
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
 
-    private static String getWindowNotFoundError(final long windowId) {
-        return String.format("Error: Window with ID %d does not exist. Please enter a valid window ID.", windowId);
+    /**
+     * @param id   id of light object to modify
+     * @param isOn boolean referring to the desired state of the object
+     * @return LightDTO object reflecting the changes made to the object
+     */
+    public LightDTO modifyLightState(final long id, final boolean isOn) {
+        return changeStateOfHouseObject(id, Light.class, LightDTO.class, lightRepository,
+                light -> {
+                    if ((isOn && light.isLightOn()) || (!isOn && !light.isLightOn())) {
+                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(light.getClass(), id));
+                    }
+                    light.setLightOn(isOn);
+                });
     }
 
-    private static String getHouseNotFoundError(final long houseId) {
-        return String.format("Error: House with ID %d does not exist. Please enter a valid house ID.", houseId);
+    /**
+     * @param id       id of door  object to modify
+     * @param isLocked boolean referring to the desired state of the object
+     * @return DoorDTo object reflecting the changes made to the object
+     */
+    public DoorDTO modifyExteriorDoorState(final long id, final boolean isLocked) {
+        return changeStateOfHouseObject(id, ExteriorDoor.class, DoorDTO.class, exteriorDoorRepository,
+                door -> {
+                    if ((isLocked && door.isLocked()) || (!isLocked && !door.isLocked())) {
+                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(door.getClass(), id));
+                    }
+                    door.setLocked(isLocked);
+                });
     }
 
-    private static String getExteriorDoorNotFoundError(final long exteriorDoorId) {
-        return String.format("Error: Exterior door with ID %d does not exist. Please enter a valid exterior door ID.", exteriorDoorId);
+    /**
+     * @param id     id of window  object to modify
+     * @param isOpen boolean referring to the desired state of the object
+     * @return WindowDTO object reflecting the changes made to the object
+     */
+    public WindowDTO modifyWindowState(final long id, final boolean isOpen) {
+        return changeStateOfHouseObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
+                window -> {
+                    if ((isOpen && window.isOpen()) || (!isOpen && !window.isOpen())) {
+                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(window.getClass(), id));
+                    }
+                    checkIfWindowIsBlocked(window);
+                    window.setOpen(isOpen);
+                });
     }
 
-    private static String getLightNotFoundError(final long lightId) {
-        return String.format("Error: Light with ID %d does not exist. Please enter a valid light ID.", lightId);
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
+    private static <Entity> String getErrorMessageForHouseNotFoundObject(final long id, final Class<Entity> classType) {
+        return String.format("Error: %s with ID %d does not exist. Please enter a valid %s ID.", classType.getName(), id, classType.getName());
     }
 
-    public WindowDTO openWindow(final long windowId) {
-        // Get the window from the db
-        final HouseWindow window = houseWindowRepository.findById(windowId).orElseThrow(() -> new HouseWindowNotFoundException(getWindowNotFoundError(windowId)));
-
-        // Check if window is already opened
-        if (window.isOpen()) {
-            throw new HouseWindowAlreadyOpenedException(String.format("Error: Window with ID %d is already opened", windowId));
-        }
-
-        // Check if the window is blocked
-        checkIfWindowIsBlocked(window);
-
-        // Open the window
-        window.setOpen(true);
-        houseWindowRepository.save(window);
-
-        // Return HouseWindowDTO to client
-        return mvcConversionService.convert(window, WindowDTO.class);
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
+    private static <Entity> String getSameStateExceptionErrorMessage(final Class<Entity> classType, final long id) {
+        return String.format("Error: object %s with id %d is already in the expected state", classType.getName(), id);
     }
 
-    public WindowDTO closeWindow(final long windowId) {
-        // Get the window from the db
-        final HouseWindow window = houseWindowRepository.findById(windowId).orElseThrow(() -> new HouseWindowNotFoundException(getWindowNotFoundError(windowId)));
-
-        // Check if window is already opened
-        if (!window.isOpen()) {
-            throw new HouseWindowAlreadyClosedException(String.format("Error: Window with ID %d is already closed", windowId));
-        }
-
-        // Check if the window is blocked
-        checkIfWindowIsBlocked(window);
-
-        // Close the window
-        window.setOpen(false);
-
-        // Return HouseWindowDTO to client
-        return mvcConversionService.convert(houseWindowRepository.save(window), WindowDTO.class);
-    }
-
+    /**
+     * @param window window object to be checked
+     */
     private static void checkIfWindowIsBlocked(final HouseWindow window) {
         final String WINDOW_BLOCKED_ERROR = "Error: Window with ID %d cannot be opened since it is blocked.";
         if (window.isBlocked()) {
@@ -95,67 +105,24 @@ public class HouseService {
         }
     }
 
-    public DoorDTO unlockExteriorDoor(final long exteriorDoorId) {
-        // Get the door from the db
-        final ExteriorDoor exteriorDoor = exteriorDoorRepository.findById(exteriorDoorId).orElseThrow(() -> new ExteriorDoorNotFoundException(getExteriorDoorNotFoundError(exteriorDoorId)));
+    /**
+     * @param id              id of object
+     * @param entityClassType entity object
+     * @param dtoClassType    dto object
+     * @param repository      repository object
+     * @param consumer        consumer function to accept
+     * @param <DTO>           generic object to be passed as a param
+     * @param <Entity>        generic object to be passed as a param
+     * @return DTO object reflecting changes made to the object
+     */
+    private <DTO, Entity> DTO changeStateOfHouseObject(final long id,
+                                                       final Class<Entity> entityClassType,
+                                                       final Class<DTO> dtoClassType,
+                                                       final CrudRepository<Entity, Long> repository,
+                                                       final Consumer<Entity> consumer) {
 
-        // Check if door is already unlocked
-        if (!exteriorDoor.isLocked()) {
-            throw new ExteriorDoorAlreadyUnlockedException(String.format("Error: Exterior door with ID %d is already unlocked.", exteriorDoorId));
-        }
-
-        // Unlock door
-        exteriorDoor.setLocked(false);
-
-        // Return DoorDTO to client
-        return mvcConversionService.convert(exteriorDoorRepository.save(exteriorDoor), DoorDTO.class);
-    }
-
-    public DoorDTO lockExteriorDoor(final long exteriorDoorId) {
-        // Get the door from the db
-        final ExteriorDoor exteriorDoor = exteriorDoorRepository.findById(exteriorDoorId).orElseThrow(() -> new ExteriorDoorNotFoundException(getExteriorDoorNotFoundError(exteriorDoorId)));
-
-        // Check if door is already locked
-        if (exteriorDoor.isLocked()) {
-            throw new ExteriorDoorAlreadyLockedException(String.format("Error: Exterior door with ID %d is already locked.", exteriorDoorId));
-        }
-
-        // Lock door
-        exteriorDoor.setLocked(true);
-
-        // Return DoorDTO to client
-        return mvcConversionService.convert(exteriorDoorRepository.save(exteriorDoor), DoorDTO.class);
-    }
-
-    public LightDTO turnOnLight(final long lightId) {
-        // Get the light from the db
-        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new LightNotFoundException(getLightNotFoundError(lightId)));
-
-        // Check if light is already on
-        if (light.isLightOn()) {
-            throw new LightIsAlreadyOnException(String.format("Error: Light with ID %d is already on.", lightId));
-        }
-
-        // Turn on light
-        light.setLightOn(true);
-
-        // Return LightDTO to client
-        return mvcConversionService.convert(lightRepository.save(light), LightDTO.class);
-    }
-
-    public LightDTO turnOffLight(final long lightId) {
-        // Get the light from the db
-        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new LightNotFoundException(getLightNotFoundError(lightId)));
-
-        // Check if light is already off
-        if (!light.isLightOn()) {
-            throw new LightIsAlreadyOffException(String.format("Error: Light with ID %d is already off.", lightId));
-        }
-
-        // Turn off light
-        light.setLightOn(false);
-
-        // Return LightDTO to client
-        return mvcConversionService.convert(lightRepository.save(light), LightDTO.class);
+        final Entity entity = repository.findById(id).orElseThrow(() -> new SHSNotFoundException(getErrorMessageForHouseNotFoundObject(id, entityClassType)));
+        consumer.accept(entity);
+        return mvcConversionService.convert(repository.save(entity), dtoClassType);
     }
 }
