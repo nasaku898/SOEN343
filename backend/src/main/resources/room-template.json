@@ -3,10 +3,9 @@
     {
       "name": "kitchen",
       "doors": [
-
         {
           "open": true,
-          "rooms":[
+          "rooms": [
             "kitchen",
             "toilet"
           ]
@@ -29,7 +28,7 @@
       "doors": [
         {
           "open": true,
-          "rooms":[
+          "rooms": [
             "kitchen",
             "toilet"
           ]
