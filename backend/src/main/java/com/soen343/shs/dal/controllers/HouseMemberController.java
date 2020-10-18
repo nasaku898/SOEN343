@@ -45,8 +45,8 @@ public class HouseMemberController {
 
     @GetMapping(value = "/houseMember/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public List<HouseMemberDTO> findAllHouseMember(){
-        return houseMemberService.findAllHouseMember();
+    public List<HouseMemberDTO> findAllHouseMember() {
+        return houseMemberService.findAllHouseMembers();
     }
 
 }

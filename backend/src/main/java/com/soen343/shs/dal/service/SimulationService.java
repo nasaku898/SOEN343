@@ -1,20 +1,26 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.*;
+import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.HouseMember;
+import com.soen343.shs.dal.model.HouseWindow;
+import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseMemberRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
-import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
-import com.soen343.shs.dal.service.exceptions.room.RoomNotFoundException;
-import com.soen343.shs.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowNotFoundException;
+import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.dto.WindowDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SimulationService {
 
     private final HouseRepository houseRepository;
@@ -23,105 +29,50 @@ public class SimulationService {
     private final ConversionService mvcConversionService;
     private final ModelFetchHandler modelFetchHandler;
 
-    @Autowired
-    public SimulationService(final HouseRepository houseRepository,
-                             final HouseMemberRepository houseMemberRepository,
-                             final HouseWindowRepository houseWindowRepository,
-                             final ConversionService mvcConversionService,
-                             final ModelFetchHandler modelFetchHandler) {
-        this.houseMemberRepository = houseMemberRepository;
-        this.houseRepository = houseRepository;
-        this.houseWindowRepository = houseWindowRepository;
-        this.mvcConversionService = mvcConversionService;
-        this.modelFetchHandler = modelFetchHandler;
-    }
 
+    /**
+     * @param houseId a house id
+     * @return house object
+     */
     public House findHouse(final long houseId) {
-        return Optional.of(houseRepository.findById(houseId).get()).orElseThrow(HouseNotFoundException::new);
+        return houseRepository.findById(houseId).orElseThrow(HouseNotFoundException::new);
     }
 
+    /**
+     * @param name   name of the house member
+     * @param roomId a room id to transfer to
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO moveUserToRoom(final String name, final long roomId) {
         final Room room = modelFetchHandler.findRoom(roomId);
-
         final HouseMember houseMember = houseMemberRepository.findByName(name);
         houseMember.setLocation(room);
 
-        houseMemberRepository.save(houseMember);
-        return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
+        return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
     }
 
-    public void addObjectToWindow(final long windowId) {
-        final HouseWindow houseWindow = modelFetchHandler.findHouseWindow(windowId);
+    /**
+     * @param windowId a window id
+     * @return WindowDTO object reflecting the changes made to the object
+     */
+    public WindowDTO addObjectToWindow(final long windowId) {
+        final HouseWindow houseWindow = houseWindowRepository.findById(windowId).orElseThrow(HouseWindowNotFoundException::new);
+
         houseWindow.setBlocked(true);
-        houseWindowRepository.save(houseWindow);
+        return mvcConversionService.convert(houseWindowRepository.save(houseWindow), WindowDTO.class);
     }
 
-    public void loadHouse(final LoadHouseDTO loadHouseDTO) {
-        final Set<LoadRoomDTO> rooms = loadHouseDTO.getRooms();
-        final Set<Room> roomsToAdd = new HashSet<>();
-        final House house = new House();
-
-        for (final LoadRoomDTO room : rooms) {
-            final Room roomToAdd = new Room();
-
-            final Set<LoadDoorDTO> doors = room.getDoors();
-            final Set<LoadLightDTO> lights = room.getLights();
-            final Set<LoadHouseWindowDTO> windows = room.getHouseWindows();
-
-            roomToAdd.setDoors(loadDoors(doors));
-            roomToAdd.setLights(loadLights(lights));
-            roomToAdd.setHouseWindows(loadHouseWindow(windows));
-
-            roomToAdd.setName(room.getName());
-            roomsToAdd.add(roomToAdd);
-        }
-
-        house.setRooms(roomsToAdd);
-        houseRepository.save(house);
-    }
-
-    public List<RoomDTO> findAllRooms(final long houseId) {
-        House house = findHouse(houseId);
-        List<RoomDTO> roomDTOS = new LinkedList<RoomDTO>();
-
-        for (Room room : house.getRooms()) {
-            roomDTOS.add(mvcConversionService.convert(room, RoomDTO.class));
-        }
-
-        return roomDTOS;
-    }
-
-    private Set<Door> loadDoors(final Set<LoadDoorDTO> doors) {
-        final Set<Door> doorsToAdd = new HashSet<>();
-
-        for (final LoadDoorDTO door : doors) {
-            final Door doorToAdd = mvcConversionService.convert(door, Door.class);
-            doorsToAdd.add(doorToAdd);
-        }
-
-        return doorsToAdd;
-    }
-
-    private Set<Light> loadLights(final Set<LoadLightDTO> lights) {
-        final Set<Light> lightsToAdd = new HashSet<>();
-
-        for (final LoadLightDTO light : lights) {
-            final Light lightToAdd = mvcConversionService.convert(light, Light.class);
-            lightsToAdd.add(lightToAdd);
-        }
-
-        return lightsToAdd;
-    }
-
-    private Set<HouseWindow> loadHouseWindow(final Set<LoadHouseWindowDTO> windows) {
-        final Set<HouseWindow> houseWindowsToAdd = new HashSet<>();
-
-        for (final LoadHouseWindowDTO houseWindow : windows) {
-            final HouseWindow houseWindowToAdd = mvcConversionService.convert(houseWindow, HouseWindow.class);
-            houseWindowsToAdd.add(houseWindowToAdd);
-        }
-
-        return houseWindowsToAdd;
+    /**
+     * @param houseId a house id
+     * @return list of RoomDTO
+     */
+    public List<RoomDTO> findAllRooms(final Long houseId) {
+        return houseRepository.findById(houseId)
+                .orElseThrow(HouseNotFoundException::new)
+                .getRooms()
+                .stream()
+                .map(room -> mvcConversionService.convert(room, RoomDTO.class))
+                .collect(Collectors.toList());
     }
 
     public Set<Room> fetchRoomsState(final long houseId){
