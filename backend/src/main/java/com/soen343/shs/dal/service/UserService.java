@@ -9,6 +9,7 @@ import com.soen343.shs.dal.service.exceptions.user.UserIdDoesntExist;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,26 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final ConversionService mvcConversionService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authProvider;
-
-
-    public UserService(final ConversionService mvcConversionService,
-                       final UserRepository userRepository,
-                       final PasswordEncoder passwordEncoder,
-                       final AuthenticationProvider authProvider) {
-        this.mvcConversionService = mvcConversionService;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authProvider = authProvider;
-    }
 
     /**
      * @param details registrationDTO object containing registration fields
@@ -48,7 +40,6 @@ public class UserService {
      */
     @Transactional
     public UserDTO createUser(final RegistrationDTO details) {
-
         // check to see if username/email exists already, if so throw exception
         if (userRepository.findByEmail(details.getEmail()).isPresent() || userRepository.findByUsername(details.getUsername()).isPresent()) {
             throw new SHSUserAlreadyExistsException("Username/email already exists!");
@@ -57,16 +48,10 @@ public class UserService {
         FieldValidator.validateRegistration(details); // Validate the rest of the fields;
 
         final User user = mvcConversionService.convert(details, User.class); // Convert to our model
+        Objects.requireNonNull(user).setPassword(passwordEncoder.encode(details.getPassword()));// encode password
 
-        if (user == null) {
-            throw new NullPointerException();
-        }
 
-        user.setPassword(passwordEncoder.encode(details.getPassword())); // encode password
-
-        userRepository.save(user); // save to DB
-
-        return mvcConversionService.convert(details, UserDTO.class); // return the dto object to our user
+        return mvcConversionService.convert(userRepository.save(user), UserDTO.class); // return the dto object to our user
     }
 
     /**
@@ -90,8 +75,12 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * @param userDTO UserDTO containing the new desired state of the user
+     * @return updated state of user
+     */
     public UserDTO updateUser(final UserDTO userDTO) {
-        userRepository.save(mvcConversionService.convert(userDTO, User.class));
+        userRepository.save(Objects.requireNonNull(mvcConversionService.convert(userDTO, User.class)));
         return userDTO;
     }
 
@@ -100,11 +89,11 @@ public class UserService {
      * @return UserDTO corresponding to the unique given username, or throw UsernameNotFoundException
      */
     public UserDTO getUserByUsername(final String username) {
-        final User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Username: %s doesn't exist", username))
-        );
-
-        return mvcConversionService.convert(user, UserDTO.class);
+        return mvcConversionService.convert(
+                userRepository
+                        .findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(String.format("Username: %s doesn't exist", username)))
+                , UserDTO.class);
     }
 
     /**
@@ -112,8 +101,10 @@ public class UserService {
      * @return UserDTO corresponding to the unique given userId, or throw UserIdDoesntExistException
      */
     private UserDTO getUserById(final Long id) {
-        final User user = userRepository.findById(id).orElseThrow(() ->
-                new UserIdDoesntExist(String.format("UserId: %d doesn't exist", id)));
-        return mvcConversionService.convert(user, UserDTO.class);
+        return mvcConversionService.convert(
+                userRepository
+                        .findById(id)
+                        .orElseThrow(() -> new UserIdDoesntExist(String.format("UserId: %d doesn't exist", id)))
+                , UserDTO.class);
     }
 }
