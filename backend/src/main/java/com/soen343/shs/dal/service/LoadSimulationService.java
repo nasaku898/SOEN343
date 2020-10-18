@@ -6,6 +6,7 @@ import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
+import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import com.soen343.shs.dto.LoadRoomDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,13 @@ public class LoadSimulationService {
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
 
-    public void loadHouse(final LoadHouseDTO loadHouseDTO) {
-        houseRepository.save(House.builder()
-                .rooms(loadRooms(loadHouseDTO.getRooms()))
-                .build());
+    public HouseDTO loadHouse(final LoadHouseDTO loadHouseDTO) {
+
+        return mvcConversionService.convert(
+                houseRepository.save(House.builder()
+                        .rooms(loadRooms(loadHouseDTO.getRooms()))
+                        .build()),
+                HouseDTO.class);
     }
 
     private Set<Room> loadRooms(final Set<LoadRoomDTO> rooms) {
