@@ -30,10 +30,19 @@ public class SimulationService {
     private final ModelFetchHandler modelFetchHandler;
 
 
+    /**
+     * @param houseId a house id
+     * @return house object
+     */
     public House findHouse(final long houseId) {
         return houseRepository.findById(houseId).orElseThrow(HouseNotFoundException::new);
     }
 
+    /**
+     * @param name   name of the house member
+     * @param roomId a room id to transfer to
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO moveUserToRoom(final String name, final long roomId) {
         final Room room = modelFetchHandler.findRoom(roomId);
         final HouseMember houseMember = houseMemberRepository.findByName(name);
@@ -42,15 +51,21 @@ public class SimulationService {
         return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
     }
 
+    /**
+     * @param windowId a window id
+     * @return WindowDTO object reflecting the changes made to the object
+     */
     public WindowDTO addObjectToWindow(final long windowId) {
         final HouseWindow houseWindow = houseWindowRepository.findById(windowId).orElseThrow(HouseWindowNotFoundException::new);
 
         houseWindow.setBlocked(true);
-        houseWindowRepository.save(houseWindow);
         return mvcConversionService.convert(houseWindowRepository.save(houseWindow), WindowDTO.class);
     }
 
-
+    /**
+     * @param houseId a house id
+     * @return list of RoomDTO
+     */
     public List<RoomDTO> findAllRooms(final Long houseId) {
         return houseRepository.findById(houseId)
                 .orElseThrow(HouseNotFoundException::new)

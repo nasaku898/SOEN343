@@ -15,6 +15,18 @@ public class TemperatureService {
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
 
+    /**
+     * @param houseId a house id
+     * @return error message
+     */
+    private static String getHouseNotFoundErrorMessage(final long houseId) {
+        return String.format("Cannot find house with houseId: %d", houseId);
+    }
+
+    /**
+     * @param houseId a house id
+     * @return inside temperature
+     */
     public double getTemperatureInside(final long houseId) {
         return houseRepository.findById(houseId)
                 .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
@@ -25,19 +37,24 @@ public class TemperatureService {
                 .orElse(0);
     }
 
+    /**
+     * @param houseId a house id
+     * @return outside temperature
+     */
     public double getTemperatureOutside(final long houseId) {
         return houseRepository.findById(houseId)
                 .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
                 .getTemperatureOutside();
     }
 
+    /**
+     * @param houseId     a house id
+     * @param temperature new outside temperature
+     * @return HouseDTO object reflecting the changes made to the object
+     */
     public HouseDTO setTemperatureOutside(final long houseId, final double temperature) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)));
         house.setTemperatureOutside(temperature);
         return mvcConversionService.convert(houseRepository.save(house), HouseDTO.class);
-    }
-
-    private static String getHouseNotFoundErrorMessage(final long houseId) {
-        return String.format("Cannot find house with houseId: %d", houseId);
     }
 }

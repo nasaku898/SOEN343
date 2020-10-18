@@ -61,6 +61,7 @@ class UserServiceTest {
         when(mvcConversionService.convert(REGISTRATION_DTO, User.class)).thenReturn(createUser());
         when(passwordEncoder.encode(REGISTRATION_DTO.getPassword())).thenReturn(ENCODED_PASSWORD);
         when(mvcConversionService.convert(userRepository.save(createUser()), UserDTO.class)).thenReturn(UserDTO.builder().build());
+
         final UserDTO dto = classUnderTest.createUser(REGISTRATION_DTO);
         Assertions.assertNotNull(dto);
     }
@@ -83,6 +84,7 @@ class UserServiceTest {
         final MockHttpServletRequest request = new MockHttpServletRequest();
 
         final User u = createUser();
+
         when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.ofNullable(u));
         when(mvcConversionService.convert(u, UserDTO.class)).thenReturn(createUserDTO());
 
