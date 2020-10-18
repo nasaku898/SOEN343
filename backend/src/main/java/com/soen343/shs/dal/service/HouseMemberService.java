@@ -23,6 +23,10 @@ public class HouseMemberService {
     private final ModelFetchHandler modelFetchHandler;
 
 
+    /**
+     * @param houseMemberDTO data transfer object that reflects the changes made to the object
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
         return mvcConversionService.convert(houseMemberRepository.save(
                 HouseMember.builder()
@@ -33,6 +37,11 @@ public class HouseMemberService {
                 , HouseMemberDTO.class);
     }
 
+    /**
+     * @param houseMemberId id of house member
+     * @param newName       new name for house member
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO editName(final long houseMemberId, final String newName) {
         final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
         houseMember.setName(newName);
@@ -40,6 +49,11 @@ public class HouseMemberService {
         return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
     }
 
+    /**
+     * @param houseMemberId id of house member
+     * @param newRole       new role for house member
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO editRole(final long houseMemberId, final String newRole) {
         final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
         houseMember.setRole(UserRole.valueOf(newRole));
@@ -47,6 +61,11 @@ public class HouseMemberService {
         return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
     }
 
+    /**
+     * @param houseMemberId id of house member
+     * @param newRoomId     new room id
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO editLocation(final long houseMemberId, final long newRoomId) {
         final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
         houseMember.setLocation(modelFetchHandler.findRoom(newRoomId));
@@ -54,12 +73,19 @@ public class HouseMemberService {
         return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
     }
 
+    /**
+     * @param houseMemberId id of house member
+     * @return HouseMemberDTO object reflecting the changes made to the object
+     */
     public HouseMemberDTO removeHouseMember(final long houseMemberId) {
         final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
         houseMemberRepository.delete(houseMember);
         return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
     }
 
+    /**
+     * @return List of house member dto
+     */
     public List<HouseMemberDTO> findAllHouseMembers() {
         return houseMemberRepository.findAll()
                 .stream().map(houseMember -> mvcConversionService.convert(houseMember, HouseMemberDTO.class))

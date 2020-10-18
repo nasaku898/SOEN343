@@ -19,14 +19,26 @@ public class ModelFetchHandler {
     private final RoomRepository roomRepository;
     private final HouseWindowRepository houseWindowRepository;
 
+    /**
+     * @param roomId a room id
+     * @return A room object
+     */
     public Room findRoom(final long roomId) {
         return roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
     }
 
+    /**
+     * @param houseMemberId house member id
+     * @return a room House member
+     */
     public HouseMember findHouseMember(final long houseMemberId) {
         return houseMemberRepository.findById(houseMemberId).orElseThrow(HouseMemberNotFoundException::new);
     }
 
+    /**
+     * @param houseWindowId house window id
+     * @return a house window
+     */
     public HouseWindow findHouseWindow(final long houseWindowId) {
         return houseWindowRepository.findById(houseWindowId).orElseThrow(HouseWindowNotFoundException::new);
     }
