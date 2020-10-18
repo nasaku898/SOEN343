@@ -29,6 +29,11 @@ public class HouseService {
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
 
+    /**
+     * @param id   id of light object to modify
+     * @param isOn boolean referring to the desired state of the object
+     * @return LightDTO object reflecting the changes made to the object
+     */
     public LightDTO modifyLightState(final long id, final boolean isOn) {
         return changeStateOfHouseObject(id, Light.class, LightDTO.class, lightRepository,
                 light -> {
@@ -39,6 +44,11 @@ public class HouseService {
                 });
     }
 
+    /**
+     * @param id       id of door  object to modify
+     * @param isLocked boolean referring to the desired state of the object
+     * @return DoorDTo object reflecting the changes made to the object
+     */
     public DoorDTO modifyExteriorDoorState(final long id, final boolean isLocked) {
         return changeStateOfHouseObject(id, ExteriorDoor.class, DoorDTO.class, exteriorDoorRepository,
                 door -> {
@@ -49,6 +59,11 @@ public class HouseService {
                 });
     }
 
+    /**
+     * @param id     id of window  object to modify
+     * @param isOpen boolean referring to the desired state of the object
+     * @return WindowDTO object reflecting the changes made to the object
+     */
     public WindowDTO modifyWindowState(final long id, final boolean isOpen) {
         return changeStateOfHouseObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
                 window -> {
@@ -60,14 +75,29 @@ public class HouseService {
                 });
     }
 
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
     private static <Entity> String getErrorMessageForHouseNotFoundObject(final long id, final Class<Entity> classType) {
         return String.format("Error: %s with ID %d does not exist. Please enter a valid %s ID.", classType.getName(), id, classType.getName());
     }
 
-    private static <E> String getSameStateExceptionErrorMessage(final Class<E> classType, final long id) {
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
+    private static <Entity> String getSameStateExceptionErrorMessage(final Class<Entity> classType, final long id) {
         return String.format("Error: object %s with id %d is already in the expected state", classType.getName(), id);
     }
 
+    /**
+     * @param window window object to be checked
+     */
     private static void checkIfWindowIsBlocked(final HouseWindow window) {
         final String WINDOW_BLOCKED_ERROR = "Error: Window with ID %d cannot be opened since it is blocked.";
         if (window.isBlocked()) {
@@ -75,6 +105,16 @@ public class HouseService {
         }
     }
 
+    /**
+     * @param id              id of object
+     * @param entityClassType entity object
+     * @param dtoClassType    dto object
+     * @param repository      repository object
+     * @param consumer        consumer function to accept
+     * @param <DTO>           generic object to be passed as a param
+     * @param <Entity>        generic object to be passed as a param
+     * @return DTO object reflecting changes made to the object
+     */
     private <DTO, Entity> DTO changeStateOfHouseObject(final long id,
                                                        final Class<Entity> entityClassType,
                                                        final Class<DTO> dtoClassType,
