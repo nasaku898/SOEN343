@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import axios from 'axios';
 
 import sampleData from './sampleDataFormat.json';
 import { Checkbox, FormGroup, FormLabel } from '@material-ui/core';
@@ -21,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
   },
 }));
+
+const HOUSE_ID = 1;
 
 const ITEMS = [
   {
@@ -43,15 +46,79 @@ const SHCPanel = (props) => {
   const [data, setData] = React.useState([]);
 
   useEffect(() => {
-    // TODO - Backend call to get all windows, lights and doors
-    // store this data in the data state variable
-    // assume there will always be an attribute for Windows, Lights, Doors
-    setData(sampleData);
-  });
+    getLightsDoorsWindows();
+  }, []);
 
-  const handleChange = (event) => {
+  const getLightsDoorsWindows = async () => {
+    // Get data
+    let responseData = [];
+    try {
+      const response = await axios.get(`http://localhost:8080/api/simulation/house/${HOUSE_ID}/roomState/all`);
+      responseData = response.data;
+    } catch (error) {
+      console.log(`ERROR - to be handled laterrrr:\n ${error}`);
+    }
+
+    // Set data from backend to state
+    let lightsDoorsWindows = {lights: [], doors: [], houseWindows: []};
+    responseData.forEach(dataObject => {
+      lightsDoorsWindows.lights = lightsDoorsWindows.lights.concat(dataObject.lights)
+      lightsDoorsWindows.doors = lightsDoorsWindows.doors.concat(dataObject.doors);
+      lightsDoorsWindows.houseWindows = lightsDoorsWindows.houseWindows.concat(dataObject.houseWindows)
+    })
+
+    setData(lightsDoorsWindows);
+  }
+
+  const handleItemSelectedChange = (event) => {
     setItemSelected(event.target.value);
   };
+
+  // TODO
+  const handleLightChange = (event) => {
+    const { checked, name } = event.target;
+
+    //send request to backend to set light with lightID -> name & lightStatus -> status
+    console.log(checked, name);
+
+    // following this method, the useEffect will be called which will update all the data :)
+  }
+
+  // TODO
+  const handleDoorChange = (event, doorEventType) => {
+    const { checked, name } = event.target;
+
+    if (doorEventType === "open") {
+      // OPEN / CLOSE DOOR
+      //send request to backend to set door with doorID -> name & doorStatus -> status
+      console.log("open/close", checked, name);
+    }
+    else if (doorEventType === "lock") {
+      // LOCK / UNLOCK DOOR
+      //send request to backend to set door with doorID -> name & doorStatus -> status
+      console.log("lock/unlock", checked, name);
+    }
+
+    // following this method, the useEffect will be called which will update all the data :)
+  }
+
+  // TODO
+  const handleWindowChange = (event, windowEventType) => {
+    const { checked, name } = event.target;
+
+    if (windowEventType === "open") {
+      // OPEN / CLOSE WINDOW
+      //send request to backend to set door with windowID -> name & windowStatus -> status
+      console.log("open/close", checked, name);
+    }
+    else if (windowEventType === "block") {
+      // BLOCK / UNBLOCK WINDOW
+      //send request to backend to set door with window -> name & windowStatus -> status
+      console.log("block/unblock", checked, name);
+    }
+
+    // following this method, the useEffect will be called which will update all the data :)
+  }
 
   return (
     <div>
@@ -62,57 +129,102 @@ const SHCPanel = (props) => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={itemSelected}
-            onChange={handleChange}
+            onChange={handleItemSelectedChange}
           >
             {
               ITEMS.map(item => {
-                return <MenuItem value={item.value}>{item.title}</MenuItem>
+                return <MenuItem key={item.value} value={item.value}>{item.title}</MenuItem>
               })
             }
           </Select>
         </Fragment>
       </FormControl>
 
+      {/* Lights */}
       {
         itemSelected === "lights" &&
         <FormControl component="fieldset" className={classes.checkboxFormControl}>
-          <FormLabel component="legend">Open/Close</FormLabel>
+          <FormLabel component="legend">On (checked) / Off (unchecked)</FormLabel>
           {
             data.lights.map(light => {
               return (
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox checked={light.lightOn} onChange={() => null} name={light.id} />}
+                    control={<Checkbox key={`on-light-${light.id}`} checked={light.lightOn} onChange={handleLightChange} name={`${light.id}`} />}
                     label={light.id}
                   />
                 </FormGroup>
               )
             })
           }
-
         </FormControl>
       }
 
+      {/* Doors */}
+      {
+        itemSelected === "doors" &&
+        <FormControl component="fieldset" className={classes.checkboxFormControl}>
+          <FormLabel component="legend">Open (checked) / Closed (unchecked)</FormLabel>
+          {
+            data.doors.map(door => {
+              return (
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox key={`open-door-${door.id}`} checked={door.open} onChange={(event) => handleDoorChange(event, 'open')} name={`${door.id}`} />}
+                    label={door.id}
+                  />
+                </FormGroup>
+              )
+            })
+          }
+          {/* <FormLabel component="legend">Locked (checked) / Unlocked (unchecked)</FormLabel>
+          {
+            data.doors.map(door => {
+              return (
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox key={`lock-door-${door.id}`} checked={door.locked} onChange={(event) => handleDoorChange(event, 'lock')} name={`${door.id}`} />}
+                    label={door.id}
+                  />
+                </FormGroup>
+              )
+            })
+          } */}
+        </FormControl>
+      }
 
-
-      {/* <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Assign responsibility</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={gilad} onChange={handleChange} name="gilad" />}
-            label="Gilad Gray"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-            label="Jason Killian"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-            label="Antoine Llorca"
-          />
-        </FormGroup>
-        <FormHelperText>Be careful</FormHelperText>
-      </FormControl> */}
+      {/* Windows */}
+      {
+        itemSelected === "windows" &&
+        <FormControl component="fieldset" className={classes.checkboxFormControl}>
+          <FormLabel component="legend">Open (checked) / Closed (unchecked)</FormLabel>
+          {
+            data.houseWindows.map(window => {
+              return (
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox key={`open-window-${window.id}`} checked={window.open} onChange={(event) => handleWindowChange(event, 'open')} name={`${window.id}`} />}
+                    label={window.id}
+                  />
+                </FormGroup>
+              )
+            })
+          }
+          <FormLabel component="legend">Blocked (checked) / Unblocked (unchecked)</FormLabel>
+          {
+            data.houseWindows.map(window => {
+              return (
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Checkbox key={`block-window-${window.id}`} checked={window.blocked} onChange={(event) => handleWindowChange(event, 'block')} name={`${window.id}`} />}
+                    label={window.id}
+                  />
+                </FormGroup>
+              )
+            })
+          }
+        </FormControl>
+      }
     </div>
   )
 }

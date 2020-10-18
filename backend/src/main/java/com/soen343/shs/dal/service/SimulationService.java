@@ -123,4 +123,9 @@ public class SimulationService {
 
         return houseWindowsToAdd;
     }
+
+    public Set<Room> fetchRoomsState(final long houseId){
+        House house = houseRepository.findById(houseId).orElseThrow(HouseNotFoundException::new);
+        return house.getRooms();
+    }
 }
