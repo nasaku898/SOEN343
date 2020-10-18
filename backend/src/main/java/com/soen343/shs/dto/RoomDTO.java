@@ -18,4 +18,5 @@ public class RoomDTO {
     private Set<Long> lightIds;
     private double temperature;
     private Set<Long> userIds;
+    private long roomId;
 }

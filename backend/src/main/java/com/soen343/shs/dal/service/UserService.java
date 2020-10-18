@@ -2,12 +2,13 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
+import com.soen343.shs.dal.service.Login.LoginRequest;
+import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
+import com.soen343.shs.dal.service.exceptions.user.UserIdDoesntExist;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
@@ -29,22 +29,23 @@ public class UserService {
     private final ConversionService mvcConversionService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final FieldValidator fieldValidator;
     private final AuthenticationProvider authProvider;
 
-    @Autowired
+
     public UserService(final ConversionService mvcConversionService,
                        final UserRepository userRepository,
                        final PasswordEncoder passwordEncoder,
-                       @Qualifier("SHSFieldValidator") final FieldValidator fieldValidator,
                        final AuthenticationProvider authProvider) {
         this.mvcConversionService = mvcConversionService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.fieldValidator = fieldValidator;
         this.authProvider = authProvider;
     }
 
+    /**
+     * @param details registrationDTO object containing registration fields
+     * @return UserDTO object containing the state of the object upon registration
+     */
     @Transactional
     public UserDTO createUser(final RegistrationDTO details) {
 
@@ -53,10 +54,14 @@ public class UserService {
             throw new SHSUserAlreadyExistsException("Username/email already exists!");
         }
 
-        fieldValidator.validateRegistration(details); // Validate the rest of the fields;
+        FieldValidator.validateRegistration(details); // Validate the rest of the fields;
 
         final User user = mvcConversionService.convert(details, User.class); // Convert to our model
-        assert user != null;
+
+        if (user == null) {
+            throw new NullPointerException();
+        }
+
         user.setPassword(passwordEncoder.encode(details.getPassword())); // encode password
 
         userRepository.save(user); // save to DB
@@ -64,8 +69,13 @@ public class UserService {
         return mvcConversionService.convert(details, UserDTO.class); // return the dto object to our user
     }
 
-    public LoginResponse login(final HttpServletRequest request, final String username, final String password) {
-        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+    /**
+     * @param request      HttpServletRequest object containing request information, so we can retrieve the session attribute
+     * @param loginRequest LoginRequest object containing attempted login credentials
+     * @return LoginResponse object containing user details, and their authentication token
+     */
+    public LoginResponse login(final HttpServletRequest request, final LoginRequest loginRequest) {
+        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         authProvider.authenticate(authenticationToken);
 
         final SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -76,7 +86,7 @@ public class UserService {
 
         return LoginResponse.builder()
                 .token(session.getId()) // return token so we can use for testing in postman
-                .user(getUserByUsername(username))
+                .user(getUserByUsername(loginRequest.getUsername()))
                 .build();
     }
 
@@ -85,19 +95,25 @@ public class UserService {
         return userDTO;
     }
 
-
+    /**
+     * @param username String value used to fetch from repository by username
+     * @return UserDTO corresponding to the unique given username, or throw UsernameNotFoundException
+     */
     public UserDTO getUserByUsername(final String username) {
-        final Optional<User> user = userRepository.findByUsername(username);
+        final User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Username: %s doesn't exist", username))
+        );
 
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("Username doesn't exist");
-        } else {
-            return mvcConversionService.convert(user.get(), UserDTO.class);
-        }
+        return mvcConversionService.convert(user, UserDTO.class);
     }
 
-    public UserDTO getUserById(final Long id) {
-        final User user = userRepository.findById(id).get();
+    /**
+     * @param id long value used to fetch from repository by userId
+     * @return UserDTO corresponding to the unique given userId, or throw UserIdDoesntExistException
+     */
+    private UserDTO getUserById(final Long id) {
+        final User user = userRepository.findById(id).orElseThrow(() ->
+                new UserIdDoesntExist(String.format("UserId: %d doesn't exist", id)));
         return mvcConversionService.convert(user, UserDTO.class);
     }
 }

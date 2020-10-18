@@ -20,6 +20,7 @@ public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
                 .temperature(room.getTemperature())
                 .windowIds(room.getHouseWindows().stream().map(HouseWindow::getId).collect(Collectors.toSet()))
                 .userIds(room.getUserIds())
+                .roomId(room.getId())
                 .build();
     }
 }
