@@ -5,7 +5,7 @@
       "doors": [
         {
           "type": "exterior",
-          "open": true,
+          "open": false,
           "rooms": [
             "salon"
           ],
@@ -23,7 +23,7 @@
       "houseWindows": [
         {
           "blocked": true,
-          "open": true
+          "open": false
         },
         {
           "blocked": false,
@@ -51,7 +51,7 @@
       "houseWindows": [
         {
           "blocked": true,
-          "open": true
+          "open": false
         }
       ]
     }
