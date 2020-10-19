@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import HouseRender from "./components/HouseRender/HouseRender";
 import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
@@ -30,6 +31,7 @@ const App = () => {
         <Switch>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
+         <HouseRender/>
          <OutputConsole 
           outputData={outputData}
           />
