@@ -5,6 +5,7 @@ import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
 import './App.css';
+import Navbar from './components/tabs-navbar/Navbar'; 
 
 const App = () => {
  // we will use this to get/fetch authentication token
@@ -26,8 +27,10 @@ const App = () => {
  return (
      <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Router>
+
        <div>
         <Switch>
+        <Navbar></Navbar>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
          <OutputConsole 
