@@ -1,15 +1,15 @@
-package com.soen343.shs.dal.service.exceptions.houseWindow;
+package com.soen343.shs.dal.service.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class HouseWindowBlockedException extends RuntimeException{
-    public HouseWindowBlockedException(){
+public class IllegalStateException extends RuntimeException {
+    public IllegalStateException() {
         super("Window is blocked.");
     }
 
-    public HouseWindowBlockedException(String msg){
+    public IllegalStateException(final String msg) {
         super(msg);
     }
 }
