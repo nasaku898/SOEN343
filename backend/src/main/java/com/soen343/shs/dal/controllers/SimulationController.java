@@ -47,7 +47,7 @@ public class SimulationController {
 
     @GetMapping(value = "/house/{houseId}/roomState/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public Set<Room> fetchRoomsState(@PathVariable final long houseId) {
+    public Set<Room> fetchRoomsState(@PathVariable final long houseId){
         return simulationService.fetchRoomsState(houseId);
     }
 }
