@@ -3,6 +3,8 @@ package com.soen343.shs.configuration.security;
 import com.soen343.shs.converters.doors.ExteriorDoorToDoorDTOConverter;
 import com.soen343.shs.converters.doors.InteriorDoorToDoorDTOConverter;
 import com.soen343.shs.converters.doors.LoadDoorDTOToDoorConverter;
+import com.soen343.shs.converters.doors.LoadExteriorDoorDTOToExteriorDoorConverter;
+import com.soen343.shs.converters.doors.LoadInteriorDoorDTOToInteriorDoorConverter;
 import com.soen343.shs.converters.houseWindows.HouseWindowToHouseWindowDTOConverter;
 import com.soen343.shs.converters.houseWindows.LoadHouseWindowDTOToHouseWindowConverter;
 import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
@@ -95,6 +97,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         registry.addConverter(new LoadLightDTOToLightConverter());
         registry.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
         registry.addConverter(new HouseToHouseDTOConverter());
+        registry.addConverter(new LoadExteriorDoorDTOToExteriorDoorConverter());
+        registry.addConverter(new LoadInteriorDoorDTOToInteriorDoorConverter());
     }
 
     @Bean

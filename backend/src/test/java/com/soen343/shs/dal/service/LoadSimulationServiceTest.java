@@ -57,7 +57,7 @@ public class LoadSimulationServiceTest {
     private static Set<LoadRoomDTO> createLoadRooms() {
         return Collections
                 .singleton(LoadRoomDTO.builder()
-                        .doors(Collections.singleton(LoadDoorDTO
+                        .doors(Collections.singleton(LoadInteriorDoorDTO
                                 .builder()
                                 .build())
                         )
