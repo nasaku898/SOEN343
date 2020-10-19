@@ -7,7 +7,7 @@ import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.InteriorDoorRepository;
 import com.soen343.shs.dal.repository.LightRepository;
-import com.soen343.shs.dal.service.exceptions.houseWindow.HouseWindowBlockedException;
+import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSSameStateException;
 import com.soen343.shs.dto.DoorDTO;
@@ -37,61 +37,62 @@ public class HouseService {
     public LightDTO modifyLightState(final long id, final boolean isOn) {
         return changeStateOfHouseObject(id, Light.class, LightDTO.class, lightRepository,
                 light -> {
-                    if ((isOn && light.isLightOn()) || (!isOn && !light.isLightOn())) {
-                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(light.getClass(), id));
-                    }
+                    checkForSameStateException(isOn, light.isLightOn(), getSameStateExceptionErrorMessage(light.getClass(), id));
                     light.setLightOn(isOn);
                 }
         );
     }
 
     /**
-     * @param id       id of door  object to modify
-     * @param isLocked boolean referring to the desired state of the object
-     * @return DoorDTo object reflecting the changes made to the object
+     * @param id           id of door to modify
+     * @param open         boolean referring to if we should try to open the door or not
+     * @param desiredState boolean referring to the desired state of the object
+     * @return DoorDTO reflecting to the changes made to the object
      */
-    public DoorDTO modifyExteriorDoorState(final long id, final boolean isLocked) {
+    public DoorDTO modifyExteriorDoorState(final long id, final boolean open, final boolean desiredState) {
         return changeStateOfHouseObject(id, ExteriorDoor.class, DoorDTO.class, exteriorDoorRepository,
                 door -> {
-                    if ((isLocked && door.isLocked()) || (!isLocked && !door.isLocked())) {
-                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(door.getClass(), id));
+                    final String sameStateExceptionErrorMessage = getSameStateExceptionErrorMessage(door.getClass(), id);
+                    if (open) {
+                        checkForIllegalStateException(ExteriorDoor.class, id, door.isLocked());
+                        checkForSameStateException(desiredState, door.isOpen(), sameStateExceptionErrorMessage);
+                        door.setOpen(desiredState);
+                    } else {
+                        checkForIllegalStateException(ExteriorDoor.class, id, door.isOpen());
+                        checkForSameStateException(desiredState, door.isLocked(), sameStateExceptionErrorMessage);
+                        door.setLocked(desiredState);
                     }
-                    door.setLocked(isLocked);
                 }
         );
     }
 
     /**
-     * @param id     id of window  object to modify
-     * @param isOpen boolean referring to the desired state of the object
+     * @param id           id of window  object to modify
+     * @param open         boolean referring to if we should try to open the window or not
+     * @param desiredState boolean referring to the desired state of the object
      * @return WindowDTO object reflecting the changes made to the object
      */
-    public WindowDTO modifyWindowState(final long id, final boolean isOpen) {
+    public WindowDTO modifyWindowState(final long id, final boolean open, final boolean desiredState) {
         return changeStateOfHouseObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
                 window -> {
-                    if ((isOpen && window.isOpen()) || (!isOpen && !window.isOpen())) {
-                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(window.getClass(), id));
+                    final String sameStateExceptionErrorMessage = getSameStateExceptionErrorMessage(window.getClass(), id);
+                    if (open) {
+                        checkForSameStateException(desiredState, window.isOpen(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(HouseWindow.class, id, window.isBlocked());
+                        window.setOpen(desiredState);
+                    } else {
+                        checkForSameStateException(desiredState, window.isBlocked(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(HouseWindow.class, id, window.isOpen());
+                        window.setBlocked(desiredState);
                     }
-                    checkIfWindowIsBlocked(window);
-                    window.setOpen(isOpen);
                 }
         );
     }
 
-    /**
-     * @param id        id of window  object to modify
-     * @param isBlocked boolean referring to the desired state of the object
-     * @return WindowDTO object reflecting the changes made to the object
-     */
-    public WindowDTO changeBlockedStateOfWindow(final long id, final boolean isBlocked) {
-        return changeStateOfHouseObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
-                window -> {
-                    if ((isBlocked && window.isBlocked()) || (!isBlocked && !window.isBlocked())) {
-                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(window.getClass(), id));
-                    }
-                    window.setBlocked(isBlocked);
-                }
-        );
+    private static void checkForSameStateException(final boolean desiredState, final boolean currentState, final String sameStateExceptionErrorMessage) {
+        if (desiredState && currentState || (!desiredState && !currentState)) {
+            throw new SHSSameStateException(sameStateExceptionErrorMessage);
+        }
     }
 
     /**
@@ -115,12 +116,15 @@ public class HouseService {
     }
 
     /**
-     * @param window window object to be checked
+     * @param classType
+     * @param id
+     * @param stateToCheck
+     * @param <Entity>
      */
-    private static void checkIfWindowIsBlocked(final HouseWindow window) {
-        final String WINDOW_BLOCKED_ERROR = "Error: Window with id: %d cannot be opened since it is blocked.";
-        if (window.isBlocked()) {
-            throw new HouseWindowBlockedException(String.format(WINDOW_BLOCKED_ERROR, window.getId()));
+    private static <Entity> void checkForIllegalStateException(final Class<Entity> classType, final long id, final boolean stateToCheck) {
+        final String ERROR_MSG = String.format("Error: object: %s with id: %d cannot be opened since it is blocked.", classType.getName(), id);
+        if (stateToCheck) {
+            throw new IllegalStateException(String.format(ERROR_MSG, id));
         }
     }
 
