@@ -101,7 +101,7 @@ public class HouseService {
      * @param <Entity>  class of object
      * @return new string formatted to return our error message
      */
-    private static <Entity> String getErrorMessageForHouseNotFoundObject(final long id, final Class<Entity> classType) {
+    private static <Entity> String getSHSNotFoundErrorMessage(final long id, final Class<Entity> classType) {
         return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s id.", classType.getName(), id, classType.getName());
     }
 
@@ -144,7 +144,7 @@ public class HouseService {
                                                        final CrudRepository<Entity, Long> repository,
                                                        final Consumer<Entity> consumer) {
 
-        final Entity entity = repository.findById(id).orElseThrow(() -> new SHSNotFoundException(getErrorMessageForHouseNotFoundObject(id, entityClassType)));
+        final Entity entity = repository.findById(id).orElseThrow(() -> new SHSNotFoundException(getSHSNotFoundErrorMessage(id, entityClassType)));
         consumer.accept(entity);
         return mvcConversionService.convert(repository.save(entity), dtoClassType);
     }
