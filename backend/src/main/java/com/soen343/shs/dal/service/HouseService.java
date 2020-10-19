@@ -41,7 +41,8 @@ public class HouseService {
                         throw new SHSSameStateException(getSameStateExceptionErrorMessage(light.getClass(), id));
                     }
                     light.setLightOn(isOn);
-                });
+                }
+        );
     }
 
     /**
@@ -56,7 +57,8 @@ public class HouseService {
                         throw new SHSSameStateException(getSameStateExceptionErrorMessage(door.getClass(), id));
                     }
                     door.setLocked(isLocked);
-                });
+                }
+        );
     }
 
     /**
@@ -72,7 +74,24 @@ public class HouseService {
                     }
                     checkIfWindowIsBlocked(window);
                     window.setOpen(isOpen);
-                });
+                }
+        );
+    }
+
+    /**
+     * @param id        id of window  object to modify
+     * @param isBlocked boolean referring to the desired state of the object
+     * @return WindowDTO object reflecting the changes made to the object
+     */
+    public WindowDTO changeBlockedStateOfWindow(final long id, final boolean isBlocked) {
+        return changeStateOfHouseObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
+                window -> {
+                    if ((isBlocked && window.isBlocked()) || (!isBlocked && !window.isBlocked())) {
+                        throw new SHSSameStateException(getSameStateExceptionErrorMessage(window.getClass(), id));
+                    }
+                    window.setBlocked(isBlocked);
+                }
+        );
     }
 
     /**
@@ -82,7 +101,7 @@ public class HouseService {
      * @return new string formatted to return our error message
      */
     private static <Entity> String getErrorMessageForHouseNotFoundObject(final long id, final Class<Entity> classType) {
-        return String.format("Error: %s with ID %d does not exist. Please enter a valid %s ID.", classType.getName(), id, classType.getName());
+        return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s ID.", classType.getName(), id, classType.getName());
     }
 
     /**
@@ -92,14 +111,14 @@ public class HouseService {
      * @return new string formatted to return our error message
      */
     private static <Entity> String getSameStateExceptionErrorMessage(final Class<Entity> classType, final long id) {
-        return String.format("Error: object %s with id %d is already in the expected state", classType.getName(), id);
+        return String.format("Error: object: %s with id: %d is already in the expected state", classType.getName(), id);
     }
 
     /**
      * @param window window object to be checked
      */
     private static void checkIfWindowIsBlocked(final HouseWindow window) {
-        final String WINDOW_BLOCKED_ERROR = "Error: Window with ID %d cannot be opened since it is blocked.";
+        final String WINDOW_BLOCKED_ERROR = "Error: Window with id: %d cannot be opened since it is blocked.";
         if (window.isBlocked()) {
             throw new HouseWindowBlockedException(String.format(WINDOW_BLOCKED_ERROR, window.getId()));
         }
