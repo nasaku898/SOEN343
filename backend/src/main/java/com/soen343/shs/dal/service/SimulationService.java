@@ -17,6 +17,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,5 +74,10 @@ public class SimulationService {
                 .stream()
                 .map(room -> mvcConversionService.convert(room, RoomDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public Set<Room> fetchRoomsState(final long houseId){
+        House house = houseRepository.findById(houseId).orElseThrow(HouseNotFoundException::new);
+        return house.getRooms();
     }
 }
