@@ -1,13 +1,45 @@
 {
   "rooms": [
     {
-      "name": "kitchen",
+      "name": "salon",
       "doors": [
         {
+          "type": "exterior",
           "open": true,
           "rooms": [
-            "kitchen",
-            "toilet"
+            "salon"
+          ],
+          "locked": true
+        }
+      ],
+      "lights": [
+        {
+          "isLightOn": true
+        },
+        {
+          "isLightOn": false
+        }
+      ],
+      "houseWindows": [
+        {
+          "blocked": true,
+          "open": true
+        },
+        {
+          "blocked": false,
+          "open": false
+        }
+      ]
+    },
+    {
+      "name": "garage",
+      "doors": [
+        {
+          "type": "interior",
+          "open": false,
+          "rooms": [
+            "garage",
+            "salon"
           ]
         }
       ],
@@ -19,29 +51,6 @@
       "houseWindows": [
         {
           "blocked": true,
-          "open": true
-        }
-      ]
-    },
-    {
-      "name": "toilet",
-      "doors": [
-        {
-          "open": true,
-          "rooms": [
-            "kitchen",
-            "toilet"
-          ]
-        }
-      ],
-      "lights": [
-        {
-          "isLightOn": true
-        }
-      ],
-      "houseWindows": [
-        {
-          "blocked": false,
           "open": true
         }
       ]
