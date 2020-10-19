@@ -2,6 +2,7 @@ package com.soen343.shs.configuration.security;
 
 import com.soen343.shs.dal.model.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +12,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class SHSUserDetails implements UserDetails {
     private static final long serialVersionUID = -2677372382072221334L;
