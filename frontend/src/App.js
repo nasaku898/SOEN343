@@ -4,6 +4,7 @@ import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
+import SHCPanel from "./components/SHCPanel/SHCPanel";
 import './App.css';
 import Navbar from './components/tabs-navbar/Navbar'; 
 
@@ -33,6 +34,9 @@ const App = () => {
         <Navbar></Navbar>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
+         
+         <SHCPanel />
+         
          <OutputConsole 
           outputData={outputData}
           />
