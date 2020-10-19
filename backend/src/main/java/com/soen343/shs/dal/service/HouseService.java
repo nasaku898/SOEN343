@@ -101,7 +101,7 @@ public class HouseService {
      * @return new string formatted to return our error message
      */
     private static <Entity> String getErrorMessageForHouseNotFoundObject(final long id, final Class<Entity> classType) {
-        return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s ID.", classType.getName(), id, classType.getName());
+        return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s id.", classType.getName(), id, classType.getName());
     }
 
     /**
