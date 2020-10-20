@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { fetchHouseState } from '../../modules/HouseOverview/HouseOverviewAPI'
 import Paper from '@material-ui/core/Paper';
 import RoomInfo from '../RoomInfo/RoomInfo';
+import useStyles from './HouseOverviewStyle'
 const HouseOverview = () => {
 
     const [rows, setRows] = useState([])
-
+    const classes = useStyles()
     useEffect(() => {
         fetchHouseState().then(response => {
             setRows(response)
@@ -15,9 +16,8 @@ const HouseOverview = () => {
 
     return (
         <div>
-            <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                    
+            <TableContainer component={Paper} className={classes.tableWrapper}>
+                <Table aria-label="simple table">   
                     <TableHead>
                         <TableRow>
                             <TableCell>Room</TableCell>

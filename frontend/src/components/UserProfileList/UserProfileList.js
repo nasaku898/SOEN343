@@ -85,40 +85,40 @@ const UserProfileList = () => {
 
             <br></br>
             <MenuItem>
-                <LocationSelector currentRoom = {2} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                <LocationSelector currentRoom={2} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
             </MenuItem>
             <Button onClick={handleCreateNewHouseMember}>Create</Button>
         </div>
     );
 
     return (
-        <div>
+        <div className={classes.container}>
             <Typography>User Profiles</Typography>
             <div className={classes.userProfileListWrapper}>
                 {
                     userProfileList.slice().map(userProfile => <UserProfile key={userProfile.id} userProfile={userProfile} editMode={editMode} rooms={rooms} />)
                 }
+                {
+                    editMode ?
+                        <div>
+                            <Button onClick={handleOpenModal}>
+                                <AddIcon></AddIcon>
+                            </Button>
+                            <Modal
+                                open={openModal}
+                                onClose={handleCloseModal}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {createUser}
+                            </Modal>
+                        </div>
+
+                        : <Box></Box>
+                }
+                <Button variant="contained" className={classes.editButton} onClick={handleEditButton}>Edit User Profiles</Button>
             </div>
 
-            {
-                editMode ?
-                    <div>
-                        <Button onClick={handleOpenModal}>
-                            <AddIcon></AddIcon>
-                        </Button>
-                        <Modal
-                            open={openModal}
-                            onClose={handleCloseModal}
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description"
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {createUser}
-                        </Modal>
-                    </div>
-
-                    : <Box></Box>
-            }
-            <Button variant="contained" className={classes.editButton} onClick={handleEditButton}>Edit User Profiles</Button>
         </div>
     )
 }

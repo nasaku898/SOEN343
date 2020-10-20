@@ -7,12 +7,16 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "10px"
     },
     userProfileListWrapper: {
-        height: "350px",
         overflowY: "scroll",
-        border: "solid 2px white"
+        border: "solid 3px white",
+        height:"100%"
     },
     modal: {
         backgroundColor: theme.palette.background.paper
+    },
+    container:{
+        height: "100%",
+        border:"solid 3px white"
     }
 }))
 export default useStyles

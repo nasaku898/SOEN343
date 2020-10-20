@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
   checkboxFormControl: {
     margin: theme.spacing(3),
   },
+  container:{
+    border:"solid 3px white",
+    height:"100%"
+  }
 }));
 
 export default useStyles;
