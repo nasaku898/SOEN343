@@ -35,7 +35,7 @@ const SHCPanel = (props) => {
   }
 
   return (
-    <div>
+    <div className={classes.container}>
       <FormControl className={classes.selectFormControl}>
         <Fragment>
           <InputLabel id="item-simple-select-label">Item</InputLabel>
@@ -104,6 +104,7 @@ const SHCPanel = (props) => {
                   </FormGroup>
                 )
               }
+              return <></>
             })
           }
         </FormControl>

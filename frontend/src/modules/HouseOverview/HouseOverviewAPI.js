@@ -17,3 +17,12 @@ export const editRoomTemperature = async (roomId, newTemperature) => {
         throw error.response.data
     }
 }
+
+export const loadHouseLayout = async (requestBody) => {
+    try {
+        const response = await Axios.post(global.config.BACKEND_URL + `/api/simulation/houseLayout`, requestBody)
+        return response.data
+    } catch (error) {
+        throw error.response.data
+    }
+}

@@ -69,7 +69,7 @@ const UserProfile = ({ userProfile, editMode, rooms }) => {
     };
 
     return (
-        <div>
+        <div className={classes.container}>
             <Grid container direction="row" spacing={0} className={classes.userProfileWrapper}>
                 <Grid item xs={3} >
                     <Typography>Name: {name}</Typography>
