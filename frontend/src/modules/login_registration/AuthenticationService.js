@@ -1,9 +1,12 @@
+import "../../Utils/config"
 import React from "react";
 import {Redirect} from "react-router-dom";
 
+const URL = global.config.BACKEND_URL;
+
 export const register = async (values) => {
  try {
-  const apiRes = await fetch("http://localhost:8080/register", {
+  const apiRes = await fetch(`${URL}/register`, {
    headers: {
     "Content-Type": "application/json"
    },
@@ -11,7 +14,6 @@ export const register = async (values) => {
    method: "POST",
    body: JSON.stringify(values)
   });
-  await apiRes.json();
   return <Redirect to="/login"/>
  } catch (error) {
   console.log(error);
@@ -21,7 +23,7 @@ export const register = async (values) => {
 export const authenticate = async (values) => {
 
  try {
-  const apiRes = await fetch("http://localhost:8080/login", {
+  const apiRes = await fetch(`${URL}/login`, {
    headers: {
     "Content-Type": "application/json"
    },

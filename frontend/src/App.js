@@ -6,7 +6,9 @@ import {AuthContext} from "./context/Auth.js";
 import OutputConsole from './components/OutputConsole/OutputConsole';
 import SHCPanel from "./components/SHCPanel/SHCPanel";
 import './App.css';
-import Navbar from './components/tabs-navbar/Navbar'; 
+import Navbar from './components/tabs-navbar/Navbar';
+import SimulationForm from "./components/simulation_parameters/SimulationForm";
+
 
 const App = () => {
  // we will use this to get/fetch authentication token
@@ -14,11 +16,11 @@ const App = () => {
      localStorage.getItem("token") || ""
  );
 
-  const [outputData, setOutputData] = useState([{id:1, date: new Date(), data: "This is a sample action log."}]);
+ const [outputData, setOutputData] = useState([{id: 1, date: new Date(), data: "This is a sample action log."}]);
 
-  const appendOutputData = (data) => {
-    setOutputData(outputData => [...outputData, data]);
-  }
+ const appendOutputData = (data) => {
+  setOutputData(outputData => [...outputData, data]);
+ }
   
  const setTokens = data => {
   localStorage.setItem("token", JSON.stringify(data));
@@ -31,15 +33,15 @@ const App = () => {
 
        <div>
         <Switch>
-        <Navbar></Navbar>
+         <Navbar></Navbar>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
-         
-         <SHCPanel />
-         
-         <OutputConsole 
-          outputData={outputData}
-          />
+         <SimulationForm/>
+         <SHCPanel/>
+
+         <OutputConsole
+             outputData={outputData}
+         />
         </Switch>
        </div>
       </Router>

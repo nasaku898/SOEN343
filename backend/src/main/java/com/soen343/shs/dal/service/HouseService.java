@@ -4,13 +4,16 @@ import com.soen343.shs.dal.model.ExteriorDoor;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
+import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.InteriorDoorRepository;
 import com.soen343.shs.dal.repository.LightRepository;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
+import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSSameStateException;
 import com.soen343.shs.dto.DoorDTO;
+import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LightDTO;
 import com.soen343.shs.dto.WindowDTO;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +28,14 @@ import java.util.function.Consumer;
 public class HouseService {
     private final LightRepository lightRepository;
     private final HouseWindowRepository houseWindowRepository;
+    private final HouseRepository houseRepository;
     private final InteriorDoorRepository interiorDoorRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
+
+    public HouseDTO getHouse(final long id) {
+        return mvcConversionService.convert(houseWindowRepository.findById(id).orElseThrow(HouseNotFoundException::new), HouseDTO.class);
+    }
 
     /**
      * @param id   id of light object to modify

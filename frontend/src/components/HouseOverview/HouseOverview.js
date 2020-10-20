@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import { fetchHouseState } from '../../modules/HouseOverview/HouseOverviewAPI'
+import { fetchHouseState } from '../../modules/HouseOverview/HouseService'
 import Paper from '@material-ui/core/Paper';
 import RoomInfo from '../RoomInfo/RoomInfo';
 const HouseOverview = () => {
