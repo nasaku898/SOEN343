@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RoomService {
-    private RoomRepository roomRepository;
-    private ConversionService mvcConverionService;
+    private final RoomRepository roomRepository;
+    private final ConversionService mvcConversionService;
 
     public RoomDTO getRoom(final long id) {
-        return mvcConverionService.convert(roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(String.format("Room with id: %d was not found", id))), RoomDTO.class);
+        return mvcConversionService.convert(roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(String.format("Room with id: %d was not found", id))), RoomDTO.class);
     }
 }

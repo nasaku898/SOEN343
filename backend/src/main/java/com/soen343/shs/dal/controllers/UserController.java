@@ -33,28 +33,35 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     LoginResponse loginUser(final HttpServletRequest request, @RequestBody final LoginRequest loginRequest) {
-        return userService
-                .login(request, loginRequest);
+        final LoginResponse user = userService.login(request, loginRequest);
+        return user;
     }
 
     @PutMapping(path = "/user/{username}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    UserDTO updateUserLocation(@AuthenticationPrincipal final Authentication authentication, final UserDTO user) {
+    UserDTO updateUserLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final UserDTO user) {
         return userService.updateUser(user);
     }
 
     @GetMapping(value = "/user/{username}")
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@RequestParam final String username) {
+    public UserDTO getUser(@PathVariable final String username) {
         return userService.getUserByUsername(username);
     }
 
-    @PutMapping(value = "user/{username}/room/{roomId}")
+    @GetMapping(value = "/user")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public UserDTO getUser(@AuthenticationPrincipal final Authentication authentication) {
+        return userService.getUserByUsername(authentication.getName());
+    }
+
+    @PutMapping(value = "/user/{username}/room/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     @ResponseBody
-    public UserDTO moveUserToRoom(@RequestParam final String username, @PathVariable final long roomId) {
+    public UserDTO moveUserToRoom(@PathVariable final String username, @PathVariable final long roomId) {
         return simulationService.moveUserToRoom(username, roomId);
     }
 }

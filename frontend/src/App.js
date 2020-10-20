@@ -30,15 +30,13 @@ const App = () => {
  return (
      <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Router>
-
        <div>
         <Switch>
+         <SimulationForm/>
          <Navbar></Navbar>
          <Route path="/register" component={RegistrationForm}/>
          <Route path="/login" component={LoginForm}/>
-         <SimulationForm/>
          <SHCPanel/>
-
          <OutputConsole
              outputData={outputData}
          />

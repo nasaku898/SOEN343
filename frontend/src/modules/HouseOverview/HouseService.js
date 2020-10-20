@@ -22,41 +22,42 @@ export const editRoomTemperature = async (roomId, newTemperature) => {
 
 export const updateTemperatureOutside = async (houseId, temperatureOutside) => {
     try {
-        const response = await fetch(`${URL}/api/simulation/house/${houseId}/temperature`, {
+        const response = await fetch(`${URL}/api/simulation/house/${houseId}/temperatureOutside/${temperatureOutside}`, {
             headers: {
                 "Content-Type": "application/json"
             },
             method: "PUT",
-            body: JSON.stringify([houseId, temperatureOutside])
         });
-        return response.data
+        return response.json();
     } catch (error) {
         throw await error.json();
     }
 }
 
-export const getRoom = async (roomId) => {
+export const getRoom = async (id) => {
     try {
-        const response = await fetch(`${URL}/api/simulation/room/${roomId}`, {
+        const response = await fetch(`${URL}/api/room/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             },
         });
-        return response.data
+        return response.json();
     } catch (error) {
-        throw await error.json();
+        throw await error;
     }
 }
 
 export const getHouse = async (houseId) => {
     try {
-        const response = await fetch(`${URL}/api/${houseId}`, {
+        const response = await fetch(`${URL}/api/simulation/house/houseLayout/${houseId}`, {
             headers: {
                 "Content-Type": "application/json"
             },
         });
-        return response.data
+        return response.json();
     } catch (error) {
-        throw await error.json();
+        throw await error;
     }
 }
+
+

@@ -4,20 +4,20 @@ const URL = global.config.BACKEND_URL;
 
 export const getUser = async (username) => {
     try {
-        const response = await fetch(`${URL}/username`, {
+        const response = await fetch(`${URL}/user/${username}`, {
             headers: {
                 "Content-Type": "application/json"
             },
         });
         return response.json();
     } catch (error) {
-        throw await error.json();
+        throw await error;
     }
 }
 
 export const moveUser = async (username, roomId) => {
     try {
-        const response = await fetch(`${URL}/${username}/   room/${roomId}`, {
+        const response = await fetch(`${URL}/user/${username}/room/${roomId}`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -26,6 +26,6 @@ export const moveUser = async (username, roomId) => {
         });
         return response.json();
     } catch (error) {
-        throw await error.json();
+        throw await error;
     }
 }

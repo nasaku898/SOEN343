@@ -10,6 +10,8 @@ public class UserToUserDTOConverter implements Converter<User, UserDTO> {
         return UserDTO.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .username(user.getUsername())
+                .role(user.getRole())
                 .email(user.getEmail())
                 .roomId(user.getLocation() == null ? 0 : user.getLocation().getId()) // definitely dont wanna keep it like this but this is good for right now..
                 .build();

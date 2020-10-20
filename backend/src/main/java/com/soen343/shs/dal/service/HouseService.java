@@ -34,7 +34,7 @@ public class HouseService {
     private final ConversionService mvcConversionService;
 
     public HouseDTO getHouse(final long id) {
-        return mvcConversionService.convert(houseWindowRepository.findById(id).orElseThrow(HouseNotFoundException::new), HouseDTO.class);
+        return mvcConversionService.convert(houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException("House Not Found")), HouseDTO.class);
     }
 
     /**

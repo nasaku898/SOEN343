@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "api/house")
+@RequestMapping(path = "/api/house")
 public class HouseController {
     private final HouseService houseService;
 
@@ -36,10 +36,10 @@ public class HouseController {
         return houseService.modifyWindowState(windowId, open, desiredState);
     }
 
-    @GetMapping(value = "/{houseId}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    HouseDTO getHouse(@PathVariable final Long id) {
+    HouseDTO getHouse(@PathVariable final long id) {
         return houseService.getHouse(id);
     }
 
