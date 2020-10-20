@@ -120,19 +120,11 @@ const DraggableRoom = ({ room }) => {
                             windowOpen ?
                                 <Avatar>
                                     <BorderBottomIcon></BorderBottomIcon>
+                                    {windowBlocked ? <LockIcon></LockIcon> : <LockOpenIcon></LockOpenIcon>}
                                 </Avatar> :
                                 <Avatar>
                                     <BorderAllIcon></BorderAllIcon>
-                                </Avatar>
-                        }
-
-                        {
-                            windowBlocked ?
-                                <Avatar>
-                                    <LockIcon></LockIcon>
-                                </Avatar> :
-                                <Avatar>
-                                    <LockOpenIcon></LockOpenIcon>
+                                    {windowBlocked ? <LockIcon></LockIcon> : <LockOpenIcon></LockOpenIcon>}
                                 </Avatar>
                         }
                     </ListItemAvatar>
