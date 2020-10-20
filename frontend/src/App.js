@@ -26,7 +26,6 @@ const App = () => {
         <div>
           <Navbar></Navbar>
           <Switch>
-
             <Route path="/register" component={RegistrationForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/shs" component={SHSPage} />
