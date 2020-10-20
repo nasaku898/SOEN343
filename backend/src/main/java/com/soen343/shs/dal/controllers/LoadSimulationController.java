@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.LoadSimulationService;
+import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class LoadSimulationController {
 
     @PostMapping(value = "/houseLayout")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO) {
-        loadSimulationService.loadHouse(loadHouseDTO);
+    public HouseDTO loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO) {
+        return loadSimulationService.loadHouse(loadHouseDTO);
     }
 }
