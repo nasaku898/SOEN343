@@ -38,115 +38,85 @@ public class HouseServiceTest {
 
     @Test
     public void turnLightOn() {
-        final Light mockLight = buildMockLight(false);
-        final LightDTO lightDTO = setUpLight(mockLight, true);
-
-        Assertions.assertEquals(lightDTO.getId(), mockLight.getId());
-        Assertions.assertEquals(lightDTO.isLightOn(), mockLight.isLightOn());
+        setUpLightAndAssertStateChange(false, true);
     }
 
     @Test
     public void turnLightOff() {
-        final Light mockLight = buildMockLight(true);
-        final LightDTO lightDTO = setUpLight(mockLight, false);
-
-        Assertions.assertEquals(lightDTO.getId(), mockLight.getId());
-        Assertions.assertEquals(lightDTO.isLightOn(), mockLight.isLightOn());
+        setUpLightAndAssertStateChange(true, false);
     }
 
     @Test
     public void openDoor() {
         final ExteriorDoor mockExteriorDoor = buildMockExteriorDoor(false, false);
-        final DoorDTO doorDTO = setUpExteriorDoor(mockExteriorDoor, true, true, false);
-
-        Assertions.assertEquals(doorDTO.getId(), mockExteriorDoor.getId());
-        Assertions.assertEquals(doorDTO.isOpen(), mockExteriorDoor.isOpen());
-        Assertions.assertEquals(doorDTO.isLocked(), mockExteriorDoor.isLocked());
+        setUpExteriorDoorAndAssertStateChange(mockExteriorDoor, true, true, false);
     }
 
     @Test
     public void closeDoor() {
         final ExteriorDoor mockExteriorDoor = buildMockExteriorDoor(true, false);
-        final DoorDTO doorDTO = setUpExteriorDoor(mockExteriorDoor, true, false, false);
+        setUpExteriorDoorAndAssertStateChange(mockExteriorDoor, true, false, false);
 
-        Assertions.assertEquals(doorDTO.getId(), mockExteriorDoor.getId());
-        Assertions.assertEquals(doorDTO.isOpen(), mockExteriorDoor.isOpen());
-        Assertions.assertEquals(doorDTO.isLocked(), mockExteriorDoor.isLocked());
     }
 
     @Test
     public void unlockDoor() {
         final ExteriorDoor mockExteriorDoor = buildMockExteriorDoor(false, true);
-        final DoorDTO doorDTO = setUpExteriorDoor(mockExteriorDoor, false, false, false);
-
-        Assertions.assertEquals(doorDTO.getId(), mockExteriorDoor.getId());
-        Assertions.assertEquals(doorDTO.isOpen(), mockExteriorDoor.isOpen());
-        Assertions.assertEquals(doorDTO.isLocked(), mockExteriorDoor.isLocked());
+        setUpExteriorDoorAndAssertStateChange(mockExteriorDoor, false, false, false);
     }
 
     @Test
     public void lockDoor() {
         final ExteriorDoor mockExteriorDoor = buildMockExteriorDoor(false, false);
-        final DoorDTO doorDTO = setUpExteriorDoor(mockExteriorDoor, false, false, true);
-
-        Assertions.assertEquals(doorDTO.getId(), mockExteriorDoor.getId());
-        Assertions.assertEquals(doorDTO.isOpen(), mockExteriorDoor.isOpen());
-        Assertions.assertEquals(doorDTO.isLocked(), mockExteriorDoor.isLocked());
+        setUpExteriorDoorAndAssertStateChange(mockExteriorDoor, false, false, true);
     }
 
 
     @Test
     public void openWindow() {
         final HouseWindow mockHouseWindow = buildMockHouseWindow(false, false);
-        final WindowDTO windowDTO = setUpWindow(mockHouseWindow, true, true, false);
-
-        Assertions.assertEquals(windowDTO.getId(), mockHouseWindow.getId());
-        Assertions.assertEquals(windowDTO.isOpen(), mockHouseWindow.isOpen());
-        Assertions.assertEquals(windowDTO.isBlocked(), mockHouseWindow.isBlocked());
+        setUpWindowAndAssertStateChange(mockHouseWindow, true, true, false);
     }
 
     @Test
     public void closeWindow() {
         final HouseWindow mockHouseWindow = buildMockHouseWindow(true, false);
-        final WindowDTO windowDTO = setUpWindow(mockHouseWindow, true, false, false);
+        setUpWindowAndAssertStateChange(mockHouseWindow, true, false, false);
 
-        Assertions.assertEquals(windowDTO.getId(), mockHouseWindow.getId());
-        Assertions.assertEquals(windowDTO.isOpen(), mockHouseWindow.isOpen());
-        Assertions.assertEquals(windowDTO.isBlocked(), mockHouseWindow.isBlocked());
     }
 
     @Test
     public void unblockWindow() {
         final HouseWindow mockHouseWindow = buildMockHouseWindow(false, true);
-        final WindowDTO windowDTO = setUpWindow(mockHouseWindow, false, false, false);
-
-        Assertions.assertEquals(windowDTO.getId(), mockHouseWindow.getId());
-        Assertions.assertEquals(windowDTO.isOpen(), mockHouseWindow.isOpen());
-        Assertions.assertEquals(windowDTO.isBlocked(), mockHouseWindow.isBlocked());
+        setUpWindowAndAssertStateChange(mockHouseWindow, false, false, false);
     }
 
     @Test
     public void blockWindow() {
         final HouseWindow mockHouseWindow = buildMockHouseWindow(false, false);
-        final WindowDTO windowDTO = setUpWindow(mockHouseWindow, false, false, true);
-
-        Assertions.assertEquals(windowDTO.getId(), mockHouseWindow.getId());
-        Assertions.assertEquals(windowDTO.isOpen(), mockHouseWindow.isOpen());
-        Assertions.assertEquals(windowDTO.isBlocked(), mockHouseWindow.isBlocked());
+        setUpWindowAndAssertStateChange(mockHouseWindow, false, false, true);
     }
 
-    private LightDTO setUpLight(final Light mockLight, final boolean desiredState) {
+    private void setUpLightAndAssertStateChange(final boolean initialState, final boolean desiredState) {
+        final Light mockLight = buildMockLight(initialState);
         when(lightRepository.findById(MOCK_HOUSE_LIGHT_ID)).thenReturn(java.util.Optional.ofNullable(mockLight));
         when(mvcConversionService.convert(lightRepository.save(mockLight), LightDTO.class))
-                .thenReturn(LightDTO.builder().id(MOCK_HOUSE_LIGHT_ID).isLightOn(desiredState).build());
+                .thenReturn(LightDTO.builder()
+                        .id(MOCK_HOUSE_LIGHT_ID)
+                        .isLightOn(desiredState)
+                        .build());
 
-        return houseService.modifyLightState(MOCK_HOUSE_LIGHT_ID, desiredState);
+        final LightDTO dto = houseService.modifyLightState(MOCK_HOUSE_LIGHT_ID, desiredState);
+
+        Assertions.assertEquals(dto.getId(), mockLight.getId());
+        Assertions.assertEquals(dto.isLightOn(), mockLight.isLightOn());
     }
 
-    private DoorDTO setUpExteriorDoor(final ExteriorDoor exteriorDoor,
-                                      final boolean doWeOpen,
-                                      final boolean finalOpen,
-                                      final boolean finalLocked) {
+
+    private void setUpExteriorDoorAndAssertStateChange(final ExteriorDoor exteriorDoor,
+                                                       final boolean doWeOpen,
+                                                       final boolean finalOpen,
+                                                       final boolean finalLocked) {
         when(exteriorDoorRepository.findById(MOCK_HOUSE_EXTERIOR_DOOR_ID)).thenReturn(java.util.Optional.ofNullable(exteriorDoor));
 
         when(mvcConversionService.convert(exteriorDoorRepository.save(exteriorDoor), DoorDTO.class))
@@ -156,18 +126,29 @@ public class HouseServiceTest {
                         .locked(finalLocked)
                         .build());
 
-        return houseService.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, doWeOpen ? finalOpen : finalLocked);
+        final DoorDTO dto = houseService.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, doWeOpen ? finalOpen : finalLocked);
+
+        Assertions.assertEquals(dto.getId(), exteriorDoor.getId());
+        Assertions.assertEquals(dto.isOpen(), exteriorDoor.isOpen());
+        Assertions.assertEquals(dto.isLocked(), exteriorDoor.isLocked());
     }
 
-    private WindowDTO setUpWindow(final HouseWindow mockHouseWindow,
-                                  final boolean doWeOpen,
-                                  final boolean finalOpen,
-                                  final boolean finalBlocked) {
+    private void setUpWindowAndAssertStateChange(final HouseWindow mockHouseWindow,
+                                                 final boolean doWeOpen,
+                                                 final boolean finalOpen,
+                                                 final boolean finalBlocked) {
         when(houseWindowRepository.findById(MOCK_HOUSE_WINDOW_ID)).thenReturn(java.util.Optional.ofNullable(mockHouseWindow));
         when(mvcConversionService.convert(houseWindowRepository.save(mockHouseWindow), WindowDTO.class))
-                .thenReturn(WindowDTO.builder().id(MOCK_HOUSE_WINDOW_ID).open(finalOpen).blocked(finalBlocked).build());
+                .thenReturn(WindowDTO.builder()
+                        .id(MOCK_HOUSE_WINDOW_ID)
+                        .open(finalOpen)
+                        .blocked(finalBlocked)
+                        .build());
 
-        return houseService.modifyWindowState(MOCK_HOUSE_WINDOW_ID, doWeOpen, doWeOpen ? finalOpen : finalBlocked);
+        final WindowDTO dto = houseService.modifyWindowState(MOCK_HOUSE_WINDOW_ID, doWeOpen, doWeOpen ? finalOpen : finalBlocked);
+        Assertions.assertEquals(dto.getId(), mockHouseWindow.getId());
+        Assertions.assertEquals(dto.isOpen(), mockHouseWindow.isOpen());
+        Assertions.assertEquals(dto.isBlocked(), mockHouseWindow.isBlocked());
     }
 
     private static Light buildMockLight(final boolean desiredState) {
