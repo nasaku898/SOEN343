@@ -24,7 +24,6 @@ const Navbar = () => {
 
                     <Button
                         variant="contained"
-                        color="red"
                         startIcon={<AccountCircleOutlinedIcon />}
                     >
                         Login
