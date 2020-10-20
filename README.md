@@ -62,4 +62,18 @@ The server is built and executed using Maven.
   The web user interface is written in Javascript using the React framework for the architecture, and npm for
 library management.
 
-6. Installation
+6. Requirements
+- Java JDk 8 or above
+- Node JS
+- Maven
+- NPM
+- MySQL
+
+7. Installation
+
+- Clone Repo
+- Install Dependencies with Maven for backend
+- Install Dependencies with NPM for frontend
+- Connect backend to database in `backend/src/main/resources/application.properties` by adding your local database url and password
+- Laucnh backend appplication
+- Launch frontend application
