@@ -104,6 +104,7 @@ const SHCPanel = (props) => {
                   </FormGroup>
                 )
               }
+              return <></>
             })
           }
         </FormControl>
