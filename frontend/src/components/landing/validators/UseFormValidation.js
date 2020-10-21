@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const useFormValidation = (initialState, validate, authenticate) => {
     const [values, setValues] = useState(initialState);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setSubmitting] = useState(false);
-
+    const history = useHistory()
     useEffect(() => {
         if (isSubmitting) {
             if (errors.length === 0) {
@@ -33,6 +34,7 @@ const useFormValidation = (initialState, validate, authenticate) => {
         const validationErrors = validate(values);
         setErrors(validationErrors);
         setSubmitting(true);
+        history.push("/login")
     };
 
     return {
