@@ -28,13 +28,12 @@ public class HouseMemberService {
      * @return HouseMemberDTO object reflecting the changes made to the object
      */
     public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
-        return mvcConversionService.convert(houseMemberRepository.save(
-                HouseMember.builder()
-                        .name(houseMemberDTO.getName())
-                        .location(modelFetchHandler.findRoom(houseMemberDTO.getRoomId()))
-                        .role(UserRole.valueOf(houseMemberDTO.getRole()))
-                        .build())
-                , HouseMemberDTO.class);
+        houseMemberRepository.save(HouseMember.builder()
+                .name(houseMemberDTO.getName())
+                .location(modelFetchHandler.findRoom(houseMemberDTO.getRoomId()))
+                .role(UserRole.valueOf(houseMemberDTO.getRole()))
+                .build());
+        return houseMemberDTO;
     }
 
     /**

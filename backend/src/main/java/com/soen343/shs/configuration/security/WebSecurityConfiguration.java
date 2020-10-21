@@ -60,7 +60,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
                 .antMatchers("/api").permitAll()
                 .and()
                 .formLogin().disable()
-                .logout().permitAll()
+                .logout()
+                .permitAll()
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .and()
                 .csrf().disable();
 
