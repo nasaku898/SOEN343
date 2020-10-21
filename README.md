@@ -72,8 +72,8 @@ library management.
 7. Installation
 
 - Clone Repo
-- Install Dependencies with Maven for backend
-- Install Dependencies with NPM for frontend
+- Install Dependencies with Maven for backend by entering mvnw clean install into your terminal at the root of the `backend project`, or running by mavens install feature from your ide of choice
+- Install Dependencies with NPM for frontend entering npm install in the terminal at the root of the `frontend project`
 - Connect backend to database in `backend/src/main/resources/application.properties` by adding your local database url and password
 - Laucnh backend appplication
 - Launch frontend application
