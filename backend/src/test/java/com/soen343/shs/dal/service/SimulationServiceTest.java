@@ -86,7 +86,7 @@ public class SimulationServiceTest {
         when(mvcConversionService.convert(houseMemberRepository.save(mockHouseMember), HouseMemberDTO.class))
                 .thenReturn(HouseMemberDTO.builder().roomId(MOCK_ROOM_ID).build());
 
-        final HouseMemberDTO houseMemberDTO = simulationService.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID);
+        final HouseMemberDTO houseMemberDTO = simulationService.moveHouseMemberToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID);
 
         Assertions.assertEquals(houseMemberDTO.getRoomId(), MOCK_ROOM_ID);
     }

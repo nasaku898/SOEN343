@@ -6,7 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-import { fetchHouseMember, fetchRooms, createNewHouseMember } from '../../modules/UserProfileList/UserProfileAPI';
+import { fetchHouseMember, fetchRooms, createNewHouseMember } from '../../modules/UserProfileList/HouseMemberAPI';
 
 const UserProfileList = () => {
     const [editMode, SetEditMode] = useState(true)

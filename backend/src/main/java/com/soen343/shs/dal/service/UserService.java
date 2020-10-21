@@ -68,7 +68,6 @@ public class UserService {
 
         final HttpSession session = request.getSession(true);
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
-
         return LoginResponse.builder()
                 .token(session.getId()) // return token so we can use for testing in postman
                 .user(getUserByUsername(loginRequest.getUsername()))

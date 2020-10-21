@@ -5,7 +5,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-import { houseMemberNameModification, houseMemberRoleModification, houseMemberLocationChange } from '../../modules/UserProfileList/UserProfileAPI';
+import { houseMemberNameModification, houseMemberRoleModification, houseMemberLocationChange } from '../../modules/UserProfileList/HouseMemberAPI';
 const UserProfile = ({ userProfile, editMode, rooms }) => {
 
     const classes = useStyles()

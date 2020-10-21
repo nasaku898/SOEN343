@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { Typography, Button, Modal, TextField, TableCell, TableRow } from '@material-ui/core'
+import React, {useState} from 'react'
+import {Button, Modal, TableCell, TableRow, TextField, Typography} from '@material-ui/core'
 import UpdateIcon from '@material-ui/icons/Update';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from '../HouseOverview/HouseOverviewStyle'
-import { editRoomTemperature } from '../../modules/HouseOverview/HouseOverviewAPI';
+import {editRoomTemperature} from '../../modules/HouseOverview/HouseService';
 
-const RoomInfo = ({ row }) => {
+const RoomInfo = ({row}) => {
     const [modalTyping, setModalTyping] = useState(row.temperature)
     const [temperature, setTemperature] = useState(row.temperature)
 
