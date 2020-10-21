@@ -1,5 +1,7 @@
 SOEN-343 Project: Smart Home Simulation System
 
+Team 1
+
 1. Smart Home Simulator
 
 	The Smart Home Simulation System is a suite of interactive modules designed to reproduce the systems that operate
