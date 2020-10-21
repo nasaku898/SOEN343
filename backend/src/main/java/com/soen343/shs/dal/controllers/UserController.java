@@ -33,8 +33,7 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     LoginResponse loginUser(final HttpServletRequest request, @RequestBody final LoginRequest loginRequest) {
-        final LoginResponse user = userService.login(request, loginRequest);
-        return user;
+        return userService.login(request, loginRequest);
     }
 
     @PutMapping(path = "/user/{username}")
@@ -49,6 +48,14 @@ public class UserController {
     @ResponseBody
     public UserDTO getUser(@PathVariable final String username) {
         return userService.getUserByUsername(username);
+    }
+
+
+    @GetMapping(value = "/logout")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public String logoutUser() {
+        return "USER SUCCESSFULLY LOGGED OUT AND CLOSED THE SIMULATION";
     }
 
     @GetMapping(value = "/user")

@@ -16,7 +16,7 @@ import java.util.List;
 public class HouseMemberController {
 
     private final HouseMemberService houseMemberService;
-    
+
     @PostMapping(value = "/houseMember")
     @ResponseStatus(value = HttpStatus.CREATED)
     public HouseMemberDTO createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {

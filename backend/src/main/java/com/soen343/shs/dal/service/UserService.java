@@ -73,7 +73,7 @@ public class UserService {
                 .user(getUserByUsername(loginRequest.getUsername()))
                 .build();
     }
-
+    
     /**
      * @param userDTO UserDTO containing the new desired state of the user
      * @return updated state of user
