@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import LoginForm from "./components/landing/LoginForm.js";
 import RegistrationForm from "./components/landing/RegistrationForm.js";
 import { AuthContext } from "./context/Auth.js";
@@ -21,18 +21,24 @@ const App = () => {
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      <Router>
-
-        <div>
-          <Navbar></Navbar>
-          <Switch>
-            <Route path="/register" component={RegistrationForm} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/shs" component={SHSPage} />
-            <Route path="/shc" component={SHCPage}/>
-          </Switch>
-        </div>
-      </Router>
+      {
+        <Router>
+          <div>
+            <Navbar authTokens={authTokens}></Navbar>
+            <Switch>
+              <Route exact path="/" >
+                {
+                  authTokens ? <Redirect to="/shs"></Redirect> : <Redirect to="/register"></Redirect>
+                }
+              </Route>
+              <Route path="/register" component={RegistrationForm} />
+              <Route path="/login" component={LoginForm} />
+              <Route path="/shs" component={SHSPage} />
+              <Route path="/shc" component={SHCPage} />
+            </Switch>
+          </div>
+        </Router>
+      }
     </AuthContext.Provider>
   );
 }

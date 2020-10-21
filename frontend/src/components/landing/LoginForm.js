@@ -1,90 +1,89 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import FormInput from "./form_components/FormInput.js";
-import {Button} from "./form_components/Button.js";
+import { Button } from "./form_components/Button.js";
 import useFormValidation from "./validators/UseFormValidation";
 import ValidateAuthentication from "./validators/ValidateAuthentication";
-import {authenticate} from "../../modules/login_registration/AuthenticationService.js"
-import {useAuth} from "../../context/Auth";
-import {Redirect} from "react-router-dom";
-
+import { authenticate } from "../../modules/login_registration/AuthenticationService.js"
+import { useAuth } from "../../context/Auth";
+import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const INITIAL_STATE = {
- username: "",
- password: ""
+    username: "",
+    password: ""
 };
 
 
 const LoginForm = () => {
- const {setAuthTokens} = useAuth();
- const {authTokens} = useAuth();
+    const { setAuthTokens } = useAuth();
+    const { authTokens } = useAuth();
+    const history = useHistory()
+    const loginUser = async (fields) => {
+        setAuthTokens(await authenticate(fields));
 
- const loginUser = async (fields) => {
-  setAuthTokens(await authenticate(fields));
+        if (authTokens) {
+            history.push("/shs")
+        }
+    }
 
-  if (authTokens) {
-   return <Redirect to={"/login"}/>
-  }
+    const {
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        errors,
+        isSubmitting
+    } = useFormValidation(INITIAL_STATE, ValidateAuthentication, loginUser);
 
- }
+    return (
+        <Fragment>
+            <form
+                onSubmit={handleSubmit}
+            >
+                {errors.username && (
+                    <p className="error-text alert alert-danger">
+                        {errors.username}
+                    </p>
+                )}
 
- const {
-  handleSubmit,
-  handleChange,
-  handleBlur,
-  values,
-  errors,
-  isSubmitting
- } = useFormValidation(INITIAL_STATE, ValidateAuthentication, loginUser);
+                <FormInput
+                    label="Username"
+                    name="username"
+                    type="text"
+                    className={`${errors.username} ${"error-input"} ${"form-control"}`}
 
- return (
-     <Fragment>
-      <form
-          onSubmit={handleSubmit}
-      >
-       {errors.username && (
-           <p className="error-text alert alert-danger">
-            {errors.username}
-           </p>
-       )}
+                    value={values.username}
+                    onChange={handleChange}
+                    placeholder="Username"
+                />
 
-       <FormInput
-           label="Username"
-           name="username"
-           type="text"
-           className={`${errors.username} ${"error-input"} ${"form-control"}`}
-           
-           value={values.username}
-           onChange={handleChange}
-           placeholder="Username"
-       />
+                <br />
 
-       <br/>
+                {errors.password && (
+                    <p className="error-text alert alert-danger">
+                        {errors.password}
+                    </p>
+                )}
 
-       {errors.password && (
-           <p className="error-text alert alert-danger">
-            {errors.password}
-           </p>
-       )}
+                <FormInput
+                    type="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="password"
+                    className={`${errors.password}  ${"error-input"} ${"form-control"}`}
+                    value={values.password}
+                    placeholder="Password"
+                />
 
-       <FormInput
-           type="password"
-           onChange={handleChange}
-           onBlur={handleBlur}
-           name="password"
-           className={`${errors.password}  ${"error-input"} ${"form-control"}`}
-           value={values.password}
-           placeholder="Password"
-       />
+                <br />
 
-       <br/>
-
-       <Button
-           type="submit"
-           label="Submit"
-           className="button"
-           disabled={isSubmitting}
-       />
-      </form>
-     </Fragment>
- );
+                <Button
+                    type="submit"
+                    label="Submit"
+                    className="button"
+                    disabled={isSubmitting}
+                />
+            </form>
+        </Fragment>
+    );
 }
 export default LoginForm;
