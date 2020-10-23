@@ -2,9 +2,6 @@ package com.soen343.shs.configuration.security;
 
 import com.soen343.shs.converters.doors.ExteriorDoorToDoorDTOConverter;
 import com.soen343.shs.converters.doors.InteriorDoorToDoorDTOConverter;
-import com.soen343.shs.converters.doors.LoadDoorDTOToDoorConverter;
-import com.soen343.shs.converters.doors.LoadExteriorDoorDTOToExteriorDoorConverter;
-import com.soen343.shs.converters.doors.LoadInteriorDoorDTOToInteriorDoorConverter;
 import com.soen343.shs.converters.houseWindows.HouseWindowToHouseWindowDTOConverter;
 import com.soen343.shs.converters.houseWindows.LoadHouseWindowDTOToHouseWindowConverter;
 import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
@@ -12,10 +9,8 @@ import com.soen343.shs.converters.lights.LightToLightDTOConverter;
 import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
 import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
 import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
+import com.soen343.shs.converters.users.RealUserToRealUserDTOConverter;
 import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;
-import com.soen343.shs.converters.users.RegistrationDTOToUserDTOConverter;
-import com.soen343.shs.converters.users.UserDTOtoUserConverter;
-import com.soen343.shs.converters.users.UserToUserDTOConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -89,21 +84,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     @Override
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new RegistrationDTOToUserConverter());
-        registry.addConverter(new RegistrationDTOToUserDTOConverter());
-        registry.addConverter(new UserDTOtoUserConverter());
-        registry.addConverter(new UserToUserDTOConverter());
+        registry.addConverter(new RealUserToRealUserDTOConverter());
         registry.addConverter(new RoomToRoomDTOConverter());
         registry.addConverter(new ExteriorDoorToDoorDTOConverter());
         registry.addConverter(new InteriorDoorToDoorDTOConverter());
         registry.addConverter(new LightToLightDTOConverter());
         registry.addConverter(new HouseWindowToHouseWindowDTOConverter());
         registry.addConverter(new HouseMemberToHouseMemberDTOConverter());
-        registry.addConverter(new LoadDoorDTOToDoorConverter());
         registry.addConverter(new LoadLightDTOToLightConverter());
         registry.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
         registry.addConverter(new HouseToHouseDTOConverter());
-        registry.addConverter(new LoadExteriorDoorDTOToExteriorDoorConverter());
-        registry.addConverter(new LoadInteriorDoorDTOToInteriorDoorConverter());
     }
 
     @Bean

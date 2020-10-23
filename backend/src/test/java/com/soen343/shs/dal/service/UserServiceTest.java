@@ -1,12 +1,13 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.User;
+import com.soen343.shs.dal.model.RealUser;
 import com.soen343.shs.dal.repository.UserRepository;
+import com.soen343.shs.dal.repository.mapping.SHSUserMapper;
 import com.soen343.shs.dal.service.Login.LoginRequest;
 import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
+import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RegistrationDTO;
-import com.soen343.shs.dto.UserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +48,9 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
+    private SHSUserMapper mapper;
+
+    @Mock
     private AuthenticationProvider authProvider;
 
     @InjectMocks
@@ -58,17 +62,17 @@ class UserServiceTest {
 
     @Test
     void testCreateUser_givenUserDoesntAlreadyExist() {
-        when(mvcConversionService.convert(REGISTRATION_DTO, User.class)).thenReturn(createUser());
+        when(mvcConversionService.convert(REGISTRATION_DTO, RealUser.class)).thenReturn(createUser());
         when(passwordEncoder.encode(REGISTRATION_DTO.getPassword())).thenReturn(ENCODED_PASSWORD);
-        when(mvcConversionService.convert(userRepository.save(createUser()), UserDTO.class)).thenReturn(UserDTO.builder().build());
+        when(mvcConversionService.convert(userRepository.save(createUser()), RealUserDTO.class)).thenReturn(RealUserDTO.builder().build());
 
-        final UserDTO dto = classUnderTest.createUser(REGISTRATION_DTO);
+        final RealUserDTO dto = classUnderTest.createUser(REGISTRATION_DTO);
         Assertions.assertNotNull(dto);
     }
 
     @Test
     void testCreateUser_givenUserAlreadyExists() {
-        when(userRepository.findByUsername(REGISTRATION_DTO.getUsername())).thenReturn(Optional.of(createUser()));
+        when(userRepository.findByUsername(RealUser.class, REGISTRATION_DTO.getUsername())).thenReturn(Optional.of(createUser()));
 
         final SHSUserAlreadyExistsException exception = Assertions.assertThrows(SHSUserAlreadyExistsException.class, () -> {
                     classUnderTest.createUser(REGISTRATION_DTO);
@@ -83,10 +87,10 @@ class UserServiceTest {
         final LoginRequest loginRequest = buildLoginRequest();
         final MockHttpServletRequest request = new MockHttpServletRequest();
 
-        final User u = createUser();
+        final RealUser user = createUser();
 
-        when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.ofNullable(u));
-        when(mvcConversionService.convert(u, UserDTO.class)).thenReturn(createUserDTO());
+        when(userRepository.findByUsername(RealUser.class, USERNAME)).thenReturn(Optional.ofNullable(user));
+        when(mvcConversionService.convert(user, RealUserDTO.class)).thenReturn(createUserDTO());
 
         final HttpSession session = request.getSession(true);
         final LoginResponse response = classUnderTest.login(request, loginRequest);
@@ -107,6 +111,18 @@ class UserServiceTest {
                     classUnderTest.login(request, loginRequest);
                 }
         );
+    }
+
+    @Test
+    void testUpdate() {
+        final RealUserDTO dto = createUserDTO();
+        final RealUser user = createUser();
+
+        when(userRepository.findById(RealUser.class, user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.save(mapper.updateUserFromDTO(dto, user))).thenReturn(user);
+
+        final RealUserDTO real = classUnderTest.updateUser(dto);
+        Assertions.assertEquals(dto.getFirstName(), real.getFirstName());
     }
 
     private static RegistrationDTO buildRegistrationDTO() {

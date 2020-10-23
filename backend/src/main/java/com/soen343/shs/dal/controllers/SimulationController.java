@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dto.HouseMemberDTO;
@@ -34,13 +35,7 @@ public class SimulationController {
     @PutMapping(value = "/room/newRoom/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public HouseMemberDTO moveUserToRoom(@NotNull @RequestParam final String name, @PathVariable final long roomId) {
-        return simulationService.moveHouseMemberToRoom(name, roomId);
-    }
-
-    @PutMapping(value = "/window/windowObject/{windowId}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public void addObjectToWindow(@PathVariable final long windowId) {
-        simulationService.addObjectToWindow(windowId);
+        return simulationService.moveUserToRoom(name, roomId, HouseMember.class, HouseMemberDTO.class);
     }
 
     @GetMapping(value = "/house/{houseId}/room/all")

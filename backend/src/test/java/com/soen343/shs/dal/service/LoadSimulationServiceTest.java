@@ -1,6 +1,6 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.Door;
+import com.soen343.shs.dal.model.ExteriorDoor;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Light;
@@ -34,7 +34,9 @@ public class LoadSimulationServiceTest {
     @InjectMocks
     private LoadSimulationService classUnderTest;
 
-    private static final String ROOM_NAME = "someName";
+    public static final String ROOM_NAME = "someName";
+    private static final long ROOM_ID = 1;
+
 
     @Test
     void testLoadHouse() {
@@ -59,8 +61,7 @@ public class LoadSimulationServiceTest {
                 .singleton(LoadRoomDTO.builder()
                         .doors(Collections.singleton(LoadInteriorDoorDTO
                                 .builder()
-                                .build())
-                        )
+                                .build()))
                         .houseWindows(Collections.singleton(LoadHouseWindowDTO.builder().build()))
                         .lights(Collections.singleton(LoadLightDTO.builder().build()))
                         .name(ROOM_NAME)
@@ -70,10 +71,8 @@ public class LoadSimulationServiceTest {
     private static Set<Room> createRooms() {
         return Collections
                 .singleton(Room.builder()
-                        .doors(Collections.singleton(Door
-                                .builder()
-                                .build())
-                        )
+                        .id(ROOM_ID)
+                        .doors(Collections.singleton(ExteriorDoor.builder().build()))
                         .houseWindows(Collections.singleton(HouseWindow.builder().build()))
                         .lights(Collections.singleton(Light.builder().build()))
                         .name(ROOM_NAME)

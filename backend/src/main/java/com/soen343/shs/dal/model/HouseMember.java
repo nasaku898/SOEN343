@@ -1,22 +1,13 @@
 package com.soen343.shs.dal.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
-@Getter
-@Setter
-@Builder
-@EqualsAndHashCode
+
+@SuperBuilder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
-public class HouseMember {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private String name;
-    @OneToOne
-    private Room location;
-    private UserRole role;
+public class HouseMember extends User {
 }

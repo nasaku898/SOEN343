@@ -1,6 +1,10 @@
 package com.soen343.shs.dal.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +20,8 @@ import javax.persistence.Id;
 public class HouseWindow {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    private boolean blocked;
-    private boolean open;
+    private Long id;
+
+    private Boolean blocked;
+    private Boolean open;
 }

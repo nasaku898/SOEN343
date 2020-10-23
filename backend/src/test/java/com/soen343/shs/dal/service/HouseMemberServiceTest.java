@@ -2,7 +2,6 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.repository.HouseMemberRepository;
-import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dto.HouseMemberDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,16 +25,13 @@ public class HouseMemberServiceTest {
     private ConversionService mvcConversionService;
 
     @Mock
-    private RoomRepository roomRepository;
-
-    @Mock
-    private ModelFetchHandler modelFetchHandler;
-
+    private RoomService roomService;
+    
     @InjectMocks
     private HouseMemberService classUnderTest;
 
     @Test
-    public void testCreateNewHouseMemmber() {
+    public void testCreateNewHouseMember() {
         final HouseMemberDTO dto = getHouseMemberDTO();
 
         when(houseMemberRepository.save(any(HouseMember.class))).thenReturn(HouseMember.builder().build());

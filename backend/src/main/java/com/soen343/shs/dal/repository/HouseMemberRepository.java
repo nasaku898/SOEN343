@@ -4,5 +4,5 @@ import com.soen343.shs.dal.model.HouseMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HouseMemberRepository extends JpaRepository<HouseMember, Long> {
-    HouseMember findByName(String name);
+//    HouseMember findByName(String name);
 }

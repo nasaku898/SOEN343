@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.Map;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 public class HouseDTO {
-    private long id;
-    private Set<Long> roomIds;
-    private double temperatureOutside;
+    private Long id;
+    private Map<Long, String> rooms;
+    private Double temperatureOutside;
 }

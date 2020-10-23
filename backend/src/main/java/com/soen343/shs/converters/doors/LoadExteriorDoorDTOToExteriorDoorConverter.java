@@ -11,7 +11,6 @@ public class LoadExteriorDoorDTOToExteriorDoorConverter implements Converter<Loa
         return ExteriorDoor.builder()
                 .locked(dto.isLocked())
                 .open(dto.isOpen())
-                .rooms(dto.getRooms())
                 .build();
     }
 }

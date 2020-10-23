@@ -6,9 +6,6 @@
         {
           "type": "exterior",
           "open": false,
-          "rooms": [
-            "salon"
-          ],
           "locked": true
         }
       ],
@@ -36,11 +33,7 @@
       "doors": [
         {
           "type": "interior",
-          "open": false,
-          "rooms": [
-            "garage",
-            "salon"
-          ]
+          "open": false
         }
       ],
       "lights": [

@@ -10,7 +10,6 @@ public class LoadInteriorDoorDTOToInteriorDoorConverter implements Converter<Loa
     public InteriorDoor convert(final LoadInteriorDoorDTO dto) {
         return InteriorDoor.builder()
                 .open(dto.isOpen())
-                .rooms(dto.getRooms())
                 .build();
     }
 }

@@ -15,5 +15,5 @@ import javax.persistence.Entity;
 @Setter
 @Entity
 public class ExteriorDoor extends Door {
-    private boolean locked;
+    private Boolean locked;
 }

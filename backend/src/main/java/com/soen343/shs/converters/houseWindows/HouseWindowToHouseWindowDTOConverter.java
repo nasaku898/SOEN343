@@ -9,8 +9,8 @@ public class HouseWindowToHouseWindowDTOConverter implements Converter<HouseWind
     public WindowDTO convert(final HouseWindow houseWindow) {
         return WindowDTO.builder()
                 .id(houseWindow.getId())
-                .blocked(houseWindow.isBlocked())
-                .open(houseWindow.isOpen())
+                .blocked(houseWindow.getBlocked())
+                .open(houseWindow.getOpen())
                 .build();
     }
 }

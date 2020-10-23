@@ -46,5 +46,5 @@ public class HouseMemberController {
     public List<HouseMemberDTO> findAllHouseMember() {
         return houseMemberService.findAllHouseMembers();
     }
-
+    
 }

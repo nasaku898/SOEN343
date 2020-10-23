@@ -1,12 +1,13 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.ExteriorDoor;
+import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
-import com.soen343.shs.dal.repository.InteriorDoorRepository;
 import com.soen343.shs.dal.repository.LightRepository;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
@@ -29,24 +30,24 @@ public class HouseService {
     private final LightRepository lightRepository;
     private final HouseWindowRepository houseWindowRepository;
     private final HouseRepository houseRepository;
-    private final InteriorDoorRepository interiorDoorRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
 
     public HouseDTO getHouse(final long id) {
-        return mvcConversionService.convert(houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException("House Not Found")), HouseDTO.class);
+        return mvcConversionService.convert(houseRepository.findById(id)
+                .orElseThrow(() -> new HouseNotFoundException("House Not Found")), HouseDTO.class);
     }
 
     /**
-     * @param id   id of light object to modify
-     * @param isOn boolean referring to the desired state of the object
+     * @param id           id of light object to modify
+     * @param desiredState boolean referring to the desired state of the object
      * @return LightDTO object reflecting the changes made to the object
      */
-    public LightDTO modifyLightState(final long id, final boolean isOn) {
+    public LightDTO modifyLightState(final long id, final boolean desiredState) {
         return changeStateOfHouseObject(id, Light.class, LightDTO.class, lightRepository,
                 light -> {
-                    checkForSameStateException(isOn, light.isLightOn(), getSameStateExceptionErrorMessage(light.getClass(), id));
-                    light.setLightOn(isOn);
+                    checkForSameStateException(desiredState, light.getIsLightOn(), getSameStateExceptionErrorMessage(light.getClass(), id));
+                    light.setIsLightOn(desiredState);
                 }
         );
     }
@@ -62,12 +63,12 @@ public class HouseService {
                 door -> {
                     final String sameStateExceptionErrorMessage = getSameStateExceptionErrorMessage(door.getClass(), id);
                     if (open) {
-                        checkForIllegalStateException(ExteriorDoor.class, id, door.isLocked());
-                        checkForSameStateException(desiredState, door.isOpen(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(ExteriorDoor.class, id, door.getLocked());
+                        checkForSameStateException(desiredState, door.getOpen(), sameStateExceptionErrorMessage);
                         door.setOpen(desiredState);
                     } else {
-                        checkForIllegalStateException(ExteriorDoor.class, id, door.isOpen());
-                        checkForSameStateException(desiredState, door.isLocked(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(ExteriorDoor.class, id, door.getOpen());
+                        checkForSameStateException(desiredState, door.getLocked(), sameStateExceptionErrorMessage);
                         door.setLocked(desiredState);
                     }
                 }
@@ -85,12 +86,12 @@ public class HouseService {
                 window -> {
                     final String sameStateExceptionErrorMessage = getSameStateExceptionErrorMessage(window.getClass(), id);
                     if (open) {
-                        checkForSameStateException(desiredState, window.isOpen(), sameStateExceptionErrorMessage);
-                        checkForIllegalStateException(HouseWindow.class, id, window.isBlocked());
+                        checkForSameStateException(desiredState, window.getOpen(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(HouseWindow.class, id, window.getBlocked());
                         window.setOpen(desiredState);
                     } else {
-                        checkForSameStateException(desiredState, window.isBlocked(), sameStateExceptionErrorMessage);
-                        checkForIllegalStateException(HouseWindow.class, id, window.isOpen());
+                        checkForSameStateException(desiredState, window.getBlocked(), sameStateExceptionErrorMessage);
+                        checkForIllegalStateException(HouseWindow.class, id, window.getOpen());
                         window.setBlocked(desiredState);
                     }
                 }
@@ -134,6 +135,50 @@ public class HouseService {
         if (stateToCheck) {
             throw new IllegalStateException(String.format(ERROR_MSG, id));
         }
+    }
+
+
+    /**
+     * @param houseId a house id
+     * @return error message
+     */
+    private static String getHouseNotFoundErrorMessage(final long houseId) {
+        return String.format("Cannot find house with houseId: %d", houseId);
+    }
+
+    /**
+     * @param houseId a house id
+     * @return inside temperature
+     */
+    public double getTemperatureInside(final long houseId) {
+        return houseRepository.findById(houseId)
+                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .getRooms()
+                .stream()
+                .mapToDouble(Room::getTemperature)
+                .average()
+                .orElse(0);
+    }
+
+    /**
+     * @param houseId     a house id
+     * @param temperature new outside temperature
+     * @return HouseDTO object reflecting the changes made to the object
+     */
+    public HouseDTO setTemperatureOutside(final long houseId, final double temperature) {
+        final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)));
+        house.getExteriorSurrounding().setTemperatureOutside(temperature);
+        return mvcConversionService.convert(houseRepository.save(house), HouseDTO.class);
+    }
+
+    /**
+     * @param houseId a house id
+     * @return outside temperature
+     */
+    public double getTemperatureOutside(final long houseId) {
+        return houseRepository.findById(houseId)
+                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+                .getExteriorSurrounding().getTemperatureOutside();
     }
 
     /**

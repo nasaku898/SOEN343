@@ -2,8 +2,9 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.UserRole;
-import com.soen343.shs.dal.repository.HouseMemberRepository;
-import com.soen343.shs.dal.repository.RoomRepository;
+import com.soen343.shs.dal.repository.UserRepository;
+import com.soen343.shs.dal.repository.mapping.SHSUserMapper;
+import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.HouseMemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HouseMemberService {
 
-    private final HouseMemberRepository houseMemberRepository;
-    private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
     private final ConversionService mvcConversionService;
-    private final ModelFetchHandler modelFetchHandler;
+    private final RoomService roomService;
+    private final SHSUserMapper mapper;
 
 
     /**
@@ -28,48 +29,22 @@ public class HouseMemberService {
      * @return HouseMemberDTO object reflecting the changes made to the object
      */
     public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
-        houseMemberRepository.save(HouseMember.builder()
-                .name(houseMemberDTO.getName())
-                .location(modelFetchHandler.findRoom(houseMemberDTO.getRoomId()))
-                .role(UserRole.valueOf(houseMemberDTO.getRole()))
+        userRepository.save(HouseMember.builder()
+                .username(houseMemberDTO.getUsername())
+                .location((roomService
+                        .fetchRoom((houseMemberDTO
+                                .getRoomId()
+                                .keySet()
+                                .iterator()
+                                .next()))))
+                .role(UserRole.valueOf(houseMemberDTO.getRole().name()))
                 .build());
         return houseMemberDTO;
     }
 
-    /**
-     * @param houseMemberId id of house member
-     * @param newName       new name for house member
-     * @return HouseMemberDTO object reflecting the changes made to the object
-     */
-    public HouseMemberDTO editName(final long houseMemberId, final String newName) {
-        final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
-        houseMember.setName(newName);
-
-        return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
-    }
-
-    /**
-     * @param houseMemberId id of house member
-     * @param newRole       new role for house member
-     * @return HouseMemberDTO object reflecting the changes made to the object
-     */
-    public HouseMemberDTO editRole(final long houseMemberId, final String newRole) {
-        final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
-        houseMember.setRole(UserRole.valueOf(newRole));
-
-        return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
-    }
-
-    /**
-     * @param houseMemberId id of house member
-     * @param newRoomId     new room id
-     * @return HouseMemberDTO object reflecting the changes made to the object
-     */
-    public HouseMemberDTO editLocation(final long houseMemberId, final long newRoomId) {
-        final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
-        houseMember.setLocation(modelFetchHandler.findRoom(newRoomId));
-
-        return mvcConversionService.convert(houseMemberRepository.save(houseMember), HouseMemberDTO.class);
+    public HouseMemberDTO updateHouseMember(final HouseMemberDTO houseMemberDTO) {
+        userRepository.save(mapper.updateUserFromDTO(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
+        return houseMemberDTO;
     }
 
     /**
@@ -77,8 +52,8 @@ public class HouseMemberService {
      * @return HouseMemberDTO object reflecting the changes made to the object
      */
     public HouseMemberDTO removeHouseMember(final long houseMemberId) {
-        final HouseMember houseMember = modelFetchHandler.findHouseMember(houseMemberId);
-        houseMemberRepository.delete(houseMember);
+        final HouseMember houseMember = findHouseMember(houseMemberId);
+        userRepository.delete(houseMember);
         return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
     }
 
@@ -86,8 +61,17 @@ public class HouseMemberService {
      * @return List of house member dto
      */
     public List<HouseMemberDTO> findAllHouseMembers() {
-        return houseMemberRepository.findAll()
+        return userRepository.findAll()
                 .stream().map(houseMember -> mvcConversionService.convert(houseMember, HouseMemberDTO.class))
                 .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    /**
+     * @param houseMemberId house member id
+     * @return a room House member
+     */
+    private HouseMember findHouseMember(final long houseMemberId) {
+        return userRepository.findById(HouseMember.class, houseMemberId)
+                .orElseThrow(() -> new SHSNotFoundException(String.format("House member with id: %d was not found", houseMemberId)));
     }
 }

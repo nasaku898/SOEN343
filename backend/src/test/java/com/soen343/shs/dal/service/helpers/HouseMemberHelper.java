@@ -5,10 +5,12 @@ import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.UserRole;
 import com.soen343.shs.dto.HouseMemberDTO;
 
+import java.util.Collections;
 import java.util.HashSet;
 
 public class HouseMemberHelper {
     public final static long MOCK_ROOM_ID = 1;
+    public final static String MOCK_ROOM_NAME = "SAUNA";
     public final static long MOCK_HOUSE_MEMBER_ID = 1;
     public final static long MOCK_ID = 1;
     public final static String MOCK_HOUSE_MEMBER_NAME = "John";
@@ -17,7 +19,7 @@ public class HouseMemberHelper {
     public static HouseMember buildMockHouseMember() {
         return HouseMember.builder()
                 .id(MOCK_HOUSE_MEMBER_ID)
-                .name(MOCK_HOUSE_MEMBER_NAME)
+                .username(MOCK_HOUSE_MEMBER_NAME)
                 .role(UserRole.PARENT)
                 .location(buildMockRoom())
                 .build();
@@ -36,13 +38,11 @@ public class HouseMemberHelper {
     }
 
     public static HouseMemberDTO getHouseMemberDTO() {
-        final Room room = buildMockRoom();
         return HouseMemberDTO.builder()
                 .id(MOCK_HOUSE_MEMBER_ID)
-                .name(MOCK_HOUSE_MEMBER_NAME)
-                .role((UserRole.PARENT).toString())
-                .roomName(room.getName())
-                .roomId(room.getId())
+                .username(MOCK_HOUSE_MEMBER_NAME)
+                .role((UserRole.PARENT))
+                .roomId(Collections.singletonMap(MOCK_ROOM_ID, MOCK_ROOM_NAME))
                 .build();
     }
 

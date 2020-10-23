@@ -4,16 +4,18 @@ import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dto.HouseMemberDTO;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.Collections;
+
 public class HouseMemberToHouseMemberDTOConverter implements Converter<HouseMember, HouseMemberDTO> {
 
     @Override
     public HouseMemberDTO convert(final HouseMember houseMember) {
         return HouseMemberDTO.builder()
-                .roomId(houseMember.getLocation().getId())
-                .name(houseMember.getName())
+                .roomId(Collections.singletonMap(houseMember.getLocation().getId(),
+                        houseMember.getLocation().getName()))
+                .username(houseMember.getUsername())
                 .id(houseMember.getId())
-                .role(houseMember.getRole().toString())
-                .roomName(houseMember.getLocation().getName())
+                .role(houseMember.getRole())
                 .build();
     }
 }

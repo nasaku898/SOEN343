@@ -27,12 +27,16 @@ public class HouseServiceTest {
 
     @Mock
     private LightRepository lightRepository;
+
     @Mock
     private HouseWindowRepository houseWindowRepository;
+
     @Mock
     private ExteriorDoorRepository exteriorDoorRepository;
+
     @Mock
     private ConversionService mvcConversionService;
+
     @InjectMocks
     private HouseService houseService;
 
@@ -109,7 +113,7 @@ public class HouseServiceTest {
         final LightDTO dto = houseService.modifyLightState(MOCK_HOUSE_LIGHT_ID, desiredState);
 
         Assertions.assertEquals(dto.getId(), mockLight.getId());
-        Assertions.assertEquals(dto.isLightOn(), mockLight.isLightOn());
+        Assertions.assertEquals(dto.isLightOn(), mockLight.getIsLightOn());
     }
 
 
@@ -129,8 +133,8 @@ public class HouseServiceTest {
         final DoorDTO dto = houseService.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, doWeOpen ? finalOpen : finalLocked);
 
         Assertions.assertEquals(dto.getId(), exteriorDoor.getId());
-        Assertions.assertEquals(dto.isOpen(), exteriorDoor.isOpen());
-        Assertions.assertEquals(dto.isLocked(), exteriorDoor.isLocked());
+        Assertions.assertEquals(dto.getOpen(), exteriorDoor.getOpen());
+        Assertions.assertEquals(dto.getLocked(), exteriorDoor.getLocked());
     }
 
     private void setUpWindowAndAssertStateChange(final HouseWindow mockHouseWindow,
@@ -147,8 +151,8 @@ public class HouseServiceTest {
 
         final WindowDTO dto = houseService.modifyWindowState(MOCK_HOUSE_WINDOW_ID, doWeOpen, doWeOpen ? finalOpen : finalBlocked);
         Assertions.assertEquals(dto.getId(), mockHouseWindow.getId());
-        Assertions.assertEquals(dto.isOpen(), mockHouseWindow.isOpen());
-        Assertions.assertEquals(dto.isBlocked(), mockHouseWindow.isBlocked());
+        Assertions.assertEquals(dto.isOpen(), mockHouseWindow.getOpen());
+        Assertions.assertEquals(dto.isBlocked(), mockHouseWindow.getBlocked());
     }
 
     private static Light buildMockLight(final boolean desiredState) {

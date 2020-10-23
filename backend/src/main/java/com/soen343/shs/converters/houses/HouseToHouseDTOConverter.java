@@ -12,8 +12,10 @@ public class HouseToHouseDTOConverter implements Converter<House, HouseDTO> {
     public HouseDTO convert(final House house) {
         return HouseDTO.builder()
                 .id(house.getId())
-                .roomIds(house.getRooms().stream().map(Room::getId).collect(Collectors.toSet()))
-                .temperatureOutside(house.getTemperatureOutside())
+                .rooms(house.getRooms()
+                        .stream()
+                        .collect(Collectors.toMap(Room::getId, Room::getName)))
+                .temperatureOutside(house.getExteriorSurrounding().getTemperatureOutside())
                 .build();
     }
 }
