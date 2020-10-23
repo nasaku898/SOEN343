@@ -23,7 +23,6 @@ public class HouseMemberService {
     private final RoomService roomService;
     private final SHSUserMapper mapper;
 
-
     /**
      * @param houseMemberDTO data transfer object that reflects the changes made to the object
      * @return HouseMemberDTO object reflecting the changes made to the object

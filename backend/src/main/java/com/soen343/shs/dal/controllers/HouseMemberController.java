@@ -4,10 +4,13 @@ import com.soen343.shs.dal.service.HouseMemberService;
 import com.soen343.shs.dto.HouseMemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,24 +24,6 @@ public class HouseMemberController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public HouseMemberDTO createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {
         return houseMemberService.createNewHouseMember(houseMemberDTO);
-    }
-
-    @PutMapping(value = "/houseMember/nameModification/{houseMemberId}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public HouseMemberDTO editHouseMemberName(@PathVariable final long houseMemberId, @RequestParam @NotNull final String newName) {
-        return houseMemberService.editName(houseMemberId, newName);
-    }
-
-    @PutMapping(value = "/houseMember/roleModification/{houseMemberId}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public HouseMemberDTO editHouseMemberRole(@PathVariable final long houseMemberId, @RequestParam @NotNull final String newRole) {
-        return houseMemberService.editRole(houseMemberId, newRole);
-    }
-
-    @PutMapping(value = "/houseMember/locationModification/{houseMemberId}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public HouseMemberDTO editHouseMemberLocation(@PathVariable final long houseMemberId, @RequestParam @NotEmpty final long newRoomId) {
-        return houseMemberService.editLocation(houseMemberId, newRoomId);
     }
 
     @GetMapping(value = "/houseMember/all")

@@ -28,6 +28,7 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final ConversionService mvcConversionService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

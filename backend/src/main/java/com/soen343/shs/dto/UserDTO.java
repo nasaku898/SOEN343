@@ -1,12 +1,20 @@
 package com.soen343.shs.dto;
 
 import com.soen343.shs.dal.model.UserRole;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Map;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@EqualsAndHashCode
 @SuperBuilder
 public class UserDTO {
     private long id;

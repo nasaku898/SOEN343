@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 @Service
 @RequiredArgsConstructor
 public class HouseService {
+
     private final LightRepository lightRepository;
     private final HouseWindowRepository houseWindowRepository;
     private final HouseRepository houseRepository;

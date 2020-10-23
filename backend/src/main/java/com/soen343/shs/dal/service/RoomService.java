@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RoomService {
+
     private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
 

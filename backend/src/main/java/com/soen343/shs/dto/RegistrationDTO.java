@@ -2,9 +2,11 @@ package com.soen343.shs.dto;
 
 import com.soen343.shs.dal.service.validators.annotations.PasswordMatches;
 import com.soen343.shs.dal.service.validators.annotations.ValidEmail;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @PasswordMatches
 @ValidEmail
 public class RegistrationDTO {
