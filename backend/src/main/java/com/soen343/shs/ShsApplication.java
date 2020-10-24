@@ -20,17 +20,15 @@ public class ShsApplication {
     CommandLineRunner init(final OutsideRepository outsideRepository, final ExteriorDoorRepository exteriorDoorRepository) {
 
         if (outsideRepository.count() == 0) {
-            return args -> {
-                outsideRepository.save(
-                        Outside.builder().door(exteriorDoorRepository
-                                .save(ExteriorDoor
-                                        .builder()
-                                        .open(false)
-                                        .locked(true)
-                                        .build()))
-                                .build()
-                );
-            };
+            return args -> outsideRepository.save(
+                    Outside.builder().door(exteriorDoorRepository
+                            .save(ExteriorDoor
+                                    .builder()
+                                    .open(false)
+                                    .locked(true)
+                                    .build()))
+                            .build()
+            );
         }
         return null;
     }
