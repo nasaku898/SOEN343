@@ -1,10 +1,7 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.Door;
-import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.Light;
-import com.soen343.shs.dal.model.Room;
+import com.soen343.shs.dal.model.*;
+import com.soen343.shs.dal.repository.CityRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
@@ -22,6 +19,7 @@ public class LoadSimulationService {
 
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
+    private final CityRepository cityRepository;
 
     /**
      * @param loadHouseDTO data transfer object representing the house layout
@@ -50,6 +48,7 @@ public class LoadSimulationService {
                         .build())
                 .collect(Collectors.toSet());
     }
+
 
     /**
      * @param dtoSet    set of dto

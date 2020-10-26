@@ -1,10 +1,6 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.ExteriorDoor;
-import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.Light;
-import com.soen343.shs.dal.model.Room;
+import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
@@ -35,9 +31,18 @@ public class HouseService {
     private final ConversionService mvcConversionService;
 
     public HouseDTO getHouse(final long id) {
-        return mvcConversionService.convert(houseRepository.findById(id)
-                .orElseThrow(() -> new HouseNotFoundException("House Not Found")), HouseDTO.class);
+        return mvcConversionService.convert(fetchHouse(id), HouseDTO.class);
     }
+
+    House fetchHouse(final long id) {
+        return houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException(getSHSNotFoundErrorMessage(id, House.class)));
+    }
+
+
+//    public HouseDTO updateHouse(final HouseDTO dto) {
+//        houseRepository.save(
+//        return dto;
+//    }
 
     /**
      * @param id           id of light object to modify
@@ -152,34 +157,12 @@ public class HouseService {
      * @return inside temperature
      */
     public double getTemperatureInside(final long houseId) {
-        return houseRepository.findById(houseId)
-                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
+        return fetchHouse(houseId)
                 .getRooms()
                 .stream()
                 .mapToDouble(Room::getTemperature)
                 .average()
                 .orElse(0);
-    }
-
-    /**
-     * @param houseId     a house id
-     * @param temperature new outside temperature
-     * @return HouseDTO object reflecting the changes made to the object
-     */
-    public HouseDTO setTemperatureOutside(final long houseId, final double temperature) {
-        final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)));
-        house.getExteriorSurrounding().setTemperatureOutside(temperature);
-        return mvcConversionService.convert(houseRepository.save(house), HouseDTO.class);
-    }
-
-    /**
-     * @param houseId a house id
-     * @return outside temperature
-     */
-    public double getTemperatureOutside(final long houseId) {
-        return houseRepository.findById(houseId)
-                .orElseThrow(() -> new HouseNotFoundException(getHouseNotFoundErrorMessage(houseId)))
-                .getExteriorSurrounding().getTemperatureOutside();
     }
 
     /**

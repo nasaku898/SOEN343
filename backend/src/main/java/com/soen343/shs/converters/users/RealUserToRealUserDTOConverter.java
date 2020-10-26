@@ -16,6 +16,7 @@ public class RealUserToRealUserDTOConverter implements Converter<RealUser, RealU
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .isOutside(user.getIsOutside())
                 .role(user.getRole())
                 .roomId(Objects.isNull(user.getLocation()) ? Collections.emptyMap() : Collections.singletonMap(user.getLocation().getId(), user.getLocation().getName()))
                 .build();

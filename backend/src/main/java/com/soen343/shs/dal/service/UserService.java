@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.RealUser;
+import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
 import com.soen343.shs.dal.repository.mapping.SHSUserMapper;
 import com.soen343.shs.dal.service.Login.LoginRequest;
@@ -10,6 +11,7 @@ import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RegistrationDTO;
+import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -70,30 +72,27 @@ public class UserService {
         session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
         return LoginResponse.builder()
                 .token(session.getId()) // return token so we can use for testing in postman
-                .user(getUserByUsername(loginRequest.getUsername()))
+                .user(getUserByUsername(loginRequest.getUsername(), RealUserDTO.class))
                 .build();
     }
 
-    /**
-     * @param realUserDTO UserDTO containing the new desired state of the user
-     * @return updated state of user
-     */
-    public RealUserDTO updateUser(final RealUserDTO realUserDTO) {
-        final RealUser user = userRepository.findById(RealUser.class, realUserDTO.getId()).orElseThrow(
-                () -> new SHSNotFoundException(getNotFoundExceptionMessage("id", String.valueOf(realUserDTO.getId()))));
-        userRepository.save(userMapper.updateUserFromDTO(realUserDTO, user));
-        return realUserDTO;
+    public UserDTO updateUser(final long id, final UserDTO dto) {
+        userRepository.save(userMapper.updateUserFromDTO(dto, userRepository.findById(User.class, id)
+                .orElseThrow(() -> new SHSNotFoundException(getNotFoundExceptionMessage("id", String.valueOf(id))))
+        ));
+        return dto;
     }
+
 
     /**
      * @param username String value used to fetch from repository by username
      * @return UserDTO corresponding to the unique given username, or throw UsernameNotFoundException
      */
-    public RealUserDTO getUserByUsername(final String username) {
+    public <DTO> DTO getUserByUsername(final String username, final Class<DTO> dtoClass) {
         return mvcConversionService.convert(
                 userRepository.findByUsername(RealUser.class, username)
                         .orElseThrow(() -> new SHSNotFoundException(getNotFoundExceptionMessage("username", username)))
-                , RealUserDTO.class);
+                , dtoClass);
     }
 
     private static String getNotFoundExceptionMessage(final String username, final String parameter) {

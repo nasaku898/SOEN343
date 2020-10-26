@@ -43,11 +43,8 @@ public class HouseController {
         return houseService.getHouse(id);
     }
 
-    @PutMapping(value = "/house/{houseId}/temperatureOutside/{temperatureOutside}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public @ResponseBody
-    HouseDTO updateTemperatureOutside(@PathVariable final long houseId, @PathVariable final int temperatureOutside) {
-        return houseService.setTemperatureOutside(houseId, (double) temperatureOutside);
-    }
-
+//    @GetMapping(value = "/house/houseLayout/{houseId}")
+//    public House getHouseLayout(@PathVariable final long houseId) {
+//        return simulationService.(houseId);
+//    }
 }

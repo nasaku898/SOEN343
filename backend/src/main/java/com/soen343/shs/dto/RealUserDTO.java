@@ -1,14 +1,12 @@
 package com.soen343.shs.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class RealUserDTO extends UserDTO {

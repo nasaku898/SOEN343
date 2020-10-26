@@ -1,11 +1,7 @@
 package com.soen343.shs.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.soen343.shs.dal.model.City;
+import lombok.*;
 
 import java.util.Set;
 
@@ -16,5 +12,6 @@ import java.util.Set;
 @EqualsAndHashCode
 @Builder
 public class LoadHouseDTO {
-    Set<LoadRoomDTO> rooms;
+    private Set<LoadRoomDTO> rooms;
+    private City city;
 }

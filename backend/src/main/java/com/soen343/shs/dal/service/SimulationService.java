@@ -2,15 +2,12 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.Room;
-import com.soen343.shs.dal.model.User;
-import com.soen343.shs.dal.repository.HouseRepository;
-import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
+import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,19 +18,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SimulationService {
 
-    private final HouseRepository houseRepository;
+    private final HouseService houseService;
     private final ConversionService mvcConversionService;
-    private final UserRepository userRepository;
     private final RoomService roomService;
+    private final UserService userService;
+
+    /**
+     * @param houseId     a house id
+     * @param temperature new outside temperature
+     * @return HouseDTO object reflecting the changes made to the object
+     */
+    public HouseDTO setTemperatureOutside(final long houseId, final double temperature) {
+        final House house = houseService.fetchHouse(houseId);
+        house.getCity().setTemperatureOutside(temperature);
+        return mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class);
+    }
 
     /**
      * @param houseId a house id
-     * @return house object
+     * @return outside temperature
      */
-    public House findHouse(final long houseId) {
-        return houseRepository.findById(houseId).orElseThrow(HouseNotFoundException::new);
+    public double getTemperatureOutside(final long houseId) {
+        return houseService.getHouse(houseId).getTemperatureOutside();
     }
-
 
     /**
      * @param username username of user
@@ -41,20 +48,17 @@ public class SimulationService {
      * @return UserDTO object reflecting the changes made to the object
      */
 
-    public <DTO, Entity extends User> DTO moveUserToRoom(final String username,
-                                                         final long roomId,
-                                                         final Class<Entity> entityClass,
-                                                         final Class<DTO> classType) {
-        final User user = userRepository.findByUsername(entityClass, username).orElseThrow(() -> new UsernameNotFoundException(String.format("User with username %s doesnt exist", username)));
-
-        if (user.getIsOutside()) {
-            user.setIsOutside(false);
+    public <DTO extends UserDTO> UserDTO moveUserToRoom(final String username,
+                                                        final long roomId,
+                                                        final Class<DTO> dto) {
+        final UserDTO user = userService.getUserByUsername(username, dto);
+        if (user.isOutside()) {
+            user.setOutside(false);
         }
+        user.getRoomId().put(roomId, roomService.getRoom(roomId).getName());
+        userService.updateUser(user.getId(), user);
 
-        user.setLocation(roomService.fetchRoom(roomId));
-
-
-        return mvcConversionService.convert(userRepository.save(user), classType);
+        return user;
     }
 
     /**
@@ -62,8 +66,7 @@ public class SimulationService {
      * @return list of RoomDTO
      */
     public List<RoomDTO> findAllRooms(final Long houseId) {
-        return houseRepository.findById(houseId)
-                .orElseThrow(() -> getShsNotFoundException(houseId))
+        return houseService.fetchHouse(houseId)
                 .getRooms()
                 .stream()
                 .map(room -> mvcConversionService.convert(room, RoomDTO.class))
@@ -71,7 +74,7 @@ public class SimulationService {
     }
 
     public Set<Room> fetchRoomsState(final long houseId) {
-        return houseRepository.findById(houseId).orElseThrow(() -> getShsNotFoundException(houseId)).getRooms();
+        return houseService.fetchHouse(houseId).getRooms();
     }
 
     private static SHSNotFoundException getShsNotFoundException(final long houseId) {

@@ -1,48 +1,38 @@
 package com.soen343.shs.dal.service;
 
+import com.soen343.shs.dal.model.City;
 import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Room;
-import com.soen343.shs.dal.repository.HouseMemberRepository;
-import com.soen343.shs.dal.repository.HouseRepository;
-import com.soen343.shs.dal.repository.HouseWindowRepository;
-import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.dto.UserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.MOCK_HOUSE_MEMBER_NAME;
-import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.MOCK_HOUSE_WINDOW_ID;
-import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.MOCK_ROOM_ID;
-import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.MOCK_ROOM_NAME;
-import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.buildMockHouseMember;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
+import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SimulationServiceTest {
 
     @Mock
-    private HouseRepository houseRepository;
+    private HouseService houseService;
 
     @Mock
-    private HouseMemberRepository houseMemberRepository;
-
-    @Mock
-    private HouseWindowRepository houseWindowRepository;
+    private UserService userService;
 
     @Mock
     private ConversionService mvcConversionService;
@@ -50,38 +40,40 @@ public class SimulationServiceTest {
     @Mock
     private RoomService roomService;
 
-    @Mock
-    private UserRepository userRepository;
-
     @InjectMocks
     private SimulationService classUnderTest;
 
 
     @Test
     public void moveUserToRoomSuccessfully() {
-        final Room mockRoom = buildMockRoom();
-        final HouseMember mockHouseMember = buildMockHouseMember();
-        when(roomService.fetchRoom(MOCK_ROOM_ID)).thenReturn(mockRoom);
-        when(userRepository.findByUsername(HouseMember.class, MOCK_HOUSE_MEMBER_NAME)).thenReturn(ofNullable(mockHouseMember));
+        final UserDTO dto = Mockito.mock(UserDTO.class);
 
-        when(mvcConversionService.convert(houseMemberRepository.save(mockHouseMember), HouseMemberDTO.class))
-                .thenReturn(HouseMemberDTO.builder()
-                        .username(MOCK_HOUSE_MEMBER_NAME)
-                        .roomId(Collections.singletonMap(MOCK_ROOM_ID, MOCK_ROOM_NAME))
-                        .build());
+        when(userService.getUserByUsername(MOCK_HOUSE_MEMBER_NAME, UserDTO.class)).thenReturn(dto);
+        when(roomService.getRoom(MOCK_ROOM_ID)).thenReturn(buildRoomDTO());
 
-        final HouseMemberDTO houseMemberDTO = classUnderTest.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID, HouseMember.class, HouseMemberDTO.class);
+        when(dto.getRoomId()).thenReturn(new HashMap<>());
+
+        when(userService.updateUser(dto.getId(), dto)).thenReturn(dto);
+
+        final UserDTO houseMemberDTO = classUnderTest.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID, UserDTO.class);
 
         Assertions.assertEquals(MOCK_ROOM_ID, houseMemberDTO.getRoomId().keySet().iterator().next());
     }
 
     @Test
     public void testFindAllRooms() {
-        final House house = House.builder().rooms(Collections.singleton(buildMockRoom())).build();
+        final House house = House.builder()
+                .city(City.builder()
+                        .build())
+                .rooms(Collections.singleton(buildMockRoom()))
+                .id(1L)
+                .build();
+
         final RoomDTO dto = buildRoomDTO();
-        when(houseRepository.findById(house.getId())).thenReturn(of(house));
+
+        when(houseService.fetchHouse(anyLong())).thenReturn(house);
         when(mvcConversionService.convert(any(Room.class), any())).thenReturn(dto);
-        final List<RoomDTO> rooms = (classUnderTest.findAllRooms(house.getId()));
+        final List<RoomDTO> rooms = classUnderTest.findAllRooms(house.getId());
         Assertions.assertEquals(dto, rooms.get(0));
     }
 

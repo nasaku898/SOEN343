@@ -1,9 +1,8 @@
 package com.soen343.shs;
 
-import com.soen343.shs.dal.model.ExteriorDoor;
-import com.soen343.shs.dal.model.Outside;
+import com.soen343.shs.dal.model.City;
+import com.soen343.shs.dal.repository.CityRepository;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
-import com.soen343.shs.dal.repository.OutsideRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,17 +16,11 @@ public class ShsApplication {
     }
 
     @Bean
-    CommandLineRunner init(final OutsideRepository outsideRepository, final ExteriorDoorRepository exteriorDoorRepository) {
+    CommandLineRunner init(final CityRepository cityRepository, final ExteriorDoorRepository exteriorDoorRepository) {
 
-        if (outsideRepository.count() == 0) {
-            return args -> outsideRepository.save(
-                    Outside.builder().door(exteriorDoorRepository
-                            .save(ExteriorDoor
-                                    .builder()
-                                    .open(false)
-                                    .locked(true)
-                                    .build()))
-                            .build()
+        if (cityRepository.count() == 0) {
+            return args -> cityRepository.save(
+                    City.builder().build()
             );
         }
         return null;

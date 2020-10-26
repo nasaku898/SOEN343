@@ -14,5 +14,6 @@ import java.util.Map;
 public class HouseDTO {
     private Long id;
     private Map<Long, String> rooms;
+    private String city;
     private Double temperatureOutside;
 }

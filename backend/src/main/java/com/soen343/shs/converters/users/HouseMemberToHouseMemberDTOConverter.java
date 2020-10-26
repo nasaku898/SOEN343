@@ -14,6 +14,7 @@ public class HouseMemberToHouseMemberDTOConverter implements Converter<HouseMemb
                 .roomId(Collections.singletonMap(houseMember.getLocation().getId(),
                         houseMember.getLocation().getName()))
                 .username(houseMember.getUsername())
+                .isOutside(houseMember.getIsOutside())
                 .id(houseMember.getId())
                 .role(houseMember.getRole())
                 .build();

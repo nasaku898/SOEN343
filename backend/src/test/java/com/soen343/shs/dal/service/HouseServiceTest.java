@@ -22,6 +22,7 @@ import org.springframework.core.convert.ConversionService;
 
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -90,7 +91,7 @@ class HouseServiceTest {
     private void setUpLightAndAssertStateChange(final boolean initialState, final boolean desiredState) {
         final Light mockLight = buildMockLight(initialState);
         when(lightRepository.findById(MOCK_HOUSE_LIGHT_ID)).thenReturn(java.util.Optional.ofNullable(mockLight));
-        when(mvcConversionService.convert(lightRepository.save(mockLight), LightDTO.class))
+        when(mvcConversionService.convert(lightRepository.save(requireNonNull(mockLight)), LightDTO.class))
                 .thenReturn(LightDTO.builder()
                         .id(MOCK_HOUSE_LIGHT_ID)
                         .isLightOn(desiredState)
@@ -160,7 +161,7 @@ class HouseServiceTest {
                 )
         );
     }
-    
+
     private void setUpWindowAndAssertStateChange(final HouseWindow mockHouseWindow,
                                                  final boolean doWeOpen,
                                                  final boolean finalOpen,

@@ -15,7 +15,8 @@ public class HouseToHouseDTOConverter implements Converter<House, HouseDTO> {
                 .rooms(house.getRooms()
                         .stream()
                         .collect(Collectors.toMap(Room::getId, Room::getName)))
-                .temperatureOutside(house.getExteriorSurrounding().getTemperatureOutside())
+                .city(house.getCity().getName())
+                .temperatureOutside(house.getCity().getTemperatureOutside())
                 .build();
     }
 }
