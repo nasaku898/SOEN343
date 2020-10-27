@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,5 +15,4 @@ public class DoorDTO {
     private Long id;
     private Boolean open;
     private Boolean locked;
-    private Map<Long, String> rooms;
 }

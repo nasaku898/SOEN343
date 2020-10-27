@@ -18,7 +18,7 @@ import org.springframework.core.convert.ConversionService;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,12 +69,12 @@ public class SimulationServiceTest {
                 .id(1L)
                 .build();
 
-        final RoomDTO dto = buildRoomDTO();
+        final Set<RoomDTO> dto = Collections.singleton(buildRoomDTO());
 
         when(houseService.fetchHouse(anyLong())).thenReturn(house);
         when(mvcConversionService.convert(any(Room.class), any())).thenReturn(dto);
-        final List<RoomDTO> rooms = classUnderTest.findAllRooms(house.getId());
-        Assertions.assertEquals(dto, rooms.get(0));
+        final Set<RoomDTO> rooms = classUnderTest.findAllRooms(house.getId());
+        Assertions.assertEquals(dto, rooms);
     }
 
     private static RoomDTO buildRoomDTO() {
@@ -83,9 +83,9 @@ public class SimulationServiceTest {
                 .name("MockRoom")
                 .temperature(0)
                 .userIds(Collections.emptySet())
-                .windowIds(Collections.emptySet())
-                .doorIds(Collections.emptySet())
-                .lightIds(Collections.emptySet())
+                .windows(Collections.emptySet())
+                .doors(Collections.emptySet())
+                .lights(Collections.emptySet())
                 .build();
     }
 

@@ -10,14 +10,12 @@ import com.soen343.shs.dto.WindowDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Component
-public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
+public class RoomDTOToRoomConverter implements Converter<Room, RoomDTO> {
     private final ConversionService mvcConversionService;
     private final ConvertCollectionOfDoors convertCollectionOfDoors;
 
@@ -26,21 +24,21 @@ public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
         return RoomDTO.builder()
                 .doors(convertCollectionOfDoors.convertDoorsToDTO(room.getDoors()))
                 .lights(convertLights(room.getLights()))
-                .name(room.getName())
-                .temperature(room.getTemperature())
                 .windows(convertWindows(room.getHouseWindows()))
-                .userIds(room.getUserIds())
-                .roomId(room.getId())
                 .build();
     }
 
-    private Set<LightDTO> convertLights(final Set<Light> lights) {
-        return lights.stream().map(light -> mvcConversionService.convert(light, LightDTO.class))
+
+    private Set<WindowDTO> convertWindows(final Set<HouseWindow> windows) {
+        return windows.stream()
+                .map(window -> mvcConversionService.convert(window, WindowDTO.class))
                 .collect(Collectors.toSet());
     }
 
-    private Set<WindowDTO> convertWindows(final Set<HouseWindow> windows) {
-        return windows.stream().map(window -> mvcConversionService.convert(windows, WindowDTO.class))
+    private Set<LightDTO> convertLights(final Set<Light> lights) {
+        return lights
+                .stream()
+                .map(light -> mvcConversionService.convert(light, LightDTO.class))
                 .collect(Collectors.toSet());
     }
 }

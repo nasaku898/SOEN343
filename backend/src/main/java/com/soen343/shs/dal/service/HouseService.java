@@ -5,6 +5,7 @@ import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.LightRepository;
+import com.soen343.shs.dal.repository.mapping.SHSHouseMapper;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
@@ -29,6 +30,7 @@ public class HouseService {
     private final HouseRepository houseRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
+    private final SHSHouseMapper houseMapper;
 
     public HouseDTO getHouse(final long id) {
         return mvcConversionService.convert(fetchHouse(id), HouseDTO.class);
@@ -39,10 +41,10 @@ public class HouseService {
     }
 
 
-//    public HouseDTO updateHouse(final HouseDTO dto) {
-//        houseRepository.save(
-//        return dto;
-//    }
+    public HouseDTO updateHouse(final HouseDTO dto) {
+        houseRepository.save(houseMapper.MapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
+        return dto;
+    }
 
     /**
      * @param id           id of light object to modify

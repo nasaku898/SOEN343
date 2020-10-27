@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +37,7 @@ public class SimulationService {
      * @return outside temperature
      */
     public double getTemperatureOutside(final long houseId) {
-        return houseService.getHouse(houseId).getTemperatureOutside();
+        return houseService.getHouse(houseId).getCity().getTemperatureOutside();
     }
 
     /**
@@ -65,12 +63,8 @@ public class SimulationService {
      * @param houseId a house id
      * @return list of RoomDTO
      */
-    public List<RoomDTO> findAllRooms(final Long houseId) {
-        return houseService.fetchHouse(houseId)
-                .getRooms()
-                .stream()
-                .map(room -> mvcConversionService.convert(room, RoomDTO.class))
-                .collect(Collectors.toList());
+    public Set<RoomDTO> findAllRooms(final Long houseId) {
+        return mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class).getRooms();
     }
 
     public Set<Room> fetchRoomsState(final long houseId) {

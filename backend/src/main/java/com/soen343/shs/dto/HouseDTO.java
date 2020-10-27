@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,7 +13,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class HouseDTO {
     private Long id;
-    private Map<Long, String> rooms;
-    private String city;
-    private Double temperatureOutside;
+    private Set<RoomDTO> rooms;
+    private CityDTO city;
 }

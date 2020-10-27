@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class SimulationController {
 
     @GetMapping(value = "/house/{houseId}/room/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public List<RoomDTO> findAllRoom(@PathVariable final long houseId) {
+    public Set<RoomDTO> findAllRoom(@PathVariable final long houseId) {
         return simulationService.findAllRooms(houseId);
     }
 

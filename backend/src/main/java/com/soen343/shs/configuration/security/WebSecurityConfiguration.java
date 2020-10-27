@@ -1,21 +1,11 @@
 package com.soen343.shs.configuration.security;
 
-import com.soen343.shs.converters.doors.ExteriorDoorToDoorDTOConverter;
-import com.soen343.shs.converters.doors.InteriorDoorToDoorDTOConverter;
-import com.soen343.shs.converters.houseWindows.HouseWindowToHouseWindowDTOConverter;
-import com.soen343.shs.converters.houseWindows.LoadHouseWindowDTOToHouseWindowConverter;
-import com.soen343.shs.converters.houses.HouseToHouseDTOConverter;
-import com.soen343.shs.converters.lights.LightToLightDTOConverter;
-import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
-import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
-import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
-import com.soen343.shs.converters.users.RealUserToRealUserDTOConverter;
-import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,9 +26,10 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-    // Dependencies
-    @Autowired
     private final SHSUserDetailsService userDetailsService;
+
+    @Lazy
+    private final ConversionService mvcConversionService;
 
     @Autowired
     public void configAuthentication(final AuthenticationManagerBuilder auth) throws Exception {
@@ -81,20 +72,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         return authProvider;
     }
 
-    @Override
-    public void addFormatters(final FormatterRegistry registry) {
-        registry.addConverter(new RegistrationDTOToUserConverter());
-        registry.addConverter(new RealUserToRealUserDTOConverter());
-        registry.addConverter(new RoomToRoomDTOConverter());
-        registry.addConverter(new ExteriorDoorToDoorDTOConverter());
-        registry.addConverter(new InteriorDoorToDoorDTOConverter());
-        registry.addConverter(new LightToLightDTOConverter());
-        registry.addConverter(new HouseWindowToHouseWindowDTOConverter());
-        registry.addConverter(new HouseMemberToHouseMemberDTOConverter());
-        registry.addConverter(new LoadLightDTOToLightConverter());
-        registry.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
-        registry.addConverter(new HouseToHouseDTOConverter());
-    }
+//    @Autowired
+//    @Override
+//    public void addFormatters(final FormatterRegistry mvcConversionService) {
+//        mvcConversionService.addConverter(new RegistrationDTOToUserConverter());
+//        mvcConversionService.addConverter(new RealUserToRealUserDTOConverter());
+//        mvcConversionService.addConverter(new RoomToRoomDTOConverter());
+//        mvcConversionService.addConverter(new ExteriorDoorToExteriorDoorDTOConverter());
+//        mvcConversionService.addConverter(new InteriorDoorToInteriorDoorDTOConverter());
+//        mvcConversionService.addConverter(new LightToLightDTOConverter());
+//        mvcConversionService.addConverter(new HouseDTOToHouseConverter());
+//        mvcConversionService.addConverter(new HouseWindowToHouseWindowDTOConverter());
+//        mvcConversionService.addConverter(new HouseMemberToHouseMemberDTOConverter());
+//        mvcConversionService.addConverter(new LoadLightDTOToLightConverter());
+//        mvcConversionService.addConverter(new LoadHouseWindowDTOToHouseWindowConverter());
+//        mvcConversionService.addConverter(new HouseToHouseDTOConverter());
+//    }
 
     @Bean
     static CorsConfigurationSource corsConfigurationSource() {

@@ -12,11 +12,11 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class RoomDTO {
+    private long roomId;
     private String name;
-    private Set<Long> doorIds;
-    private Set<Long> windowIds;
-    private Set<Long> lightIds;
+    private Set<DoorDTO> doors;
+    private Set<WindowDTO> windows;
+    private Set<LightDTO> lights;
     private double temperature;
     private Set<Long> userIds;
-    private long roomId;
 }

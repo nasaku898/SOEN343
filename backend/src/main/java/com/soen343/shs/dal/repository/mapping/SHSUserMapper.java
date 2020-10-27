@@ -11,6 +11,4 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface SHSUserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateUserFromDTO(UserDTO dto, @MappingTarget User user);
-
-
 }
