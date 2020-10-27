@@ -4,6 +4,7 @@ import com.soen343.shs.dal.model.City;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Room;
+import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.RoomDTO;
 import com.soen343.shs.dto.UserDTO;
 import org.junit.jupiter.api.Assertions;
@@ -21,8 +22,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,15 +63,21 @@ public class SimulationServiceTest {
     public void testFindAllRooms() {
         final House house = House.builder()
                 .city(City.builder()
+                        .name("")
+                        .id(0L)
+                        .temperatureOutside(0.0)
+                        .houses(Collections.emptySet())
                         .build())
                 .rooms(Collections.singleton(buildMockRoom()))
                 .id(1L)
                 .build();
+        final HouseDTO houseDTO = Mockito.mock(HouseDTO.class);
 
         final Set<RoomDTO> dto = Collections.singleton(buildRoomDTO());
 
-        when(houseService.fetchHouse(anyLong())).thenReturn(house);
-        when(mvcConversionService.convert(any(Room.class), any())).thenReturn(dto);
+        when(houseService.fetchHouse(house.getId())).thenReturn(house);
+        when(mvcConversionService.convert(house, HouseDTO.class)).thenReturn(houseDTO);
+        when(houseDTO.getRooms()).thenReturn(dto);
         final Set<RoomDTO> rooms = classUnderTest.findAllRooms(house.getId());
         Assertions.assertEquals(dto, rooms);
     }
