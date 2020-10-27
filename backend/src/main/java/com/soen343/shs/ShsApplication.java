@@ -15,6 +15,7 @@ public class ShsApplication {
         SpringApplication.run(ShsApplication.class, args);
     }
 
+    // temp...gotta think of something better...
     @Bean
     CommandLineRunner init(final CityRepository cityRepository, final ExteriorDoorRepository exteriorDoorRepository) {
 

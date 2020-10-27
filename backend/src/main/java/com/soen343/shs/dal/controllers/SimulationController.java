@@ -1,13 +1,12 @@
 package com.soen343.shs.dal.controllers;
 
-import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.service.SimulationService;
-import com.soen343.shs.dto.HouseDTO;
-import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -24,22 +23,24 @@ public class SimulationController {
         return simulationService.setTemperatureOutside(houseId, temperatureOutside);
     }
 
-//    @PutMapping(value = "/user/{username}/room/{roomId}")
-//    @ResponseStatus(value = HttpStatus.ACCEPTED)
-//    @ResponseBody
-//    public UserDTO moveUserToRoom(@NotNull @RequestParam final String username, @PathVariable final long roomId) {
-//        return simulationService.moveUserToRoom(username, roomId, );
-//    }
+    @PutMapping(value = "/user/{username}/room/{roomId}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseBody
+    public UserDTO moveUserToRoom(@NotNull @PathVariable final String username, @PathVariable final long roomId) {
+        return simulationService.moveUserToRoom(username, roomId, RealUserDTO.class);
+    }
+
+    // This should be made...less dumb
+    @PutMapping(value = "/houseMember/{username}/room/{roomId}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseBody
+    public UserDTO moveHouseMemberToRoom(@NotNull @PathVariable final String username, @PathVariable final long roomId) {
+        return simulationService.moveUserToRoom(username, roomId, HouseMemberDTO.class);
+    }
 
     @GetMapping(value = "/house/{houseId}/room/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public Set<RoomDTO> findAllRoom(@PathVariable final long houseId) {
         return simulationService.findAllRooms(houseId);
-    }
-
-    @GetMapping(value = "/house/{houseId}/roomState/all")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public Set<Room> fetchRoomsState(@PathVariable final long houseId) {
-        return simulationService.fetchRoomsState(houseId);
     }
 }

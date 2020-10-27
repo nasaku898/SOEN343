@@ -42,7 +42,7 @@ public class HouseService {
 
 
     public HouseDTO updateHouse(final HouseDTO dto) {
-        houseRepository.save(houseMapper.MapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
+        houseRepository.save(houseMapper.mapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
         return dto;
     }
 
@@ -143,15 +143,6 @@ public class HouseService {
         if (stateToCheck) {
             throw new IllegalStateException(String.format(ERROR_MSG, id));
         }
-    }
-
-
-    /**
-     * @param houseId a house id
-     * @return error message
-     */
-    private static String getHouseNotFoundErrorMessage(final long houseId) {
-        return String.format("Cannot find house with houseId: %d", houseId);
     }
 
     /**

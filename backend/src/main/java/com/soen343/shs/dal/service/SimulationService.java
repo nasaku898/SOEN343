@@ -1,8 +1,6 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.Room;
-import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.RoomDTO;
 import com.soen343.shs.dto.UserDTO;
@@ -10,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -64,14 +63,6 @@ public class SimulationService {
      * @return list of RoomDTO
      */
     public Set<RoomDTO> findAllRooms(final Long houseId) {
-        return mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class).getRooms();
-    }
-
-    public Set<Room> fetchRoomsState(final long houseId) {
-        return houseService.fetchHouse(houseId).getRooms();
-    }
-
-    private static SHSNotFoundException getShsNotFoundException(final long houseId) {
-        return new SHSNotFoundException(String.format("House with id: %d doesn't exist", houseId));
+        return Objects.requireNonNull(mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class)).getRooms();
     }
 }

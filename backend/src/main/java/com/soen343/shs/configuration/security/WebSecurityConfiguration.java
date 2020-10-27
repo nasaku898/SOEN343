@@ -43,9 +43,10 @@ import java.util.Collections;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final SHSUserDetailsService userDetailsService;
+    private static final String FRONTEND_URL = "http://localhost:3000";
 
     @Autowired
-    public void configAuthentication(final AuthenticationManagerBuilder auth) throws Exception {
+    public void configAuthentication(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authProvider());
     }
 
@@ -109,7 +110,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
     @Bean
     static CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Collections.singletonList(FRONTEND_URL));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "content-type"));
         configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));

@@ -17,7 +17,7 @@ import java.util.Set;
 public class SHSHouseMapper {
     private final ConversionService mvcConversionService;
 
-    public House MapHouseDTOToHouse(final HouseDTO dto, final House house) {
+    public House mapHouseDTOToHouse(final HouseDTO dto, final House house) {
 
         return House.builder()
                 .rooms(getRooms(dto, house))
