@@ -3,7 +3,7 @@ import {Button, Modal, TableCell, TableRow, TextField, Typography} from '@materi
 import UpdateIcon from '@material-ui/icons/Update';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from '../HouseOverview/HouseOverviewStyle'
-import {editRoomTemperature} from '../../modules/HouseOverview/HouseService';
+import {editRoomTemperature} from "../../modules/HouseOverview/RoomService";
 
 const RoomInfo = ({row}) => {
     const [modalTyping, setModalTyping] = useState(row.temperature)

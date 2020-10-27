@@ -1,25 +1,25 @@
-import React, { Fragment, useEffect } from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Checkbox, FormGroup, FormLabel } from '@material-ui/core';
+import {Checkbox, FormGroup, FormLabel} from '@material-ui/core';
 import useStyles from './SHCPanelStyle';
-import { fetchLightsDoorsAndWindows } from '../../modules/SHCPanel/LightsDoorsAndWindows';
-import { setLightDoorOrWindow } from '../../modules/SHCPanel/setLightDoorOrWindow';
-import { HOUSE_ID, ITEMS } from './SHCPanelConstants';
+import {fetchLightsDoorsAndWindows} from './LightsDoorsAndWindows';
+import {setLightDoorOrWindow} from '../../modules/SHCPanel/setLightDoorOrWindow';
+import {HOUSE_ID, ITEMS} from './SHCPanelConstants';
 
 const SHCPanel = (props) => {
   const classes = useStyles();
-  const [itemSelected, setItemSelected] = React.useState('');
-  const [data, setData] = React.useState({});
+  const [itemSelected, setItemSelected] = useState('');
+  const [data, setData] = useState({});
 
   useEffect(() => {
     handleUpdateLightDoorsAndWindows();
   }, []);
 
-  const handleUpdateLightDoorsAndWindows = async () => {
+  const handleUpdateLightDoorsAndWindows = () => {
     fetchLightsDoorsAndWindows(HOUSE_ID).then(response => {
       setData(response);
     });

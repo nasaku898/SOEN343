@@ -26,7 +26,6 @@ const SimulationForm = () => {
     const [date, setDate] = useState(new Date());
     const [disabled, setDisabled] = useState(true);
 
-
     useEffect(() => {
             (async () => {
                 setUser(await getUser("Dawgears"));

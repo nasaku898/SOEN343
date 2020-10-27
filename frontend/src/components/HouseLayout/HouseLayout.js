@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { fetchHouseState, loadHouseLayout } from '../../modules/HouseOverview/HouseOverviewAPI';
+import React, {useEffect, useState} from 'react'
 import DraggableRoom from '../DraggableRoom/DraggableRoom';
 import useStyles from './HouseLayoutStyle'
 import AddIcon from '@material-ui/icons/Add';
-import { Box, Input, Typography } from '@material-ui/core';
+import {Box, Input, Typography} from '@material-ui/core';
+import {findAllRooms} from "../../modules/HouseOverview/SimulationService";
+import {loadHouseLayout} from '../../modules/HouseOverview/LoadSimulationService';
 
 
 let Draggable = require('react-draggable');
 
-const HouseLayout = () => {
+const HouseLayout = (id) => {
     const [rooms, setRooms] = useState([])
     const [refresh, setRefresh] = useState(false)
     const classes = useStyles();
 
     useEffect(() => {
-        fetchHouseState().then(response => {
+        findAllRooms(id).then(response => {
             setRooms(response)
         })
     }, [refresh])
@@ -39,9 +40,9 @@ const HouseLayout = () => {
             <div className={classes.uploadWrapper}>
                 <form>
                     <label htmlFor="file" className={classes.uploadBTN}>
-                        <Box className={classes.uploadBTN} >
+                        <Box className={classes.uploadBTN}>
                             <Typography>
-                                <AddIcon></AddIcon>
+                                <AddIcon/>
                             </Typography>
                         </Box>
                     </label>
@@ -49,13 +50,14 @@ const HouseLayout = () => {
 
             </div>
 
-            <Input className={classes.Input} type="file" id="file" name="file" inputProps={{ accept: ".json" }} onChange={handleHouseLayoutUpload}></Input>
+            <Input className={classes.Input} type="file" id="file" name="file" inputProps={{accept: ".json"}}
+                   onChange={handleHouseLayoutUpload}/>
 
             {
                 rooms.map((room) => (
                     <Draggable key={room.id}>
                         <div>
-                            <DraggableRoom room={room}></DraggableRoom>
+                            <DraggableRoom room={room}/>
                         </div>
                     </Draggable>
                 ))

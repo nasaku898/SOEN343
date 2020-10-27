@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import {Grid, Typography} from  '@material-ui/core'
+import React, {useEffect, useState} from 'react'
+import {Grid, Typography} from '@material-ui/core'
 import {Brightness2, Brightness4, Brightness5, Lock, LockOpen} from '@material-ui/icons'
-import { fetchHouseState } from '../../modules/HouseOverview/HouseOverviewAPI'
-import { Button } from '../landing/form_components/Button'
+import {fetchHouseState} from '../../modules/HouseOverview/LoadSimulationService'
+import {Button} from '../landing/form_components/Button'
 
 const HouseRender = () => {
 

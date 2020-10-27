@@ -1,18 +1,19 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import { fetchHouseState } from '../../modules/HouseOverview/HouseService'
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core'
+import React, {useEffect, useState} from 'react'
 import Paper from '@material-ui/core/Paper';
 import RoomInfo from '../RoomInfo/RoomInfo';
 import useStyles from './HouseOverviewStyle'
-const HouseOverview = () => {
+import {findAllRooms} from "../../modules/HouseOverview/SimulationService";
+
+const HouseOverview = (houseId) => {
 
     const [rows, setRows] = useState([])
     const classes = useStyles()
     useEffect(() => {
-        fetchHouseState().then(response => {
+        findAllRooms(houseId).then(response => {
             setRows(response)
         })
-    }, [])
+    }, [houseId])
 
     return (
         <div>
