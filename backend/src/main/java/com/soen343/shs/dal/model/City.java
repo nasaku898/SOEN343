@@ -1,7 +1,6 @@
 package com.soen343.shs.dal.model;
 
 import lombok.*;
-import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,7 +17,6 @@ public class City {
     private Long id;
 
     @Column(unique = true)
-    @Immutable
     private String name;
 
     @OneToMany
