@@ -3,6 +3,8 @@ package com.soen343.shs.dto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,4 +16,5 @@ public class RealUserDTO extends UserDTO {
     private String firstName;
     private String lastName;
     private boolean isOutside;
+    private Set<HouseDTO> house;
 }

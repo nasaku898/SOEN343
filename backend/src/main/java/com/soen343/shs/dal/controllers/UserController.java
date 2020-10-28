@@ -17,23 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
-
-
-    @PostMapping(path = "/register")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public @ResponseBody
-    RealUserDTO addNewUser(final HttpServletRequest request, @RequestBody final RegistrationDTO registrationDTO) {
-        return userService.createUser(registrationDTO);
-    }
-
-    @PostMapping(path = "/login")
-    @ResponseStatus(value = HttpStatus.OK)
-    public @ResponseBody
-    LoginResponse loginUser(final HttpServletRequest request, @RequestBody final LoginRequest loginRequest) {
-        return userService.login(request, loginRequest);
-    }
 
     @PutMapping(path = "/user/update}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)

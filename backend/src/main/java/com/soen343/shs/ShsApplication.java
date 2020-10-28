@@ -26,5 +26,4 @@ public class ShsApplication {
         }
         return null;
     }
-
 }

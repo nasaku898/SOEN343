@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,8 +22,10 @@ import javax.persistence.Entity;
 public class RealUser extends User {
     @Column(unique = true)
     private String email;
-
     private String firstName;
     private String lastName;
     private String password;
+
+    @OneToMany
+    private Set<House> home;
 }

@@ -52,63 +52,6 @@ class UserServiceTest {
     @InjectMocks
     private UserService classUnderTest;
 
-    private static final RegistrationDTO REGISTRATION_DTO = buildRegistrationDTO();
-    private static final String ENCODED_PASSWORD = "encodedString";
-    private static final String REGISTRATION_ERR_MSG = "Username/email already exists!";
-
-    @Test
-    void testCreateUser_givenUserDoesntAlreadyExist() {
-        when(mvcConversionService.convert(REGISTRATION_DTO, RealUser.class)).thenReturn(createUser());
-        when(passwordEncoder.encode(REGISTRATION_DTO.getPassword())).thenReturn(ENCODED_PASSWORD);
-        when(mvcConversionService.convert(userRepository.save(createUser()), RealUserDTO.class)).thenReturn(RealUserDTO.builder().build());
-
-        final RealUserDTO dto = classUnderTest.createUser(REGISTRATION_DTO);
-        Assertions.assertNotNull(dto);
-    }
-
-    @Test
-    void testCreateUser_givenUserAlreadyExists() {
-        when(userRepository.findByUsername(RealUser.class, REGISTRATION_DTO.getUsername())).thenReturn(Optional.of(createUser()));
-
-        final SHSUserAlreadyExistsException exception = Assertions.assertThrows(SHSUserAlreadyExistsException.class, () -> {
-                    classUnderTest.createUser(REGISTRATION_DTO);
-                }
-        );
-
-        Assertions.assertEquals(REGISTRATION_ERR_MSG, exception.getMessage());
-    }
-
-    @Test
-    void testLogin_givenValidCredentials() {
-        final LoginRequest loginRequest = buildLoginRequest();
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-
-        final RealUser user = createUser();
-
-        when(userRepository.findByUsername(RealUser.class, USERNAME)).thenReturn(Optional.ofNullable(user));
-        when(mvcConversionService.convert(user, RealUserDTO.class)).thenReturn(createUserDTO());
-
-        final HttpSession session = request.getSession(true);
-        final LoginResponse response = classUnderTest.login(request, loginRequest);
-
-        Assertions.assertNotNull(response);
-        Assertions.assertEquals(createUserDTO(), response.getUser());
-        Assertions.assertEquals(Objects.requireNonNull(session).getId(), response.getToken());
-    }
-
-    @Test
-    void testLogin_givenInvalidCredentials() {
-        final LoginRequest loginRequest = buildLoginRequest();
-        final MockHttpServletRequest request = new MockHttpServletRequest();
-
-        when(authProvider.authenticate(any())).thenThrow(BadCredentialsException.class);
-
-        Assertions.assertThrows(BadCredentialsException.class, () -> {
-                    classUnderTest.login(request, loginRequest);
-                }
-        );
-    }
-
     @Test
     void testUpdate() {
         final RealUserDTO dto = createUserDTO();
@@ -122,7 +65,7 @@ class UserServiceTest {
         Assertions.assertEquals(dto.getFirstName(), ((RealUserDTO) real).getFirstName());
     }
 
-    private static RegistrationDTO buildRegistrationDTO() {
+    static RegistrationDTO buildRegistrationDTO() {
         return RegistrationDTO.builder()
 
                 .username(USERNAME)
@@ -135,7 +78,7 @@ class UserServiceTest {
                 .build();
     }
 
-    private static LoginRequest buildLoginRequest() {
+    static LoginRequest buildLoginRequest() {
         return LoginRequest.builder()
                 .username(USERNAME)
                 .password(PASSWORD)
