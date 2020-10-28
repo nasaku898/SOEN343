@@ -17,8 +17,13 @@ const UserProfileList = () => {
     const [userProfileList, setUserProfileList] = useState([])
     const [name, setName] = useState("")
     const [role, setRole] = useState("")
-    const [roomId, setRoomId] = useState(null)
     const [rooms, setRooms] = useState([])
+    const [houseMember, setHouseMember] = useState({
+        username: "",
+        location: "",
+        role: "",
+        isOutside: true
+    });
 
     useEffect(() => {
         findAllHouseMembers().then(response => {
@@ -35,23 +40,37 @@ const UserProfileList = () => {
 
     }, [refresh])
 
-    const handleNameTyping = (event) => {
-        setName(event.target.value)
-    }
+
+    const handleChange = (event) => {
+        setHouseMember({
+            ...houseMember,
+            [event.target.name]: event.target.value,
+        });
+    };
+
 
     const handleCreateNewHouseMember = () => {
 
-        if (!name || !role || !roomId) {
+        if (!name || !role) {
             alert("Cannot leave field empty")
             return
         }
-
-        createNewHouseMember(name, role, roomId)
+        if (houseMember.location) {
+            setHouseMember({
+                ...houseMember,
+                isOutside: false
+            })
+        }
+        createNewHouseMember(houseMember)
             .then(() => {
                 setRefresh(!refresh)
-                setName("")
-                setRole("")
-                setRoomId(null)
+                setHouseMember(
+                    {
+                        name: "",
+                        role: "",
+                        location: {},
+                        isOutside: true
+                    })
                 handleCloseModal()
             }).catch(error => {
                 alert(`Status: ${error.status}: ${error.message}`)
@@ -75,17 +94,17 @@ const UserProfileList = () => {
     const createUser = (
         <div className={classes.modal}>
             <MenuItem>
-                <TextField label="Name" value={name} onChange={handleNameTyping} />
+                <TextField label="Name" value={houseMember.username} onChange={handleChange}/>
             </MenuItem>
 
             <br/>
             <MenuItem>
-                <RoleSelector role={role} setRole={setRole}/>
+                <RoleSelector role={houseMember.role} setRole={handleChange}/>
             </MenuItem>
 
             <br/>
             <MenuItem>
-                <LocationSelector currentRoom={2} rooms={rooms} setRoomId={setRoomId}/>
+                <LocationSelector rooms={rooms} setRoomId={handleChange}/>
             </MenuItem>
             <Button onClick={handleCreateNewHouseMember}>Create</Button>
         </div>

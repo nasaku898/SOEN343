@@ -5,64 +5,55 @@ import UpdateIcon from '@material-ui/icons/Update';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-import {
-    houseMemberLocationChange,
-    houseMemberNameModification,
-    houseMemberRoleModification
-} from '../../modules/UserProfileList/HouseMemberService';
+import {updateHouseMember} from '../../modules/UserProfileList/HouseMemberService';
+import {moveHouseMemberToRoom} from "../../modules/HouseOverview/SimulationService";
 
 const UserProfile = ({userProfile, editMode, rooms}) => {
 
     const classes = useStyles()
-
-
     const [role, setRole] = useState(userProfile.role)
     const [name, setName] = useState(userProfile.name)
-    const [room, setRoom] = useState(userProfile.roomName)
-    const [roomId, setRoomId] = useState(userProfile.roomId)
-
+    const [room, setRoom] = useState(userProfile.location)
+    const [profile, setProfile] = useState({userProfile})
     const userProfileId = userProfile.id
 
     //Temporary state when typing or selecting a role
     const [nameField, setNameField] = useState(userProfile.name)
-    const [roleField, setRoleField] = useState(userProfile.role)
 
-    const handleNameModification = (event) => {
+    // this will send the PUT request to update the object, and will update our view with whichever fields have been modified
+    const handleUpdate = (event) => {
         event.preventDefault()
-
-        houseMemberNameModification(userProfileId, nameField).then(response => {
-            setName(response.name)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
+        (async () => {
+            const response = await updateHouseMember(userProfile);
+            setProfile({
+                ...profile,
+                ...response
+            })
         })
     }
 
-    const handleRoleModification = (event) => {
-        event.preventDefault()
-        houseMemberRoleModification(userProfileId, roleField).then(response => {
-            setRole(response.role)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
-        })
-    }
 
     const handleLocationChange = (event) => {
         event.preventDefault()
-        houseMemberLocationChange(roomId, name).then(response => {
-            setName(response.name)
-            setRole(response.role)
-            setRoom(response.roomName)
-            setRoomId(response.roomId)
+        moveHouseMemberToRoom(profile.username, room.id).then(response => {
+            setProfile({
+                ...profile,
+                ...response
+            })
         }).catch(error => {
             alert(`Status: ${error.status}: ${error.message}`)
         })
     }
+    const handleChange = (event) => {
+            setProfile({
+                ...profile,
+                [event.target.name]: event.target.value,
+            })
+        }
+    ;
 
-    const handleNameTyping = (event) => {
-        setNameField(event.target.value)
-    }
 
-    //Function for handling menu
+//Function for handling menu
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleEditButtonClick = (event) => {
@@ -76,20 +67,26 @@ const UserProfile = ({userProfile, editMode, rooms}) => {
     return (
         <div className={classes.container}>
             <Grid container direction="row" spacing={0} className={classes.userProfileWrapper}>
-                <Grid item xs={3} >
-                    <Typography>Name: {name}</Typography>
+                <Grid item xs={3}>
+                    <Typography>Name: {profile.username}</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography>Role: {role}</Typography>
+                    <Typography>Role: {profile.role}</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography>Location: {room}</Typography>
+                    <Typography>
+                        Location:
+                        {profile.isOutside
+                            ? "outside"
+                            : profile.location}
+                    </Typography>
                 </Grid>
                 <Grid item xs={3}>
                     {
                         editMode ?
                             <div>
-                                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleEditButtonClick}>
+                                <Button aria-controls="simple-menu" aria-haspopup="true"
+                                        onClick={handleEditButtonClick}>
                                     Edit
                                 </Button>
                                 <Menu
@@ -99,32 +96,34 @@ const UserProfile = ({userProfile, editMode, rooms}) => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleCloseEdit}>
 
-                                    <MenuItem >
-                                        <TextField label="Name" value={nameField} onChange={handleNameTyping} autoComplete="off" />
-                                        <Button onClick={handleNameModification}>
-                                            <UpdateIcon></UpdateIcon>
+                                    <MenuItem>
+                                        <TextField label="Name" value={profile.username} onChange={handleChange}
+                                                   autoComplete="off"/>
+                                        <Button onClick={handleUpdate}>
+                                            <UpdateIcon/>
                                         </Button>
 
                                     </MenuItem>
 
                                     <MenuItem>
-                                        <RoleSelector role={roleField} setRole={setRoleField}></RoleSelector>
-                                        <Button onClick={handleRoleModification}>
-                                            <UpdateIcon></UpdateIcon>
+                                        <RoleSelector role={profile.role} setRole={handleChange}/>
+                                        <Button onClick={handleUpdate}>
+                                            <UpdateIcon/>
                                         </Button>
                                     </MenuItem>
 
                                     <MenuItem>
-                                        <LocationSelector currentRoom={roomId} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                                        <LocationSelector currentRoom={profile.location} rooms={rooms}
+                                                          setRoomId={handleChange}/>
                                         <Button onClick={handleLocationChange}>
-                                            <UpdateIcon></UpdateIcon>
+                                            <UpdateIcon/>
                                         </Button>
                                     </MenuItem>
 
                                 </Menu>
                             </div>
                             :
-                            <Box></Box>
+                            <Box/>
                     }
                 </Grid>
 
