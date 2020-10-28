@@ -1,12 +1,17 @@
-import { Box, Grid, Menu, Typography, MenuItem, Button, TextField } from '@material-ui/core'
-import React, { useState } from 'react'
+import {Box, Button, Grid, Menu, MenuItem, TextField, Typography} from '@material-ui/core'
+import React, {useState} from 'react'
 import useStyles from './UserProfileStyle'
 import UpdateIcon from '@material-ui/icons/Update';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-import { houseMemberNameModification, houseMemberRoleModification, houseMemberLocationChange } from '../../modules/UserProfileList/HouseMemberAPI';
-const UserProfile = ({ userProfile, editMode, rooms }) => {
+import {
+    houseMemberLocationChange,
+    houseMemberNameModification,
+    houseMemberRoleModification
+} from '../../modules/UserProfileList/HouseMemberService';
+
+const UserProfile = ({userProfile, editMode, rooms}) => {
 
     const classes = useStyles()
 

@@ -60,7 +60,7 @@ public class UserController {
     @GetMapping(value = "/user")
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public RealUserDTO getUser(@AuthenticationPrincipal final Authentication authentication) {
+    public RealUserDTO getAuthenticatedUser(@AuthenticationPrincipal final Authentication authentication) {
         return userService.getUserByUsername(authentication.getName(), RealUserDTO.class);
     }
 

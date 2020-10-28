@@ -9,6 +9,7 @@ import useStyles from './SHCPanelStyle';
 import {fetchLightsDoorsAndWindows} from './LightsDoorsAndWindows';
 import {setLightDoorOrWindow} from '../../modules/SHCPanel/setLightDoorOrWindow';
 import {HOUSE_ID, ITEMS} from './SHCPanelConstants';
+import DoorPanel from "./DoorPanel";
 
 const SHCPanel = (props) => {
   const classes = useStyles();
@@ -64,8 +65,8 @@ const SHCPanel = (props) => {
               return (
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox key={`on-light-${light.id}`} checked={light.lightOn} onChange={(event) => handleItemChange(event, 'light')} name={`${light.id}`} />}
-                    label={light.id}
+                      control={<Checkbox key={`on-light-${light.id}`} checked={light.lightOn} onChange={(event) => handleItemChange(event, 'light')} name={`${light.id}`} />}
+                      label={light.id}
                   />
                 </FormGroup>
               )
@@ -75,39 +76,8 @@ const SHCPanel = (props) => {
       }
 
       {/* Doors */}
-      {
-        itemSelected === "doors" &&
-        <FormControl component="fieldset" className={classes.checkboxFormControl}>
-          <FormLabel component="legend">Open</FormLabel>
-          {
-            data.doors.map(door => {
-              return (
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox key={`open-door-${door.id}`} checked={door.open} onChange={(event) => handleItemChange(event, 'exteriorDoorOpen')} name={`${door.id}`} />}
-                    label={door.id}
-                  />
-                </FormGroup>
-              )
-            })
-          }
-          <FormLabel component="legend">Locked</FormLabel>
-          {
-            data.doors.map(door => {
-              if (door.locked != null) {
-                return (
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox key={`lock-door-${door.id}`} checked={door.locked} onChange={(event) => handleItemChange(event, 'exteriorDoorLock')} name={`${door.id}`} />}
-                      label={door.id}
-                    />
-                  </FormGroup>
-                )
-              }
-              return <></>
-            })
-          }
-        </FormControl>
+      {itemSelected === "doors" &&
+      <DoorPanel handleItemChange={handleItemChange} doors={data.doors} classes={classes}/>
       }
 
       {/* Windows */}

@@ -1,12 +1,13 @@
-import { Box, Button, Modal, Typography, TextField, MenuItem } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
+import {Box, Button, MenuItem, Modal, TextField, Typography} from '@material-ui/core'
+import React, {useEffect, useState} from 'react'
 import UserProfile from '../UserProfile/UserProfile'
 import useStyles from './UserProfileListStyle'
 import AddIcon from '@material-ui/icons/Add';
 import "../../Utils/config";
 import RoleSelector from '../RoleSelector/RoleSelector';
 import LocationSelector from '../LocationSelector/LocationSelector';
-import { fetchHouseMember, fetchRooms, createNewHouseMember } from '../../modules/UserProfileList/HouseMemberAPI';
+import {createNewHouseMember, findAllHouseMembers} from '../../modules/UserProfileList/HouseMemberService';
+import {getHouse} from "../../modules/HouseOverview/HouseService";
 
 const UserProfileList = () => {
     const [editMode, SetEditMode] = useState(true)
@@ -20,14 +21,13 @@ const UserProfileList = () => {
     const [rooms, setRooms] = useState([])
 
     useEffect(() => {
-
-        fetchHouseMember().then(response => {
+        findAllHouseMembers().then(response => {
             setUserProfileList(response)
         }).catch(error => {
             alert(`Status: ${error.status}: ${error.message}`)
         })
 
-        fetchRooms().then(response => {
+        getHouse(1).then(response => {
             setRooms(response)
         }).catch(error => {
             alert(`Status: ${error.status}: ${error.message}`)
@@ -78,14 +78,14 @@ const UserProfileList = () => {
                 <TextField label="Name" value={name} onChange={handleNameTyping} />
             </MenuItem>
 
-            <br></br>
+            <br/>
             <MenuItem>
-                <RoleSelector role={role} setRole={setRole}></RoleSelector>
+                <RoleSelector role={role} setRole={setRole}/>
             </MenuItem>
 
-            <br></br>
+            <br/>
             <MenuItem>
-                <LocationSelector currentRoom={2} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
+                <LocationSelector currentRoom={2} rooms={rooms} setRoomId={setRoomId}/>
             </MenuItem>
             <Button onClick={handleCreateNewHouseMember}>Create</Button>
         </div>
@@ -102,19 +102,19 @@ const UserProfileList = () => {
                     editMode ?
                         <div>
                             <Button onClick={handleOpenModal}>
-                                <AddIcon></AddIcon>
+                                <AddIcon/>
                             </Button>
                             <Modal
                                 open={openModal}
                                 onClose={handleCloseModal}
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                                 {createUser}
                             </Modal>
                         </div>
 
-                        : <Box></Box>
+                        : <Box/>
                 }
                 <Button variant="contained" className={classes.editButton} onClick={handleEditButton}>Edit User Profiles</Button>
             </div>
