@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useStyles from './SHCPanelStyle';
 import {fetchLightsDoorsAndWindows} from './LightsDoorsAndWindows';
-import {setLightDoorOrWindow} from '../../modules/SHCPanel/setLightDoorOrWindow';
+import {houseObjectStateChangeHandler} from './HouseObjectStateChangeHandler';
 import {HOUSE_ID} from './SHCPanelConstants';
 import DoorPanel from "./DoorPanel";
 import WindowPanel from "./WindowPanel";
@@ -28,7 +28,7 @@ const SHCPanel = (props) => {
     };
 
     const handleItemChange = async (event, itemType) => {
-        await setLightDoorOrWindow(event, itemType);
+        await houseObjectStateChangeHandler(event, itemType);
         handleUpdateLightDoorsAndWindows();
     }
 
