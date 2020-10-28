@@ -24,8 +24,7 @@ const LightPanel = ({
                                 />
                             </FormGroup>
                         )
-                    })
-                }
+                    })}
             </FormControl>
         </>
     );

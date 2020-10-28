@@ -1,15 +1,12 @@
-import React, {Fragment, useEffect, useState} from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React, {useEffect, useState} from 'react';
 import useStyles from './SHCPanelStyle';
 import {fetchLightsDoorsAndWindows} from './LightsDoorsAndWindows';
 import {setLightDoorOrWindow} from '../../modules/SHCPanel/setLightDoorOrWindow';
-import {HOUSE_ID, ITEMS} from './SHCPanelConstants';
+import {HOUSE_ID} from './SHCPanelConstants';
 import DoorPanel from "./DoorPanel";
 import WindowPanel from "./WindowPanel";
 import LightPanel from "./LightPanel";
+import SHCHeader from "./SHCHeader";
 
 const SHCPanel = (props) => {
     const classes = useStyles();
@@ -37,23 +34,11 @@ const SHCPanel = (props) => {
 
     return (
         <div className={classes.container}>
-            <FormControl className={classes.selectFormControl}>
-                <Fragment>
-                    <InputLabel id="item-simple-select-label">Item</InputLabel>
-                    <Select
-                        labelId="item-simple-select-label"
-                        id="item-simple-select"
-                        value={itemSelected}
-                        onChange={handleItemSelectedChange}
-                    >
-                        {
-                            ITEMS.map(item => {
-                                return <MenuItem key={item.value} value={item.value}>{item.title}</MenuItem>
-                            })
-                        }
-                    </Select>
-                </Fragment>
-            </FormControl>
+            <SHCHeader
+                classes={classes}
+                handleItemSelectedChange={handleItemSelectedChange}
+                temSelected={itemSelected}
+            />
 
             {/* Lights */}
             {itemSelected === "lights" &&

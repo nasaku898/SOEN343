@@ -48,8 +48,7 @@ const DoorPanel = ({
                             )
                         }
                         return <></>
-                    })
-                }
+                    })}
             </FormControl>
         </>
     )
