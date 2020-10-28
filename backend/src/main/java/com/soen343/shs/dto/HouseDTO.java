@@ -12,7 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 public class HouseDTO {
-    private long id;
-    private Set<Long> roomIds;
-    private double temperatureOutside;
+    private Long id;
+    private Set<RoomDTO> rooms;
+    private CityDTO city;
 }

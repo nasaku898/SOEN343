@@ -1,24 +1,22 @@
 package com.soen343.shs.converters.rooms;
 
-import com.soen343.shs.dal.model.Door;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.converters.collections.ConvertCollectionOfDoors;
+import com.soen343.shs.converters.collections.ConvertCollectionOfLights;
+import com.soen343.shs.converters.collections.ConvertCollectionOfWindows;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dto.RoomDTO;
 import org.springframework.core.convert.converter.Converter;
-
-import java.util.stream.Collectors;
 
 public class RoomToRoomDTOConverter implements Converter<Room, RoomDTO> {
 
     @Override
     public RoomDTO convert(final Room room) {
         return RoomDTO.builder()
-                .doorIds(room.getDoors().stream().map(Door::getId).collect(Collectors.toSet()))
-                .lightIds(room.getLights().stream().map(Light::getId).collect(Collectors.toSet()))
+                .doors(ConvertCollectionOfDoors.convertDoors(room.getDoors()))
+                .lights(ConvertCollectionOfLights.convertLights(room.getLights()))
                 .name(room.getName())
                 .temperature(room.getTemperature())
-                .windowIds(room.getHouseWindows().stream().map(HouseWindow::getId).collect(Collectors.toSet()))
+                .windows(ConvertCollectionOfWindows.convertWindows(room.getHouseWindows()))
                 .userIds(room.getUserIds())
                 .roomId(room.getId())
                 .build();

@@ -43,4 +43,8 @@ public class HouseController {
         return houseService.getHouse(id);
     }
 
+//    @GetMapping(value = "/house/houseLayout/{houseId}")
+//    public House getHouseLayout(@PathVariable final long houseId) {
+//        return simulationService.(houseId);
+//    }
 }

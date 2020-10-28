@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 public class ExteriorDoorDTO extends DoorDTO {
-    private boolean locked;
+    private Boolean locked;
 }

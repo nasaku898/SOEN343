@@ -10,7 +10,7 @@ public class LightToLightDTOConverter implements Converter<Light, LightDTO> {
     public LightDTO convert(final Light light) {
         return LightDTO.builder()
                 .id(light.getId())
-                .isLightOn(light.isLightOn())
+                .isLightOn(light.getIsLightOn())
                 .build();
     }
 }

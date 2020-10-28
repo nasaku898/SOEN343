@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class LightDTO {
-    private long id;
+    private Long id;
     private boolean isLightOn;
 }

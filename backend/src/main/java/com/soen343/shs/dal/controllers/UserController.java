@@ -2,8 +2,8 @@ package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.Login.LoginRequest;
 import com.soen343.shs.dal.service.Login.LoginResponse;
-import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dal.service.UserService;
+import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     private final UserService userService;
-    private final SimulationService simulationService;
 
 
     @PostMapping(path = "/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody
-    UserDTO addNewUser(final HttpServletRequest request, @RequestBody final RegistrationDTO registrationDTO) {
+    RealUserDTO addNewUser(final HttpServletRequest request, @RequestBody final RegistrationDTO registrationDTO) {
         return userService.createUser(registrationDTO);
     }
 
@@ -36,18 +35,18 @@ public class UserController {
         return userService.login(request, loginRequest);
     }
 
-    @PutMapping(path = "/user/{username}")
+    @PutMapping(path = "/user/update}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    UserDTO updateUserLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final UserDTO user) {
-        return userService.updateUser(user);
+    UserDTO updateUserLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final RealUserDTO user) {
+        return userService.updateUser(user.getId(), user);
     }
 
     @GetMapping(value = "/user/{username}")
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@PathVariable final String username) {
-        return userService.getUserByUsername(username);
+    public RealUserDTO getUser(@PathVariable final String username) {
+        return userService.getUserByUsername(username, RealUserDTO.class);
     }
 
 
@@ -61,14 +60,8 @@ public class UserController {
     @GetMapping(value = "/user")
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public UserDTO getUser(@AuthenticationPrincipal final Authentication authentication) {
-        return userService.getUserByUsername(authentication.getName());
+    public RealUserDTO getUser(@AuthenticationPrincipal final Authentication authentication) {
+        return userService.getUserByUsername(authentication.getName(), RealUserDTO.class);
     }
 
-    @PutMapping(value = "/user/{username}/room/{roomId}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    @ResponseBody
-    public UserDTO moveUserToRoom(@PathVariable final String username, @PathVariable final long roomId) {
-        return simulationService.moveUserToRoom(username, roomId);
-    }
 }
