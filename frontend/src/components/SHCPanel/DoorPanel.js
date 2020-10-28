@@ -8,7 +8,6 @@ const DoorPanel = ({
                        handleItemChange,
                        classes,
                    }) => {
-
     return (
         <>
             <FormControl component="fieldset" className={classes.checkboxFormControl}>
@@ -20,7 +19,8 @@ const DoorPanel = ({
                                     <FormGroup>
                                         <FormControlLabel
                                             control={<Checkbox
-                                                key={`lock-door-${door.id}`} checked={door.locked}
+                                                key={`lock-door-${door.id}`}
+                                                checked={door.locked}
                                                 onChange={(event) => handleItemChange(event, 'exteriorDoorLock')}
                                                 name={`${door.id}`}/>}
                                             label={door.id}
@@ -38,7 +38,8 @@ const DoorPanel = ({
                             return (
                                 <FormGroup>
                                     <FormControlLabel
-                                        control={<Checkbox key={`lock-door-${door.id}`} checked={door.locked}
+                                        control={<Checkbox key={`lock-door-${door.id}`}
+                                                           checked={door.locked}
                                                            onChange={(event) => handleItemChange(event, 'exteriorDoorLock')}
                                                            name={`${door.id}`}/>}
                                         label={door.id}
