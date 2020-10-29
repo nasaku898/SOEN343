@@ -3,6 +3,7 @@ package com.soen343.shs.dal.controllers;
 import com.soen343.shs.dal.service.Login.LoginRequest;
 import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.UserService;
+import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RegistrationDTO;
 import com.soen343.shs.dto.UserDTO;
@@ -47,6 +48,13 @@ public class UserController {
     @ResponseBody
     public RealUserDTO getUser(@PathVariable final String username) {
         return userService.getUserByUsername(username, RealUserDTO.class);
+    }
+
+    @PutMapping(path = "/user/update")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    UserDTO updateHouseMemberLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final HouseMemberDTO houseMember) {
+        return userService.updateUser(houseMember.getId(), houseMember);
     }
 
 

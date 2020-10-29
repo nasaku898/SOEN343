@@ -11,14 +11,7 @@ import {moveHouseMemberToRoom} from "../../modules/HouseOverview/SimulationServi
 const UserProfile = ({userProfile, editMode, rooms}) => {
 
     const classes = useStyles()
-    const [role, setRole] = useState(userProfile.role)
-    const [name, setName] = useState(userProfile.name)
-    const [room, setRoom] = useState(userProfile.location)
     const [profile, setProfile] = useState({userProfile})
-    const userProfileId = userProfile.id
-
-    //Temporary state when typing or selecting a role
-    const [nameField, setNameField] = useState(userProfile.name)
 
     // this will send the PUT request to update the object, and will update our view with whichever fields have been modified
     const handleUpdate = (event) => {
@@ -28,32 +21,32 @@ const UserProfile = ({userProfile, editMode, rooms}) => {
             setProfile({
                 ...profile,
                 ...response
-            })
-        })
-    }
+            });
+        });
+    };
 
 
     const handleLocationChange = (event) => {
         event.preventDefault()
-        moveHouseMemberToRoom(profile.username, room.id).then(response => {
+        moveHouseMemberToRoom(profile.username, profile.location.id).then(response => {
             setProfile({
                 ...profile,
                 ...response
-            })
+            });
         }).catch(error => {
             alert(`Status: ${error.status}: ${error.message}`)
-        })
-    }
+        });
+    };
+
     const handleChange = (event) => {
-            setProfile({
-                ...profile,
-                [event.target.name]: event.target.value,
-            })
-        }
-    ;
+        setProfile({
+            ...profile,
+            [event.target.name]: event.target.value,
+        });
+    };
 
 
-//Function for handling menu
+    //Function for handling menu
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleEditButtonClick = (event) => {
@@ -113,7 +106,8 @@ const UserProfile = ({userProfile, editMode, rooms}) => {
                                     </MenuItem>
 
                                     <MenuItem>
-                                        <LocationSelector currentRoom={profile.location} rooms={rooms}
+                                        <LocationSelector currentRoom={profile.location}
+                                                          rooms={rooms}
                                                           setRoomId={handleChange}/>
                                         <Button onClick={handleLocationChange}>
                                             <UpdateIcon/>
