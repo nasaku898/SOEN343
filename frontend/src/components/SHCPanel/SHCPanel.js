@@ -22,10 +22,7 @@ const SHCPanel = (props) => {
   }, [house]);
 
   const handleUpdateLightDoorsAndWindows = () => {
-    console.log(house);
-    fetchLightsDoorsAndWindows(house).then((response) => {
-      setData(response);
-    });
+    setData(fetchLightsDoorsAndWindows(house));
   };
 
   const handleItemSelectedChange = (event) => {

@@ -15,6 +15,7 @@ import { AuthContext } from "../../context/Auth";
 import Axios from "axios";
 import "../../Utils/config";
 import { useHistory } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 const Navbar = (props) => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   const classes = useStyles();
@@ -23,6 +24,8 @@ const Navbar = (props) => {
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
+
+  const { user, setUser } = useUser();
 
   const [authTokens, setAuthTokens] = useState(
     localStorage.getItem("token") || ""
@@ -35,6 +38,7 @@ const Navbar = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setUser(null);
     Axios.get(global.config.BACKEND_URL + `/logout`);
     history.push("/login");
   };
@@ -55,7 +59,7 @@ const Navbar = (props) => {
               <Tab label="+"></Tab>
             </Tabs>
 
-            {authTokens ? (
+            {user ? (
               <Button
                 variant="contained"
                 startIcon={<AccountCircleOutlinedIcon />}

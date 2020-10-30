@@ -1,4 +1,3 @@
-import Axios from "axios";
 import "../../Utils/config";
 
 const URL = `${global.config.BACKEND_URL}/api/house`;

@@ -1,9 +1,6 @@
-import { findAllRooms } from "../../modules/HouseOverview/SimulationService";
-
 export const fetchLightsDoorsAndWindows = async ({ house }) => {
   if (house) {
     const rooms = house.rooms;
-    console.log(rooms);
     const lightsDoorsWindows = { lights: [], doors: [], windows: [] };
 
     rooms.forEach((roomsItem) => {

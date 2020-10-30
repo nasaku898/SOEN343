@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { moveUser } from "../../modules/UserProfileList/UserService.js";
 import {
-  getAuthenticatedUser,
-  moveUser,
-} from "../../modules/UserProfileList/UserService.js";
-import {
-  getHouse,
   updateTemperatureOutside,
-} from "../../modules/HouseOverview/HouseService";
+  getCity,
+} from "../../modules/HouseOverview/CityService";
 import SimulationHeader from "./SimulationHeader";
 import SimulationField from "./SimulationField";
 import { LocationChooser } from "./LocationChooser";
 import { useCurrentHouse } from "../../context/CurrentHouse";
-import { getCity } from "../../modules/HouseOverview/SimulationService.js";
 import { useUser } from "../../context/UserContext";
 
 const SimulationForm = () => {
@@ -26,8 +22,8 @@ const SimulationForm = () => {
   useEffect(() => {
     if (house) {
       (async () => {
-        console.log(house.city);
-        setCity(await getCity(house.name));
+        setCity(await getCity(house.city));
+        console.log(city);
       })();
     }
   }, [house]);
@@ -42,10 +38,7 @@ const SimulationForm = () => {
     const fd = new FormData(event.target);
 
     (async () => {
-      await updateTemperatureOutside(
-        parseInt(house.id),
-        house.temperatureOutside
-      );
+      await updateTemperatureOutside(city.name, city.temperatureOutside);
       const { id } = house.rooms.find(
         (room) => room.id === ~~fd.get("location")
       );
@@ -59,11 +52,11 @@ const SimulationForm = () => {
     setDate(event.target.value);
   };
 
-  if (house) {
+  if (city) {
     return (
       <>
         <form onSubmit={handleSubmit}>
-          <SimulationHeader user={user} />
+          <SimulationHeader user={user} city={city} />
 
           {house.rooms.length && (
             <LocationChooser
@@ -89,7 +82,7 @@ const SimulationForm = () => {
             id="temperature"
             type="text"
             onChange={handleTemperatureChange}
-            value={house.temperatureOutside}
+            value={city.temperatureOutside}
             disabled={disabled}
           />
           <br />

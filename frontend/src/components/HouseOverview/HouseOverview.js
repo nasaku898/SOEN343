@@ -15,7 +15,6 @@ import { useCurrentHouse } from "../../context/CurrentHouse";
 
 const HouseOverview = () => {
   const { houseId } = useCurrentHouse();
-  const { setHouseId } = useCurrentHouse();
   const [rows, setRows] = useState([]);
   const classes = useStyles();
   useEffect(() => {

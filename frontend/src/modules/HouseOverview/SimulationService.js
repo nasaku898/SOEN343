@@ -45,33 +45,3 @@ export const moveUserToRoom = async (username, roomId) => {
     throw error.response.data;
   }
 };
-
-export const updateTemperatureOutside = async (name, temperatureOutside) => {
-  try {
-    const response = await fetch(
-      `${URL}/house/${name}/temperature/${temperatureOutside}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "PUT",
-      }
-    );
-    return response.json();
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-export const getCity = async (name) => {
-  try {
-    const response = await fetch(`${URL}/api/city/${name}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.json();
-  } catch (error) {
-    throw error.response.data;
-  }
-};

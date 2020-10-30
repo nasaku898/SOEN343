@@ -17,11 +17,8 @@ import {
   createNewHouseMember,
   findAllHouseMembers,
 } from "../../modules/UserProfileList/HouseMemberService";
-import { useCurrentHouse } from "../../context/CurrentHouse";
 
 const UserProfileList = () => {
-  const { house } = useCurrentHouse();
-
   const [editMode, SetEditMode] = useState(true);
   const [refresh, setRefresh] = useState(true);
   const classes = useStyles();

@@ -13,8 +13,6 @@ const HouseLayout = () => {
 
   useEffect(() => {
     if (house) {
-      console.log(house);
-
       setRooms(house.rooms);
     }
   }, [house]);
