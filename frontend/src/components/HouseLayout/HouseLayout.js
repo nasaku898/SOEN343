@@ -13,6 +13,8 @@ const HouseLayout = () => {
 
   useEffect(() => {
     if (house) {
+      console.log(house);
+
       setRooms(house.rooms);
     }
   }, [house]);
@@ -22,7 +24,9 @@ const HouseLayout = () => {
       <div className={classes.layoutWrapper}>
         {rooms.map((room) => (
           <Draggable key={room.id}>
-            <div>{/* <DraggableRoom room={room} /> */}</div>
+            <div>
+              <DraggableRoom room={room} />
+            </div>
           </Draggable>
         ))}
       </div>

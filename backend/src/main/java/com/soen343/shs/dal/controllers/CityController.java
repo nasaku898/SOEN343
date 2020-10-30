@@ -18,4 +18,11 @@ public class CityController {
     CityDTO updateTemperatureOutside(@PathVariable final String name, @PathVariable final double temperatureOutside) {
         return cityService.setTemperatureOutside(name, temperatureOutside);
     }
+
+    @GetMapping(value = "/{name}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    CityDTO getCity(@PathVariable final String name) {
+        return cityService.getCity(name);
+    }
 }

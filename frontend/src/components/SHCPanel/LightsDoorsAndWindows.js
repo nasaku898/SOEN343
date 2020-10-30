@@ -1,13 +1,22 @@
-import {findAllRooms} from "../../modules/HouseOverview/SimulationService";
+import { findAllRooms } from "../../modules/HouseOverview/SimulationService";
 
-export const fetchLightsDoorsAndWindows = async (houseId) => {
-  const {data} = await findAllRooms(houseId);
-  const lightsDoorsWindows = {lights: [], doors: [], windows: []};
+export const fetchLightsDoorsAndWindows = async ({ house }) => {
+  if (house) {
+    const rooms = house.rooms;
+    console.log(rooms);
+    const lightsDoorsWindows = { lights: [], doors: [], windows: [] };
 
-  data.forEach(dataItem => {
-    lightsDoorsWindows.lights = lightsDoorsWindows.lights.concat(dataItem.lights)
-    lightsDoorsWindows.doors = lightsDoorsWindows.doors.concat(dataItem.doors);
-    lightsDoorsWindows.windows = lightsDoorsWindows.windows.concat(dataItem.houseWindows)
-  });
-  return lightsDoorsWindows;
-}
+    rooms.forEach((roomsItem) => {
+      lightsDoorsWindows.lights = lightsDoorsWindows.lights.concat(
+        roomsItem.lights
+      );
+      lightsDoorsWindows.doors = lightsDoorsWindows.doors.concat(
+        roomsItem.doors
+      );
+      lightsDoorsWindows.windows = lightsDoorsWindows.windows.concat(
+        roomsItem.houseWindows
+      );
+    });
+    return lightsDoorsWindows;
+  }
+};

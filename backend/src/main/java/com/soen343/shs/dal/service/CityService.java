@@ -35,10 +35,10 @@ public class CityService {
     }
 
     /**
-     * @param houseId a house id
-     * @return outside temperature
+     * @param name name of the city
+     * @return DTO representing current city
      */
-    public double getTemperatureOutside(final String name) {
-        return getCity(name).getTemperatureOutside();
+    public CityDTO getTemperatureOutside(final String name) {
+        return getCity(name);
     }
 }

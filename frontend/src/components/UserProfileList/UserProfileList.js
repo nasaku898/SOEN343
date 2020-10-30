@@ -17,9 +17,11 @@ import {
   createNewHouseMember,
   findAllHouseMembers,
 } from "../../modules/UserProfileList/HouseMemberService";
-import { getHouse } from "../../modules/HouseOverview/HouseService";
+import { useCurrentHouse } from "../../context/CurrentHouse";
 
 const UserProfileList = () => {
+  const { house } = useCurrentHouse();
+
   const [editMode, SetEditMode] = useState(true);
   const [refresh, setRefresh] = useState(true);
   const classes = useStyles();
@@ -38,14 +40,6 @@ const UserProfileList = () => {
     findAllHouseMembers()
       .then((response) => {
         setUserProfileList(response);
-      })
-      .catch((error) => {
-        alert(`Status: ${error.status}: ${error.message}`);
-      });
-
-    getHouse(1)
-      .then((response) => {
-        setRooms(response);
       })
       .catch((error) => {
         alert(`Status: ${error.status}: ${error.message}`);

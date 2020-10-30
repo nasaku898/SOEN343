@@ -19,13 +19,11 @@ import BorderBottomIcon from "@material-ui/icons/BorderBottom";
 import useStyles from "./DraggableRoomStyle";
 
 const DraggableRoom = ({ room }) => {
-  console.log(room);
-  console.log("DOISJHIOFDSIFH");
   const [name] = useState(room.name);
   const [temperature] = useState(room.temperature);
   const [doors] = useState(room.doors);
   const [lights] = useState(room.lights);
-  const [houseWindows] = useState(room.houseWindows);
+  const [windows] = useState(room.windows);
 
   const [lightOn, setLightOn] = useState(false);
   const [doorOpen, setDoorOpen] = useState(false);
@@ -35,8 +33,6 @@ const DraggableRoom = ({ room }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(room);
-
     const checkIfLightOn = () => {
       lights.forEach((light) => {
         if (light.lightOn) {
@@ -54,16 +50,16 @@ const DraggableRoom = ({ room }) => {
     };
 
     const checkIfWindowOpen = () => {
-      houseWindows.forEach((houseWindow) => {
-        if (houseWindow.open) {
+      windows.forEach((window) => {
+        if (window.open) {
           setWindowOpen(true);
         }
       });
     };
 
     const checkIfWindowBlocked = () => {
-      houseWindows.forEach((houseWindow) => {
-        if (houseWindow.blocked) {
+      windows.forEach((window) => {
+        if (window.blocked) {
           setBlocked(true);
         }
       });
@@ -73,7 +69,7 @@ const DraggableRoom = ({ room }) => {
     checkIfDoorOpen();
     checkIfWindowBlocked();
     checkIfWindowOpen();
-  }, [doors, houseWindows, lights]);
+  }, [doors, windows, lights]);
 
   return (
     <div>
@@ -152,15 +148,13 @@ const DraggableRoom = ({ room }) => {
               </Avatar>
             )}
           </ListItemAvatar>
-          {houseWindows.map((houseWindow) => (
+          {windows.map((window) => (
             <ListItemText
-              key={houseWindow.id}
-              primary={`WindowID: ${houseWindow.id}`}
+              key={window.id}
+              primary={`WindowID: ${window.id}`}
               secondary={`Open: ${Boolean(
-                houseWindow.open
-              ).toString()} Blocked: ${Boolean(
-                houseWindow.blocked
-              ).toString()}`}
+                window.open
+              ).toString()} Blocked: ${Boolean(window.blocked).toString()}`}
             ></ListItemText>
           ))}
         </ListItem>
