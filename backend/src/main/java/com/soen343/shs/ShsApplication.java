@@ -21,7 +21,10 @@ public class ShsApplication {
 
         if (cityRepository.count() == 0) {
             return args -> cityRepository.save(
-                    City.builder().build()
+                    City.builder()
+                            .temperatureOutside(0.0)
+                            .name("Montreal")
+                            .build()
             );
         }
         return null;

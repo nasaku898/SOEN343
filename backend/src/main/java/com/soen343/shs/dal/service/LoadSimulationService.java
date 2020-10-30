@@ -1,15 +1,17 @@
 package com.soen343.shs.dal.service;
 
+import com.google.common.collect.Sets;
 import com.soen343.shs.dal.model.*;
-import com.soen343.shs.dal.repository.CityRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import com.soen343.shs.dto.LoadRoomDTO;
+import com.soen343.shs.dto.RealUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,19 +21,27 @@ public class LoadSimulationService {
 
     private final HouseRepository houseRepository;
     private final ConversionService mvcConversionService;
-    private final CityRepository cityRepository;
+    private final UserService userService;
+    private final CityService cityService;
 
     /**
      * @param loadHouseDTO data transfer object representing the house layout
      * @return HouseDTO object reflecting the changes made to the object
      */
-    public HouseDTO loadHouse(final LoadHouseDTO loadHouseDTO) {
+    public HouseDTO loadHouse(final LoadHouseDTO loadHouseDTO, final String username) {
+        final RealUserDTO owner = userService.getUserByUsername(username, RealUserDTO.class);
 
-        return mvcConversionService.convert(
-                houseRepository.save(House.builder()
-                        .rooms(loadRooms(loadHouseDTO.getRooms()))
-                        .build()),
-                HouseDTO.class);
+        final House house = houseRepository.save(House.builder()
+                .rooms(loadRooms(loadHouseDTO.getRooms()))
+                .city(cityService.getCity(loadHouseDTO.getCity()).getName())
+                .parents(Sets.newHashSet(owner.getId()))
+                .children(Collections.emptySet())
+                .guests(Collections.emptySet())
+                .build());
+
+        owner.getHouseIds().add(house.getId());
+        userService.updateUser(owner);
+        return mvcConversionService.convert(house, HouseDTO.class);
     }
 
     /**
@@ -48,7 +58,6 @@ public class LoadSimulationService {
                         .build())
                 .collect(Collectors.toSet());
     }
-
 
     /**
      * @param dtoSet    set of dto

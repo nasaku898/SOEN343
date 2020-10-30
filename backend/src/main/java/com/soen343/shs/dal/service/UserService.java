@@ -1,31 +1,14 @@
 package com.soen343.shs.dal.service;
 
+import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.RealUser;
-import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.repository.mapping.SHSUserMapper;
-import com.soen343.shs.dal.service.Login.LoginRequest;
-import com.soen343.shs.dal.service.Login.LoginResponse;
+import com.soen343.shs.dal.repository.mapping.RealUserMapper;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
-import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
-import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RealUserDTO;
-import com.soen343.shs.dto.RegistrationDTO;
-import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Objects;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Service
 @RequiredArgsConstructor
@@ -33,56 +16,33 @@ public class UserService {
 
     private final ConversionService mvcConversionService;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationProvider authProvider;
-    private final SHSUserMapper userMapper;
+    private final RealUserMapper mapper;
 
     /**
-     * @param details registrationDTO object containing registration fields
-     * @return UserDTO object containing the state of the object upon registration
+     * @param user user object to save to our db
+     * @return userDTO representing the object saved to db
      */
-    public RealUserDTO createUser(final RegistrationDTO details) {
-        // check to see if username/email exists already, if so throw exception
-        if (userRepository.findByEmail(details.getEmail()).isPresent() ||
-                userRepository.findByUsername(RealUser.class, details.getUsername()).isPresent()) {
-            throw new SHSUserAlreadyExistsException("Username/email already exists!");
-        }
-
-        FieldValidator.validateRegistration(details); // Validate the rest of the fields;
-
-        final RealUser user = mvcConversionService.convert(details, RealUser.class);
-        Objects.requireNonNull(user).setPassword(passwordEncoder.encode(details.getPassword()));// encode password
-
+    public RealUserDTO createUser(final RealUser user) {
         return mvcConversionService.convert(userRepository.save(user), RealUserDTO.class); // return the dto object to our user
     }
 
     /**
-     * @param request      HttpServletRequest object containing request information, so we can retrieve the session attribute
-     * @param loginRequest LoginRequest object containing attempted login credentials
-     * @return LoginResponse object containing user details, and their authentication token
+     * @param dto data transfer object used to map the desired state of user to the record in the db
+     * @return dto representing the change of state to our user
      */
-    public LoginResponse login(final HttpServletRequest request, final LoginRequest loginRequest) {
-        final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-        authProvider.authenticate(authenticationToken);
-
-        final SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authenticationToken);
-
-        final HttpSession session = request.getSession(true);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, securityContext);
-        return LoginResponse.builder()
-                .token(session.getId()) // return token so we can use for testing in postman
-                .user(getUserByUsername(loginRequest.getUsername(), RealUserDTO.class))
-                .build();
+    public RealUserDTO updateUser(final RealUserDTO dto) {
+        return mvcConversionService.convert(userRepository.save(mapper.mapRealUserDTOToRealUser(dto, fetchById(dto.getId()))), RealUserDTO.class);
     }
 
-    public UserDTO updateUser(final long id, final UserDTO dto) {
-        userRepository.save(userMapper.updateUserFromDTO(dto, userRepository.findById(User.class, id)
-                .orElseThrow(() -> new SHSNotFoundException(getNotFoundExceptionMessage("id", String.valueOf(id))))
-        ));
-        return dto;
+    /**
+     * @param id    id of user to fetch from db
+     * @param dto   instance of data transfer object to convert to
+     * @param <DTO> class of dto to convert to
+     * @return DTO object who has the given id
+     */
+    public <DTO> DTO getById(final long id, final Class<DTO> dto) {
+        return mvcConversionService.convert(fetchById(id), dto);
     }
-
 
     /**
      * @param username String value used to fetch from repository by username
@@ -95,7 +55,29 @@ public class UserService {
                 , dtoClass);
     }
 
+    /**
+     * @param email to check if it exists
+     * @return boolean value representing if theres a user in our db who this email already belongs to
+     */
+    public boolean emailExists(final String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    /**
+     * @param username to check if it exists
+     * @return boolean value representing if theres a user in our db who this name already belongs to
+     */
+    public boolean usernameExists(final String username) {
+        return userRepository.findByUsername(RealUser.class, username).isPresent()
+                || userRepository.findByUsername(HouseMember.class, username).isPresent();
+    }
+
     private static String getNotFoundExceptionMessage(final String username, final String parameter) {
         return String.format("%s: %s doesn't exist", username, parameter);
+    }
+
+    private RealUser fetchById(final long id) {
+        return userRepository.findById(RealUser.class, id)
+                .orElseThrow(() -> new SHSNotFoundException(getNotFoundExceptionMessage("id", String.valueOf(id))));
     }
 }

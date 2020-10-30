@@ -20,6 +20,14 @@ public class House {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Room> rooms;
 
-    @OneToOne
-    private City city;
+    @ElementCollection
+    private Set<Long> parents;
+
+    @ElementCollection
+    private Set<Long> children;
+
+    @ElementCollection
+    private Set<Long> guests;
+
+    private String city;
 }

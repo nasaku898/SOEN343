@@ -5,11 +5,9 @@ import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,7 +17,7 @@ public class LoadSimulationController {
 
     @PostMapping(value = "/houseLayout")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public HouseDTO loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO) {
-        return loadSimulationService.loadHouse(loadHouseDTO);
+    public HouseDTO loadHouse(@RequestBody final LoadHouseDTO loadHouseDTO, @AuthenticationPrincipal final Authentication authentication) {
+        return loadSimulationService.loadHouse(loadHouseDTO, authentication.getName());
     }
 }

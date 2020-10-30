@@ -13,6 +13,7 @@ public class RegistrationDTOToUserDTOConverter implements Converter<Registration
                 .firstName(registrationDTO.getFirstName())
                 .lastName(registrationDTO.getLastName())
                 .email(registrationDTO.getEmail())
+                .isOutside(true)
                 .role(UserRole.valueOf(registrationDTO.getRole()))
                 .build();
     }

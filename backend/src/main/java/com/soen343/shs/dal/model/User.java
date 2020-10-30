@@ -1,18 +1,10 @@
 package com.soen343.shs.dal.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,4 +23,7 @@ public abstract class User {
     private Room location;
     private UserRole role;
     private Boolean isOutside;
+
+    @ElementCollection
+    private Set<Long> houseIds;
 }

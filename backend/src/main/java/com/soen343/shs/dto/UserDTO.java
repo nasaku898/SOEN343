@@ -4,7 +4,7 @@ import com.soen343.shs.dal.model.UserRole;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Map;
+import java.util.Set;
 
 @Getter
 @AllArgsConstructor
@@ -15,7 +15,8 @@ import java.util.Map;
 public class UserDTO {
     private long id;
     private String username;
-    private Map<Long, String> roomId;
+    private RoomDTO location;
     private UserRole role;
     private boolean isOutside;
+    private Set<Long> houseIds;
 }

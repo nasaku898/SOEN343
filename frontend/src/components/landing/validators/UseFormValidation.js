@@ -2,49 +2,51 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const useFormValidation = (initialState, validate, authenticate) => {
-    const [values, setValues] = useState(initialState);
-    const [errors, setErrors] = useState({});
-    const [isSubmitting, setSubmitting] = useState(false);
-    const history = useHistory()
-    useEffect(() => {
-        if (isSubmitting) {
-            if (errors.length === 0) {
-                authenticate(values);
-                setSubmitting(false);
-            } else {
-                setSubmitting(false);
-            }
-        }
-    }, [errors, values, isSubmitting, authenticate]);
+  const [values, setValues] = useState(initialState);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setSubmitting] = useState(false);
 
-    const handleChange = (event) => {
-        setValues({
-            ...values,
-            [event.target.name]: event.target.value,
-        });
-    };
+  useEffect(() => {
+    if (isSubmitting) {
+      if (errors.length === 0) {
+        (async () => {
+          await authenticate(values);
+          setSubmitting(false);
+        })();
+      } else {
+        setSubmitting(false);
+      }
+    }
+  }, [errors, values, isSubmitting, authenticate]);
 
-    const handleBlur = () => {
-        const validationErrors = validate(values);
-        setErrors(validationErrors);
-    };
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const validationErrors = validate(values);
-        setErrors(validationErrors);
-        setSubmitting(true);
-        history.push("/login")
-    };
+  const handleBlur = () => {
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
+  };
 
-    return {
-        handleSubmit,
-        handleChange,
-        handleBlur,
-        values,
-        errors,
-        isSubmitting,
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
+    setSubmitting(true);
+    // history.push("/login");
+  };
+
+  return {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    values,
+    errors,
+    isSubmitting,
+  };
 };
 
 export default useFormValidation;

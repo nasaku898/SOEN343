@@ -2,8 +2,11 @@ package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.HouseMemberService;
 import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,5 +29,13 @@ public class HouseMemberController {
     public List<HouseMemberDTO> findAllHouseMembers() {
         return houseMemberService.findAllHouseMembers();
     }
-    
+
+
+    @PutMapping(path = "/user/update")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    UserDTO updateHouseMemberLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final HouseMemberDTO houseMember) {
+        return houseMemberService.updateHouseMember(houseMember);
+    }
+
 }

@@ -42,9 +42,5 @@ public class HouseController {
     HouseDTO getHouse(@PathVariable final long id) {
         return houseService.getHouse(id);
     }
-
-//    @GetMapping(value = "/house/houseLayout/{houseId}")
-//    public House getHouseLayout(@PathVariable final long houseId) {
-//        return simulationService.(houseId);
-//    }
+    
 }

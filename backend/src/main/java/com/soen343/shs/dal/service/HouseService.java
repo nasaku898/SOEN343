@@ -30,7 +30,6 @@ public class HouseService {
     private final HouseRepository houseRepository;
     private final ExteriorDoorRepository exteriorDoorRepository;
     private final ConversionService mvcConversionService;
-    private final SHSHouseMapper houseMapper;
 
     public HouseDTO getHouse(final long id) {
         return mvcConversionService.convert(fetchHouse(id), HouseDTO.class);
@@ -40,9 +39,8 @@ public class HouseService {
         return houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException(getSHSNotFoundErrorMessage(id, House.class)));
     }
 
-
     public HouseDTO updateHouse(final HouseDTO dto) {
-        houseRepository.save(houseMapper.mapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
+        houseRepository.save(SHSHouseMapper.mapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
         return dto;
     }
 

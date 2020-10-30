@@ -1,76 +1,79 @@
-import Axios from "axios"
-import "../../Utils/config"
+import Axios from "axios";
+import "../../Utils/config";
 
-const URL = `${global.config.BACKEND_URL}/api/house`
+const URL = `${global.config.BACKEND_URL}/api/house`;
 
 export const updateTemperatureOutside = async (houseId, temperatureOutside) => {
-    try {
-        const response = await fetch(`${URL}/api/simulation/house/${houseId}/temperatureOutside/${temperatureOutside}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "PUT",
-        });
-        return response.json();
-    } catch (error) {
-        throw await error.json();
-    }
-}
+  try {
+    const response = await fetch(
+      `${URL}/api/simulation/house/${houseId}/temperatureOutside/${temperatureOutside}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+      }
+    );
+    return response.json();
+  } catch (error) {
+    throw await error.json();
+  }
+};
 
 export const getHouse = async (houseId) => {
-    try {
-        const response = await fetch(`${URL}/${houseId}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-        return response.json();
-    } catch (error) {
-        throw await error;
-    }
-}
+  try {
+    const response = await fetch(`${URL}/${houseId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.json();
+  } catch (error) {
+    throw await error;
+  }
+};
 
 export const modifyLightState = async (lightId, desiredState) => {
-    try {
-        const response = await fetch(`${URL}/light/${lightId}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "PUT",
-            body: JSON.stringify(desiredState)
-        });
-        return response.json();
-    } catch (error) {
-        throw await error;
-    }
-}
+  try {
+    const response = await fetch(`${URL}/light/${lightId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(desiredState),
+    });
+    return response.json();
+  } catch (error) {
+    throw await error;
+  }
+};
 
-export const modifyDoorState = async (doorId, open, desiredState ) => {
-    try {
-        const response = await fetch(`${URL}/exteriorDoor/${doorId}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "PUT",
-            body: JSON.stringify(open, desiredState)
-        });
-        return response.json();
-    } catch (error) {
-        throw await error;
-    }
-}
+export const modifyDoorState = async (doorId, open, desiredState) => {
+  try {
+    const response = await fetch(`${URL}/exteriorDoor/${doorId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(open, desiredState),
+    });
+    return response.json();
+  } catch (error) {
+    throw await error;
+  }
+};
 
 export const modifyWindowState = async (windowId, open, desiredState) => {
-    try {
-        const response = await fetch(`${URL}/window/${windowId}`, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "PUT",
-            body: JSON.stringify(open, desiredState)
-        });
-        return response.json();
-    } catch (error) {
-        throw await error;
-    }
-}
+  try {
+    const response = await fetch(`${URL}/window/${windowId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(open, desiredState),
+    });
+    return response.json();
+  } catch (error) {
+    throw await error;
+  }
+};

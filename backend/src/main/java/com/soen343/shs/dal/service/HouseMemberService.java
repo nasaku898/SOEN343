@@ -3,7 +3,7 @@ package com.soen343.shs.dal.service;
 import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.UserRole;
 import com.soen343.shs.dal.repository.UserRepository;
-import com.soen343.shs.dal.repository.mapping.SHSUserMapper;
+import com.soen343.shs.dal.repository.mapping.HouseMemberMapper;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.HouseMemberDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class HouseMemberService {
     private final UserRepository userRepository;
     private final ConversionService mvcConversionService;
     private final RoomService roomService;
-    private final SHSUserMapper mapper;
+    private final HouseMemberMapper mapper;
 
     /**
      * @param houseMemberDTO data transfer object that reflects the changes made to the object
@@ -32,17 +32,14 @@ public class HouseMemberService {
                 .username(houseMemberDTO.getUsername())
                 .location((roomService
                         .fetchRoom((houseMemberDTO
-                                .getRoomId()
-                                .keySet()
-                                .iterator()
-                                .next()))))
+                                .getLocation().getRoomId()))))
                 .role(UserRole.valueOf(houseMemberDTO.getRole().name()))
                 .build());
         return houseMemberDTO;
     }
 
     public HouseMemberDTO updateHouseMember(final HouseMemberDTO houseMemberDTO) {
-        userRepository.save(mapper.updateUserFromDTO(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
+        userRepository.save(mapper.mapUserDTOToUser(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
         return houseMemberDTO;
     }
 
@@ -61,7 +58,9 @@ public class HouseMemberService {
      */
     public List<HouseMemberDTO> findAllHouseMembers() {
         return userRepository.findAll()
-                .stream().map(houseMember -> mvcConversionService.convert(houseMember, HouseMemberDTO.class))
+                .stream()
+                .filter(user -> user instanceof HouseMember)
+                .map(houseMember -> mvcConversionService.convert(houseMember, HouseMemberDTO.class))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
