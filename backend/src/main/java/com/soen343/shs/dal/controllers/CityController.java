@@ -1,7 +1,6 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.CityService;
-import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dto.CityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ public class CityController {
     CityDTO updateTemperatureOutside(@PathVariable final String name, @PathVariable final double temperatureOutside) {
         return cityService.setTemperatureOutside(name, temperatureOutside);
     }
-    /api/simulation/api/city/Montreal
     @GetMapping(value = "/{name}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
