@@ -50,10 +50,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (user && authTokens) {
+    if (authTokens) {
       (async () => {
         await loadUser();
-        await loadHouse();
       })();
     }
   }, [authTokens]);

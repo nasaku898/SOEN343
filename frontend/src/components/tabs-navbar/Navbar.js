@@ -16,6 +16,7 @@ import Axios from "axios";
 import "../../Utils/config";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+
 const Navbar = (props) => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   const classes = useStyles();
@@ -42,6 +43,7 @@ const Navbar = (props) => {
     Axios.get(global.config.BACKEND_URL + `/logout`);
     history.push("/login");
   };
+
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <Box component="nav">

@@ -19,11 +19,18 @@ const SimulationForm = () => {
 
   const [city, setCity] = useState(null);
 
+  const [outside, setOutside] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      setOutside(user.isOutisde && disabled);
+    }
+  }, [user, disabled]);
+
   useEffect(() => {
     if (house) {
       (async () => {
         setCity(await getCity(house.city));
-        console.log(city);
       })();
     }
   }, [house]);
@@ -57,15 +64,18 @@ const SimulationForm = () => {
       <>
         <form onSubmit={handleSubmit}>
           <SimulationHeader user={user} city={city} />
-
-          {house.rooms.length && (
-            <LocationChooser
-              name={"location"}
-              disabled={disabled}
-              locationName={house.rooms[0].name}
-              rooms={house.rooms}
-              username={user.username}
-            />
+          {outside ? (
+            <p>is outside</p>
+          ) : (
+            house.rooms.length && (
+              <LocationChooser
+                name={"location"}
+                disabled={disabled}
+                locationName={house.rooms[0].name}
+                rooms={house.rooms}
+                username={user.username}
+              />
+            )
           )}
 
           <SimulationField

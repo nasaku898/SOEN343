@@ -9,11 +9,11 @@ import LightPanel from "./LightPanel";
 import SHCHeader from "./SHCHeader";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 
-const SHCPanel = (props) => {
+const SHCPanel = () => {
   const { house } = useCurrentHouse();
   const classes = useStyles();
   const [itemSelected, setItemSelected] = useState("");
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     if (house) {
@@ -22,7 +22,9 @@ const SHCPanel = (props) => {
   }, [house]);
 
   const handleUpdateLightDoorsAndWindows = () => {
-    setData(fetchLightsDoorsAndWindows(house));
+    if (house.rooms) {
+      setData(fetchLightsDoorsAndWindows(house.rooms));
+    }
   };
 
   const handleItemSelectedChange = (event) => {
@@ -31,7 +33,7 @@ const SHCPanel = (props) => {
 
   const handleItemChange = async (event, itemType) => {
     await houseObjectStateChangeHandler(event, itemType);
-    handleUpdateLightDoorsAndWindows();
+    await handleUpdateLightDoorsAndWindows();
   };
 
   if (data) {
@@ -40,7 +42,7 @@ const SHCPanel = (props) => {
         <SHCHeader
           classes={classes}
           handleItemSelectedChange={handleItemSelectedChange}
-          temSelected={itemSelected}
+          itemSelected={itemSelected}
         />
 
         {/* Lights */}
@@ -66,7 +68,7 @@ const SHCPanel = (props) => {
           <WindowPanel
             handleItemChange={handleItemChange}
             classes={classes}
-            houseWindows={data.houseWindows}
+            windows={data.windows}
           />
         )}
       </div>

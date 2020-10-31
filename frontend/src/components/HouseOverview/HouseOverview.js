@@ -10,18 +10,18 @@ import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import RoomInfo from "../RoomInfo/RoomInfo";
 import useStyles from "./HouseOverviewStyle";
-import { findAllRooms } from "../../modules/HouseOverview/SimulationService";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 
 const HouseOverview = () => {
-  const { houseId } = useCurrentHouse();
+  const { house } = useCurrentHouse();
   const [rows, setRows] = useState([]);
   const classes = useStyles();
   useEffect(() => {
-    findAllRooms(houseId).then((response) => {
-      setRows(response);
-    });
-  }, [houseId]);
+    if (house) {
+      console.log(house);
+      setRows(house.rooms);
+    }
+  }, [house]);
 
   return (
     <div>
@@ -37,11 +37,15 @@ const HouseOverview = () => {
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            {rows.map((row) => (
-              <RoomInfo key={row.name} row={row}></RoomInfo>
-            ))}
-          </TableBody>
+          {rows ? (
+            <TableBody>
+              {rows.map((row) => (
+                <RoomInfo key={row.name} row={row}></RoomInfo>
+              ))}
+            </TableBody>
+          ) : (
+            <></>
+          )}
         </Table>
       </TableContainer>
     </div>

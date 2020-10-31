@@ -1,7 +1,6 @@
 import React from "react";
 
 const SimulationHeader = ({ user, city }) => {
-  console.log(city);
   return (
     <>
       <h3>Simulation Parameters</h3>

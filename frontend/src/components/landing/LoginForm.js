@@ -21,6 +21,7 @@ const LoginForm = () => {
   const history = useHistory();
   const loginUser = async (fields) => {
     const result = await authenticate(fields);
+    console.log(await result);
     setUser(await result.user);
     setAuthTokens(await result.token);
 

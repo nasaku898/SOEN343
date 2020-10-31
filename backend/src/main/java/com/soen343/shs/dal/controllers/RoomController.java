@@ -15,16 +15,16 @@ public class RoomController {
 
     @GetMapping(value = "/")
     @ResponseStatus(value = HttpStatus.OK)
-    public RoomDTO getRoom(@PathVariable final long id) {
-        return roomService.getRoom(id);
+    public RoomDTO getRoom(@PathVariable final long roomId) {
+        return roomService.getRoom(roomId);
     }
 
-
-    @PutMapping(value = "/temperature/{newTemperature}")
+    @PutMapping(value = "/temperature")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @PathVariable final double newTemperature) {
-        return roomService.setTemperatureOfRoom(roomId, newTemperature);
+    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @RequestBody final double newTemperature) {
+        final RoomDTO room = roomService.setTemperatureOfRoom(roomId, newTemperature);
+        return room;
     }
 
     @GetMapping(value = "/temperature")
