@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { moveUser } from "../../modules/UserProfileList/UserService.js";
+
 import {
   updateTemperatureOutside,
   getCity,
@@ -9,6 +9,7 @@ import SimulationField from "./SimulationField";
 import { LocationChooser } from "./LocationChooser";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 import { useUser } from "../../context/UserContext";
+import { moveUserToRoom } from "../../modules/HouseOverview/SimulationService";
 
 const SimulationForm = () => {
   const { house } = useCurrentHouse();
@@ -31,6 +32,7 @@ const SimulationForm = () => {
     if (house) {
       (async () => {
         setCity(await getCity(house.city));
+        console.log(house);
       })();
     }
   }, [house]);
@@ -46,10 +48,10 @@ const SimulationForm = () => {
 
     (async () => {
       await updateTemperatureOutside(city.name, city.temperatureOutside);
-      const { id } = house.rooms.find(
-        (room) => room.id === ~~fd.get("location")
+      const { roomId } = house.rooms.find(
+        (room) => room.name === fd.get("location")
       );
-      await moveUser(user.username, id);
+      await moveUserToRoom(user.username, roomId);
     })();
     setDisabled(true);
   };

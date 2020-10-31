@@ -8,16 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "api/city")
+@RequestMapping(path = "/api/city")
 public class CityController {
     private final CityService cityService;
-
-    @PutMapping(value = "/{name}/temperatureOutside/{temperatureOutside}")
+                          
+    @PutMapping(value = "/{name}/temperatureOutside")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    CityDTO updateTemperatureOutside(@PathVariable final String name, @PathVariable final double temperatureOutside) {
+    CityDTO updateTemperatureOutside(@PathVariable final String name, @RequestBody final double temperatureOutside) {
         return cityService.setTemperatureOutside(name, temperatureOutside);
     }
+
     @GetMapping(value = "/{name}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody

@@ -4,15 +4,13 @@ const URL = `${global.config.BACKEND_URL}/api/city`;
 
 export const updateTemperatureOutside = async (name, temperatureOutside) => {
   try {
-    const response = await fetch(
-      `${URL}/${name}/temperature/${temperatureOutside}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "PUT",
-      }
-    );
+    const response = await fetch(`${URL}/${name}/temperatureOutside`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(temperatureOutside),
+    });
     return response.json();
   } catch (error) {
     throw error.response.data;
