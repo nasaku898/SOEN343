@@ -16,8 +16,6 @@ export const getRoom = async (id) => {
 
 export const editRoomTemperature = async (roomId, newTemperature) => {
   try {
-    console.log(roomId);
-    console.log(newTemperature);
     const response = await fetch(`${URL}/${roomId}/temperature`, {
       headers: {
         "Content-Type": "application/json",

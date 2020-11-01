@@ -5,7 +5,6 @@ import WindowOpenSwitch from "./WindowOpenSwitch";
 import WindowBlockedSwitch from "./WindowBlockedSwitch";
 
 const WindowPanel = ({ windows, classes }) => {
-  console.log(windows);
   return (
     <>
       <FormControl component="fieldset" className={classes.checkboxFormControl}>

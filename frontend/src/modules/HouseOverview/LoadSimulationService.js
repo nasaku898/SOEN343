@@ -2,7 +2,6 @@ import Axios from "axios";
 import "../../Utils/config";
 
 export const loadHouseLayout = async (requestBody) => {
-  console.log("fuck");
   try {
     const response = await fetch(
       global.config.BACKEND_URL + `/api/simulation/houseLayout`,

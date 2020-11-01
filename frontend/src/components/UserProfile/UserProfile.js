@@ -27,13 +27,11 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
   const [profile, setProfile] = useState(userProfile);
   const classes = useStyles();
 
-  console.log(rooms);
   // this will send the PUT request to update the object, and will update our view with whichever fields have been modified
   const handleUpdate = (event) => {
     event.preventDefault();
 
     (async () => {
-      console.log(profile);
       const response = await updateHouseMember(profile);
       setProfile({
         profile,
@@ -50,7 +48,6 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
           profile,
           ...response,
         });
-        console.log(response);
       })
       .catch((error) => {
         alert(`Status: ${error.status}: ${error.message}`);
@@ -59,7 +56,6 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
 
   const handleChange = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
 
     setProfile({
       ...profile,

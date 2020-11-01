@@ -5,7 +5,6 @@ import OpenDoorSwitch from "./OpenDoorSwitch";
 import LockDoorSwitch from "./LockDoorSwitch";
 
 const DoorPanel = ({ doors, handleItemChange, classes }) => {
-  console.log(doors);
   return (
     <>
       <FormControl component="fieldset" className={classes.checkboxFormControl}>
