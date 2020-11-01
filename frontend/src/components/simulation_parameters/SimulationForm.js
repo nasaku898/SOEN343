@@ -21,12 +21,18 @@ const SimulationForm = () => {
   const [city, setCity] = useState(null);
 
   const [outside, setOutside] = useState(true);
+  const [locationName, setLocationName] = useState("outside");
 
   useEffect(() => {
     if (user) {
-      setOutside(user.isOutisde && disabled);
+      setOutside(user.outisde && disabled);
+      if (!user.outside) {
+        setLocationName(user.location.name);
+      }
     }
-  }, [user, disabled]);
+  }, [user]);
+
+  useEffect(() => {}, [user]);
 
   useEffect(() => {
     if (house) {
@@ -34,7 +40,7 @@ const SimulationForm = () => {
         setCity(await getCity(house.city));
       })();
     }
-  }, [house]);
+  }, [house, user]);
 
   const handleTemperatureChange = (event) => {
     event.preventDefault();
@@ -72,7 +78,7 @@ const SimulationForm = () => {
               <LocationChooser
                 name={"location"}
                 disabled={disabled}
-                locationName={user.location.name}
+                locationName={locationName}
                 rooms={house.rooms}
                 username={user.username}
               />

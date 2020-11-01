@@ -17,7 +17,6 @@ const SHCPanel = () => {
 
   useEffect(() => {
     if (house) {
-      console.log(house);
       handleUpdateLightDoorsAndWindows();
     }
   }, [house]);

@@ -18,7 +18,6 @@ const HouseOverview = () => {
   const classes = useStyles();
   useEffect(() => {
     if (house) {
-      console.log(house);
       setRows(house.rooms);
     }
   }, [house]);

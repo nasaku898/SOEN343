@@ -36,7 +36,6 @@ const UserProfileList = () => {
 
   useEffect(() => {
     if (house) {
-      console.log(house.id);
       findAllHouseMembers(house.id)
         .then((response) => {
           setUserProfileList(response);

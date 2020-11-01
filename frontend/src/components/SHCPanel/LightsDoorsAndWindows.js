@@ -1,6 +1,4 @@
 export const fetchLightsDoorsAndWindows = (rooms) => {
-  console.log(rooms);
-
   const lightsDoorsWindows = { lights: [], doors: [], windows: [] };
 
   rooms.forEach((roomsItem) => {

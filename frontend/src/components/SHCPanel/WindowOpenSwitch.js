@@ -5,7 +5,6 @@ import { modifyWindowState } from "../../modules/HouseOverview/HouseService";
 
 const WindowOpenSwitch = ({ window }) => {
   const [desiredState, setDesiredState] = useState(false);
-  console.log(window);
   useEffect(() => {
     setDesiredState(window.open);
   }, [window]);
