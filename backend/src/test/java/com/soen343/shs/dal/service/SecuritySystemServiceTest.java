@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 
-import java.util.Collections;
-
+import static com.soen343.shs.dal.service.helpers.RoomHelper.createRoomDTO;
+import static com.soen343.shs.dal.service.helpers.RoomHelper.createRooms;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +35,7 @@ public class SecuritySystemServiceTest {
     private SecuritySystemService classUnderTest;
 
     @Test
-    void createSecuritySystem() {
+    void createSecuritySystemTest() {
         final SecuritySystemDTO dto = buildSecuritySystemDTO();
 
         when(repository.save(any(SecuritySystem.class))).thenReturn(getEntity());
@@ -43,13 +43,16 @@ public class SecuritySystemServiceTest {
         final SecuritySystemDTO system = classUnderTest.createSecuritySystem(dto);
         Assertions.assertNotNull(dto);
     }
+//
+//    @Test
+//    void toggleAwayTest
 
     private static SecuritySystem getEntity() {
         return SecuritySystem.builder()
                 .auto(false)
                 .away(false)
                 .houseId(1L)
-                .rooms(Collections.emptySet())
+                .rooms(createRooms())
                 .id(1L)
                 .build();
     }
@@ -59,7 +62,7 @@ public class SecuritySystemServiceTest {
                 .auto(false)
                 .away(false)
                 .id(1L)
-                .rooms(Collections.emptySet())
+                .rooms(createRoomDTO())
                 .houseId(1L)
                 .build();
     }

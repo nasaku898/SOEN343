@@ -15,6 +15,8 @@ import org.springframework.core.convert.ConversionService;
 import java.util.Collections;
 import java.util.Set;
 
+import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_NAME;
+import static com.soen343.shs.dal.service.helpers.RoomHelper.createRoomDTO;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -37,8 +39,7 @@ class LoadSimulationServiceTest {
     @InjectMocks
     private LoadSimulationService classUnderTest;
 
-    public static final String ROOM_NAME = "someName";
-    private static final long ROOM_ID = 1;
+
     private static final String CITY_NAME = "Montreal";
 
     @Test
@@ -94,25 +95,5 @@ class LoadSimulationServiceTest {
                         .build());
     }
 
-    private static Set<Room> createRooms() {
-        return Collections
-                .singleton(Room.builder()
-                        .id(ROOM_ID)
-                        .doors(Collections.singleton(ExteriorDoor.builder().build()))
-                        .houseWindows(Collections.singleton(HouseWindow.builder().build()))
-                        .lights(Collections.singleton(Light.builder().build()))
-                        .name(ROOM_NAME)
-                        .build());
-    }
 
-    private static Set<RoomDTO> createRoomDTO() {
-        return Collections
-                .singleton(RoomDTO.builder()
-                        .roomId(ROOM_ID)
-                        .doors(Collections.singleton(ExteriorDoorDTO.builder().build()))
-                        .windows(Collections.singleton(WindowDTO.builder().build()))
-                        .lights(Collections.singleton(LightDTO.builder().build()))
-                        .name(ROOM_NAME)
-                        .build());
-    }
 }
