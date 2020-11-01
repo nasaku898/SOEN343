@@ -29,6 +29,9 @@ class LoadSimulationServiceTest {
     private UserService userService;
 
     @Mock
+    private CityService cityService;
+
+    @Mock
     private ConversionService mvcConversionService;
 
     @InjectMocks
@@ -36,24 +39,47 @@ class LoadSimulationServiceTest {
 
     public static final String ROOM_NAME = "someName";
     private static final long ROOM_ID = 1;
+    private static final String CITY_NAME = "Montreal";
 
     @Test
     void testLoadHouse() {
-        final House house = House.builder().id(1L).rooms(createRooms()).build();
+        final House house = House.builder().id(1L).city("Montreal").parents(Collections.singleton(1L)).rooms(Collections.singleton(Room.builder().build())).build();
         final RealUserDTO user = Mockito.mock(RealUserDTO.class);
+        final LoadHouseDTO mockHouse = createLoadHouse();
 
         when(userService.getUserByUsername(USERNAME, RealUserDTO.class)).thenReturn(user);
-        when(mvcConversionService.convert(any(LoadDoorDTO.class), any())).thenReturn(DoorDTO.builder().build());
-        when(mvcConversionService.convert(any(LoadHouseWindowDTO.class), any())).thenReturn(WindowDTO.builder().build());
-        when(mvcConversionService.convert(any(LoadLightDTO.class), any())).thenReturn(LightDTO.builder().build());
-        when(user.getHouseIds()).thenReturn(Collections.emptySet());
 
-        final HouseDTO dto = classUnderTest.loadHouse(LoadHouseDTO
-                .builder()
+        when(cityService.getCity(mockHouse.getCity())).thenReturn(CityDTO.builder().build());
+        when(houseRepository.save(any(House.class))).thenReturn(house);
+
+        when(mvcConversionService.convert(any(LoadInteriorDoorDTO.class), any())).thenReturn(InteriorDoor.builder().build());
+        when(mvcConversionService.convert(any(LoadHouseWindowDTO.class), any())).thenReturn(HouseWindow.builder().build());
+        when(mvcConversionService.convert(any(LoadLightDTO.class), any())).thenReturn(Light.builder().build());
+        when(mvcConversionService.convert(house, HouseDTO.class)).thenReturn(createHouseDTO());
+
+        final HouseDTO dto = classUnderTest.loadHouse(mockHouse, USERNAME);
+        Assertions.assertEquals(house.getId(), dto.getId());
+        Assertions.assertEquals(house.getParents(), dto.getParents());
+        Assertions.assertEquals(house.getRooms().size(), dto.getRooms().size());
+    }
+
+
+    private static LoadHouseDTO createLoadHouse() {
+        return LoadHouseDTO.builder()
+                .city(CITY_NAME)
                 .rooms(createLoadRooms())
-                .build(), USERNAME);
+                .build();
+    }
 
-        Assertions.assertNotNull(dto);
+    private static HouseDTO createHouseDTO() {
+        return HouseDTO.builder()
+                .rooms(createRoomDTO())
+                .city(CITY_NAME)
+                .parents(Collections.singleton(1L))
+                .children(Collections.emptySet())
+                .guests(Collections.emptySet())
+                .id(1L)
+                .build();
     }
 
     private static Set<LoadRoomDTO> createLoadRooms() {
@@ -75,6 +101,17 @@ class LoadSimulationServiceTest {
                         .doors(Collections.singleton(ExteriorDoor.builder().build()))
                         .houseWindows(Collections.singleton(HouseWindow.builder().build()))
                         .lights(Collections.singleton(Light.builder().build()))
+                        .name(ROOM_NAME)
+                        .build());
+    }
+
+    private static Set<RoomDTO> createRoomDTO() {
+        return Collections
+                .singleton(RoomDTO.builder()
+                        .roomId(ROOM_ID)
+                        .doors(Collections.singleton(ExteriorDoorDTO.builder().build()))
+                        .windows(Collections.singleton(WindowDTO.builder().build()))
+                        .lights(Collections.singleton(LightDTO.builder().build()))
                         .name(ROOM_NAME)
                         .build());
     }
