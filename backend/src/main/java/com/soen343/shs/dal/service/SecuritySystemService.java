@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SHSSecurityService {
+public class SecuritySystemService {
 
     private final SecuritySystemRepository repository;
     private final ConversionService mvcConversionService;
@@ -38,15 +38,15 @@ public class SHSSecurityService {
      * @param dto containing the security system we want to create
      * @return a DTO showing the properties of the newly created security system
      */
-    public SecuritySystemDTO createSecurityService(final SecuritySystemDTO dto) {
-        repository.save(SecuritySystem.builder()
+    public SecuritySystemDTO createSecuritySystem(final SecuritySystemDTO dto) {
+        final SecuritySystem system = repository.save(SecuritySystem.builder()
                 .auto(dto.isAuto())
                 .houseId(dto.getHouseId())
                 .away(dto.isAway())
                 .rooms((houseService.fetchHouse(dto.getHouseId()).getRooms()))
                 .build());
 
-        return dto;
+        return mvcConversionService.convert(system, SecuritySystemDTO.class);
     }
 
     /**

@@ -45,7 +45,6 @@ public class HouseMemberServiceTest {
         final HouseMemberDTO dtoTest = classUnderTest.createNewHouseMember(dto);
 
         Assertions.assertEquals(dto, dtoTest);
-
     }
 
 }

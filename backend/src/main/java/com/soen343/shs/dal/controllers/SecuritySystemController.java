@@ -1,6 +1,6 @@
 package com.soen343.shs.dal.controllers;
 
-import com.soen343.shs.dal.service.SHSSecurityService;
+import com.soen343.shs.dal.service.SecuritySystemService;
 import com.soen343.shs.dto.SecuritySystemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping(path = "api/security")
 public class SecuritySystemController {
-    private final SHSSecurityService securityService;
+    private final SecuritySystemService securityService;
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
