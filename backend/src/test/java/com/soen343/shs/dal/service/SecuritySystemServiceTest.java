@@ -44,7 +44,7 @@ public class SecuritySystemServiceTest {
         when(mvcConversionService.convert(any(SecuritySystem.class), any())).thenReturn(dto);
 
         final SecuritySystemDTO system = classUnderTest.createSecuritySystem(dto);
-        Assertions.assertNotNull(system);
+        Assertions.assertEquals(dto, system);
     }
 
     private static SecuritySystem getEntity() {
