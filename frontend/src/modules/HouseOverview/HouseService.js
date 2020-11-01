@@ -47,14 +47,32 @@ export const modifyLightState = async (lightId, desiredState) => {
   }
 };
 
-export const modifyDoorState = async (doorId, open, desiredState) => {
+export const modifyExteriorDoorState = async (doorId, open, desiredState) => {
+  const args = {};
+  args.open = open;
+  args.desiredState = desiredState;
   try {
     const response = await fetch(`${URL}/exteriorDoor/${doorId}`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      body: JSON.stringify(open, desiredState),
+      body: JSON.stringify(args),
+    });
+    return response.json();
+  } catch (error) {
+    throw await error;
+  }
+};
+
+export const modifyInteriorDoorState = async (doorId, open) => {
+  try {
+    const response = await fetch(`${URL}/interiorDoor/${doorId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(open),
     });
     return response.json();
   } catch (error) {
@@ -63,13 +81,16 @@ export const modifyDoorState = async (doorId, open, desiredState) => {
 };
 
 export const modifyWindowState = async (windowId, open, desiredState) => {
+  const args = {};
+  args.open = open;
+  args.desiredState = desiredState;
   try {
     const response = await fetch(`${URL}/window/${windowId}`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      body: JSON.stringify(open, desiredState),
+      body: JSON.stringify(args),
     });
     return response.json();
   } catch (error) {

@@ -44,8 +44,6 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
 
   const handleLocationChange = (event) => {
     event.preventDefault();
-    const room1 = rooms.find((room) => (room.name = event.target.value));
-
     moveHouseMemberToRoom(profile.username, ~~profile.location.roomId)
       .then((response) => {
         setProfile({

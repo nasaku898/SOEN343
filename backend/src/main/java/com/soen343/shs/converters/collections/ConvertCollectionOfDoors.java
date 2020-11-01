@@ -21,7 +21,7 @@ public class ConvertCollectionOfDoors {
         final Set<DoorDTO> dtos = new HashSet<>();
         doors.forEach(door -> {
             if (door instanceof ExteriorDoor) {
-                dtos.add(buildExteriorDoorDTO(door));
+                dtos.add(buildExteriorDoorDTO((ExteriorDoor) door));
             } else {
                 dtos.add(buildInteriorDoorDTO(door));
             }
@@ -33,7 +33,7 @@ public class ConvertCollectionOfDoors {
         final Set<Door> doors = new HashSet<>();
         for (final DoorDTO dto : dtos) {
             if (dto instanceof ExteriorDoorDTO) {
-                doors.add(buildExteriorDoor(dto));
+                doors.add(buildExteriorDoor((ExteriorDoorDTO) dto));
             } else {
                 doors.add(buildInteriorDoor(dto));
             }
@@ -48,9 +48,9 @@ public class ConvertCollectionOfDoors {
                 .build();
     }
 
-    private static ExteriorDoorDTO buildExteriorDoorDTO(final Door door) {
+    private static ExteriorDoorDTO buildExteriorDoorDTO(final ExteriorDoor door) {
         return ExteriorDoorDTO.builder()
-                .locked(((ExteriorDoor) door).getLocked())
+                .locked(door.getLocked())
                 .open(door.getOpen())
                 .id(door.getId())
                 .build();
@@ -64,7 +64,8 @@ public class ConvertCollectionOfDoors {
                 .build();
     }
 
-    private static ExteriorDoor buildExteriorDoor(final DoorDTO dto) {
+    private static ExteriorDoor buildExteriorDoor(final ExteriorDoorDTO dto) {
+
         return ExteriorDoor.builder()
                 .locked(dto.getLocked())
                 .open(dto.getOpen())
