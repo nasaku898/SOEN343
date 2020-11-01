@@ -3,7 +3,6 @@ package com.soen343.shs.dal.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -18,9 +17,6 @@ public class City {
 
     @Column(unique = true)
     private String name;
-
-    @OneToMany
-    private Set<House> houses;
 
     @Column(name = "temperature_outside")
     private Double temperatureOutside;

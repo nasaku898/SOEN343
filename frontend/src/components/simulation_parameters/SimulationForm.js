@@ -1,116 +1,126 @@
-import React, {useEffect, useState} from 'react';
-import {moveUser} from "../../modules/UserProfileList/UserService.js"
-import {getHouse, updateTemperatureOutside} from "../../modules/HouseOverview/HouseService";
+import React, { useEffect, useState } from "react";
+
+import {
+  updateTemperatureOutside,
+  getCity,
+} from "../../modules/HouseOverview/CityService";
 import SimulationHeader from "./SimulationHeader";
 import SimulationField from "./SimulationField";
-import {LocationChooser} from "./LocationChooser";
-import {getUser} from "../../modules/UserProfileList/UserService";
+import { LocationChooser } from "./LocationChooser";
+import { useCurrentHouse } from "../../context/CurrentHouse";
+import { useUser } from "../../context/UserContext";
+import { moveUserToRoom } from "../../modules/HouseOverview/SimulationService";
 
 const SimulationForm = () => {
-    const [user, setUser] = useState({
-        id: 0,
-        email: "",
-        username: "",
-        firstName: "",
-        lastName: "",
-        role: "GUEST",
-        roomId: 2
-    });
+  const { house } = useCurrentHouse();
+  const { user } = useUser();
 
-    const [house, setHouse] = useState({
-        id: 1,
-        rooms: [],
-        temperatureOutside: 0,
-    });
+  const [date, setDate] = useState(new Date());
+  const [disabled, setDisabled] = useState(true);
 
-    const [date, setDate] = useState(new Date());
-    const [disabled, setDisabled] = useState(true);
+  const [city, setCity] = useState(null);
 
+  const [outside, setOutside] = useState(true);
+  const [locationName, setLocationName] = useState("outside");
 
-    useEffect(() => {
-            (async () => {
-                setUser(await getUser("Dawgears"));
-            })();
-
-        },
-        [user.roomId]);
-
-    useEffect(() => {
-        (async () => {
-            setHouse(await getHouse(1))
-            setDisabled(true);
-        })()
-    }, []);
-
-    const handleTemperatureChange = (event) => {
-        event.preventDefault();
-        setHouse({...house, temperatureOutside: event.target.value});
+  useEffect(() => {
+    if (user) {
+      setOutside(user.outisde && disabled);
+      if (!user.outside) {
+        setLocationName(user.location.name);
+      }
     }
+  }, [user]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const fd = new FormData(event.target);
+  useEffect(() => {}, [user]);
 
-        (async () => {
-
-            await updateTemperatureOutside(parseInt(house.id), house.temperatureOutside);
-            const {id} = house.rooms.find(room =>
-                room.id === ~~fd.get('location')
-            );
-            await moveUser(user.username, id);
-        })();
-        setDisabled(true);
+  useEffect(() => {
+    if (house) {
+      (async () => {
+        setCity(await getCity(house.city));
+      })();
     }
+  }, [house, user]);
 
-    const handleDateChange = (event) => {
-        event.preventDefault();
-        setDate(event.target.value);
-    }
+  const handleTemperatureChange = (event) => {
+    event.preventDefault();
+    setCity({ ...city, temperatureOutside: event.target.value });
+  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const fd = new FormData(event.target);
+
+    (async () => {
+      await updateTemperatureOutside(city.name, city.temperatureOutside);
+      const { roomId } = house.rooms.find(
+        (room) => room.name === fd.get("location")
+      );
+      await moveUserToRoom(user.username, roomId);
+    })();
+    setDisabled(true);
+  };
+
+  const handleDateChange = (event) => {
+    event.preventDefault();
+    setDate(event.target.value);
+  };
+
+  if (city) {
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <SimulationHeader user={user}/>
+      <>
+        <form onSubmit={handleSubmit}>
+          <SimulationHeader user={user} city={city} />
+          {outside ? (
+            <p>is outside</p>
+          ) : (
+            house.rooms.length && (
+              <LocationChooser
+                name={"location"}
+                disabled={disabled}
+                locationName={locationName}
+                rooms={house.rooms}
+                username={user.username}
+              />
+            )
+          )}
 
-                {house.rooms.length &&
-                <LocationChooser
-                    name={"location"}
-                    disabled={disabled}
-                    locationName={house.rooms[0].name}
-                    rooms={house.rooms}
-                    username={user.username}
-                />}
-
-                <SimulationField
-                    name="date"
-                    id="date"
-                    type="text"
-                    onChange={handleDateChange}
-                    value={date}
-                    disabled={disabled}
-                />
-                <br/>
-                <SimulationField
-                    name="temperature"
-                    id="temperature"
-                    type="text"
-                    onChange={handleTemperatureChange}
-                    value={house.temperatureOutside}
-                    disabled={disabled}
-                />
-                <br/>
-                {disabled
-                    ? <button onClick={(event) => {
-                        event.preventDefault()
-                        setDisabled(!disabled)
-                    }}>Edit Parameters</button>
-                    : <button type="submit">Submit</button>
-                }
-
-            </form>
-
-        </>
+          <SimulationField
+            name="date"
+            id="date"
+            type="text"
+            onChange={handleDateChange}
+            value={date}
+            disabled={disabled}
+          />
+          <br />
+          <SimulationField
+            name="temperature"
+            id="temperature"
+            type="text"
+            onChange={handleTemperatureChange}
+            value={city.temperatureOutside}
+            disabled={disabled}
+          />
+          <br />
+          {disabled ? (
+            <button
+              onClick={(event) => {
+                event.preventDefault();
+                setDisabled(!disabled);
+              }}
+            >
+              Edit Parameters
+            </button>
+          ) : (
+            <button type="submit">Submit</button>
+          )}
+        </form>
+      </>
     );
+  }
+
+  return <></>;
 };
 
 export default SimulationForm;

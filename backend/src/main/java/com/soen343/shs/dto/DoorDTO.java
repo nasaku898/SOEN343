@@ -14,5 +14,4 @@ import lombok.experimental.SuperBuilder;
 public class DoorDTO {
     private Long id;
     private Boolean open;
-    private Boolean locked;
 }

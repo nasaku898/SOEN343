@@ -1,7 +1,10 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.SimulationService;
-import com.soen343.shs.dto.*;
+import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.RealUserDTO;
+import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +18,6 @@ import java.util.Set;
 public class SimulationController {
 
     private final SimulationService simulationService;
-
-    @PutMapping(value = "/house/{houseId}/temperatureOutside/{temperatureOutside}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public @ResponseBody
-    HouseDTO updateTemperatureOutside(@PathVariable final long houseId, @PathVariable final double temperatureOutside) {
-        return simulationService.setTemperatureOutside(houseId, temperatureOutside);
-    }
 
     @PutMapping(value = "/user/{username}/room/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)

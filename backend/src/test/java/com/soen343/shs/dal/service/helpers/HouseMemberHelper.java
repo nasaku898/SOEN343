@@ -4,8 +4,8 @@ import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.UserRole;
 import com.soen343.shs.dto.HouseMemberDTO;
+import com.soen343.shs.dto.RoomDTO;
 
-import java.util.Collections;
 import java.util.HashSet;
 
 public class HouseMemberHelper {
@@ -42,7 +42,7 @@ public class HouseMemberHelper {
                 .id(MOCK_HOUSE_MEMBER_ID)
                 .username(MOCK_HOUSE_MEMBER_NAME)
                 .role((UserRole.PARENT))
-                .roomId(Collections.singletonMap(MOCK_ROOM_ID, MOCK_ROOM_NAME))
+                .location(RoomDTO.builder().build())
                 .build();
     }
 

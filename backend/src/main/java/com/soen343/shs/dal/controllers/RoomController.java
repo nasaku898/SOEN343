@@ -4,36 +4,30 @@ import com.soen343.shs.dal.service.RoomService;
 import com.soen343.shs.dto.RoomDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/room")
+@RequestMapping(path = "api/room/{roomId}")
 public class RoomController {
 
     private final RoomService roomService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/")
     @ResponseStatus(value = HttpStatus.OK)
-    public RoomDTO getRoom(@PathVariable final long id) {
-        return roomService.getRoom(id);
+    public RoomDTO getRoom(@PathVariable final long roomId) {
+        return roomService.getRoom(roomId);
     }
 
-
-    @PutMapping(value = "/room/{roomId}/temperature/{newTemperature}")
+    @PutMapping(value = "/temperature")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @PathVariable final double newTemperature) {
-        return roomService.setTemperatureOfRoom(roomId, newTemperature);
+    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @RequestBody final double newTemperature) {
+        final RoomDTO room = roomService.setTemperatureOfRoom(roomId, newTemperature);
+        return room;
     }
 
-    @GetMapping(value = "/room/{roomId}/temperature")
+    @GetMapping(value = "/temperature")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     double getRoomTemperature(@PathVariable final long roomId) {

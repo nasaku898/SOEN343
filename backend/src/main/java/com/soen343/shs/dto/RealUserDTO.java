@@ -13,5 +13,4 @@ public class RealUserDTO extends UserDTO {
     private String email;
     private String firstName;
     private String lastName;
-    private boolean isOutside;
 }

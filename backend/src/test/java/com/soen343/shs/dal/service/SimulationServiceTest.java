@@ -1,10 +1,10 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.City;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dto.HouseDTO;
+import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.RoomDTO;
 import com.soen343.shs.dto.UserDTO;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,10 +24,13 @@ import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SimulationServiceTest {
+class SimulationServiceTest {
 
     @Mock
     private HouseService houseService;
+
+    @Mock
+    private HouseMemberService houseMemberService;
 
     @Mock
     private UserService userService;
@@ -42,32 +44,26 @@ public class SimulationServiceTest {
     @InjectMocks
     private SimulationService classUnderTest;
 
-
     @Test
-    public void moveUserToRoomSuccessfully() {
-        final UserDTO dto = Mockito.mock(UserDTO.class);
+    void moveUserToRoomSuccessfully() {
+        final HouseMemberDTO dto = Mockito.mock(HouseMemberDTO.class);
 
-        when(userService.getUserByUsername(MOCK_HOUSE_MEMBER_NAME, UserDTO.class)).thenReturn(dto);
-        when(roomService.getRoom(MOCK_ROOM_ID)).thenReturn(buildRoomDTO());
+        when(userService.getUserByUsername(MOCK_HOUSE_MEMBER_NAME, HouseMemberDTO.class)).thenReturn(dto);
+        final RoomDTO roomDTO = buildRoomDTO();
+        when(roomService.getRoom(MOCK_ROOM_ID)).thenReturn(roomDTO);
+        when(dto.getLocation()).thenReturn(roomDTO);
 
-        when(dto.getRoomId()).thenReturn(new HashMap<>());
+        when(houseMemberService.updateHouseMember(dto)).thenReturn(HouseMemberDTO.builder().location(roomDTO).build());
 
-        when(userService.updateUser(dto.getId(), dto)).thenReturn(dto);
+        final UserDTO houseMemberDTO = classUnderTest.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID, HouseMemberDTO.class);
 
-        final UserDTO houseMemberDTO = classUnderTest.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID, UserDTO.class);
-
-        Assertions.assertEquals(MOCK_ROOM_ID, houseMemberDTO.getRoomId().keySet().iterator().next());
+        Assertions.assertEquals(MOCK_ROOM_ID, houseMemberDTO.getLocation().getRoomId());
     }
 
     @Test
-    public void testFindAllRooms() {
+    void testFindAllRooms() {
         final House house = House.builder()
-                .city(City.builder()
-                        .name("")
-                        .id(0L)
-                        .temperatureOutside(0.0)
-                        .houses(Collections.emptySet())
-                        .build())
+                .city("Montreal")
                 .rooms(Collections.singleton(buildMockRoom()))
                 .id(1L)
                 .build();

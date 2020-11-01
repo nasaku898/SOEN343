@@ -1,6 +1,5 @@
 package com.soen343.shs.dto;
 
-import com.soen343.shs.dal.model.City;
 import lombok.*;
 
 import java.util.Set;
@@ -13,5 +12,5 @@ import java.util.Set;
 @Builder
 public class LoadHouseDTO {
     private Set<LoadRoomDTO> rooms;
-    private City city;
+    private String city;
 }

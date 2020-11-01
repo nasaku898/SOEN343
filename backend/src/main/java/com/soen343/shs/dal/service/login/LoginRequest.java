@@ -1,11 +1,11 @@
-package com.soen343.shs.dal.service.Login;
+package com.soen343.shs.dal.service.login;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
+@AllArgsConstructor
 @Setter
+@NoArgsConstructor
 @Getter
 public class LoginRequest {
     private String username;

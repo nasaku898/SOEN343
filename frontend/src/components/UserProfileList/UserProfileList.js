@@ -1,126 +1,180 @@
-import { Box, Button, Modal, Typography, TextField, MenuItem } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
-import UserProfile from '../UserProfile/UserProfile'
-import useStyles from './UserProfileListStyle'
-import AddIcon from '@material-ui/icons/Add';
+import {
+  Box,
+  Button,
+  MenuItem,
+  Modal,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import UserProfile from "../UserProfile/UserProfile";
+import useStyles from "./UserProfileListStyle";
+import AddIcon from "@material-ui/icons/Add";
 import "../../Utils/config";
-import RoleSelector from '../RoleSelector/RoleSelector';
-import LocationSelector from '../LocationSelector/LocationSelector';
-import { fetchHouseMember, fetchRooms, createNewHouseMember } from '../../modules/UserProfileList/HouseMemberAPI';
+import RoleSelector from "../RoleSelector/RoleSelector";
+import LocationSelector from "../LocationSelector/LocationSelector";
+import { useCurrentHouse } from "../../context/CurrentHouse";
+import {
+  createNewHouseMember,
+  findAllHouseMembers,
+} from "../../modules/UserProfileList/HouseMemberService";
 
 const UserProfileList = () => {
-    const [editMode, SetEditMode] = useState(true)
-    const [refresh, setRefresh] = useState(true)
-    const classes = useStyles()
+  const [editMode, SetEditMode] = useState(true);
+  const [refresh, setRefresh] = useState(true);
+  const classes = useStyles();
+  const { house } = useCurrentHouse();
+  const [userProfileList, setUserProfileList] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
-    const [userProfileList, setUserProfileList] = useState([])
-    const [name, setName] = useState("")
-    const [role, setRole] = useState("")
-    const [roomId, setRoomId] = useState(null)
-    const [rooms, setRooms] = useState([])
+  const [houseMember, setHouseMember] = useState({
+    username: "",
+    location: {},
+    role: "",
+    isOutside: true,
+  });
 
-    useEffect(() => {
-
-        fetchHouseMember().then(response => {
-            setUserProfileList(response)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
+  useEffect(() => {
+    if (house) {
+      findAllHouseMembers(house.id)
+        .then((response) => {
+          setUserProfileList(response);
         })
-
-        fetchRooms().then(response => {
-            setRooms(response)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
-        })
-
-    }, [refresh])
-
-    const handleNameTyping = (event) => {
-        setName(event.target.value)
+        .catch((error) => {
+          alert(`Status: ${error.status}: ${error.message}`);
+        });
     }
+  }, [house, refresh]);
 
-    const handleCreateNewHouseMember = () => {
-
-        if (!name || !role || !roomId) {
-            alert("Cannot leave field empty")
-            return
-        }
-
-        createNewHouseMember(name, role, roomId)
-            .then(() => {
-                setRefresh(!refresh)
-                setName("")
-                setRole("")
-                setRoomId(null)
-                handleCloseModal()
-            }).catch(error => {
-                alert(`Status: ${error.status}: ${error.message}`)
-            })
+  useEffect(() => {
+    if (house) {
+      setRooms(house.rooms);
     }
+  }, [house]);
 
-    //Modal Handling
-    const handleEditButton = () => {
-        SetEditMode(!editMode)
+  const handleChange = (event) => {
+    event.preventDefault();
+    setHouseMember({
+      ...houseMember,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleCreateNewHouseMember = () => {
+    if (!houseMember.username || !houseMember.role) {
+      alert("Cannot leave field empty");
+      return;
     }
-    const [openModal, setOpenModal] = useState(false);
+    if (houseMember.location) {
+      setHouseMember({
+        ...houseMember,
+        isOutside: false,
+      });
+    }
+    houseMember.houseIds = [house.id];
+    createNewHouseMember(houseMember)
+      .then(() => {
+        setRefresh(!refresh);
+        setHouseMember({
+          username: "",
+          role: "",
+          location: null,
+          isOutside: true,
+        });
+        handleCloseModal();
+      })
+      .catch((error) => {
+        alert(`Status: ${error.status}: ${error.message}`);
+      });
+  };
 
-    const handleOpenModal = () => {
-        setOpenModal(true);
-    };
+  //Modal Handling
+  const handleEditButton = () => {
+    SetEditMode(!editMode);
+  };
 
-    const handleCloseModal = () => {
-        setOpenModal(false);
-    };
+  const [openModal, setOpenModal] = useState(false);
 
-    const createUser = (
-        <div className={classes.modal}>
-            <MenuItem>
-                <TextField label="Name" value={name} onChange={handleNameTyping} />
-            </MenuItem>
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
 
-            <br></br>
-            <MenuItem>
-                <RoleSelector role={role} setRole={setRole}></RoleSelector>
-            </MenuItem>
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
-            <br></br>
-            <MenuItem>
-                <LocationSelector currentRoom={2} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
-            </MenuItem>
-            <Button onClick={handleCreateNewHouseMember}>Create</Button>
-        </div>
-    );
+  const createUser = (
+    <div className={classes.modal}>
+      <MenuItem>
+        <TextField
+          label="Name"
+          name="username"
+          value={houseMember.username}
+          onChange={handleChange}
+        />
+      </MenuItem>
 
-    return (
-        <div className={classes.container}>
-            <Typography>User Profiles</Typography>
-            <div className={classes.userProfileListWrapper}>
-                {
-                    userProfileList.slice().map(userProfile => <UserProfile key={userProfile.id} userProfile={userProfile} editMode={editMode} rooms={rooms} />)
-                }
-                {
-                    editMode ?
-                        <div>
-                            <Button onClick={handleOpenModal}>
-                                <AddIcon></AddIcon>
-                            </Button>
-                            <Modal
-                                open={openModal}
-                                onClose={handleCloseModal}
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {createUser}
-                            </Modal>
-                        </div>
+      <br />
+      <MenuItem>
+        <RoleSelector role={houseMember.role} handleChange={handleChange} />
+      </MenuItem>
 
-                        : <Box></Box>
-                }
-                <Button variant="contained" className={classes.editButton} onClick={handleEditButton}>Edit User Profiles</Button>
-            </div>
+      <br />
+      <MenuItem>
+        <LocationSelector
+          name="location"
+          rooms={rooms}
+          handleChange={handleChange}
+        />
+      </MenuItem>
+      <Button onClick={handleCreateNewHouseMember}>Create</Button>
+    </div>
+  );
 
-        </div>
-    )
-}
+  return (
+    <div className={classes.container}>
+      <Typography>User Profiles</Typography>
+      <div className={classes.userProfileListWrapper}>
+        {userProfileList.slice().map((userProfile) => (
+          <UserProfile
+            key={userProfile.id}
+            userProfile={userProfile}
+            editMode={editMode}
+            rooms={rooms}
+          />
+        ))}
+        {editMode ? (
+          <div>
+            <Button onClick={handleOpenModal}>
+              <AddIcon />
+            </Button>
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {createUser}
+            </Modal>
+          </div>
+        ) : (
+          <Box />
+        )}
+        <Button
+          variant="contained"
+          className={classes.editButton}
+          onClick={handleEditButton}
+        >
+          Edit User Profiles
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-export default UserProfileList
+export default UserProfileList;

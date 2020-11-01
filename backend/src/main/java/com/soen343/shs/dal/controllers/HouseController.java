@@ -1,5 +1,6 @@
 package com.soen343.shs.dal.controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.soen343.shs.dal.service.HouseService;
 import com.soen343.shs.dto.DoorDTO;
 import com.soen343.shs.dto.HouseDTO;
@@ -18,22 +19,37 @@ public class HouseController {
     @PutMapping(value = "/light/{lightId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    LightDTO modifyLightState(@PathVariable final long lightId, @RequestParam final boolean desiredState) {
+    LightDTO modifyLightState(@PathVariable final long lightId, @RequestBody final boolean desiredState) {
         return houseService.modifyLightState(lightId, desiredState);
     }
 
     @PutMapping(value = "/exteriorDoor/{doorId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    DoorDTO modifyExteriorDoorState(@PathVariable final long doorId, @RequestParam final boolean open, final boolean desiredState) {
-        return houseService.modifyExteriorDoorState(doorId, open, desiredState);
+    DoorDTO modifyExteriorDoorState(@PathVariable final long doorId, @RequestBody final ObjectNode objectNode) {
+        return houseService
+                .modifyExteriorDoorState(
+                        doorId,
+                        objectNode.get("open").asBoolean(),
+                        objectNode.get("desiredState").asBoolean()
+                );
+    }
+
+    @PutMapping(value = "/interiorDoor/{doorId}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    DoorDTO modifyInteriorDoorState(@PathVariable final long doorId, @RequestBody final boolean desiredState) {
+        return houseService.modifyInteriorDoorState(doorId, desiredState);
     }
 
     @PutMapping(value = "/window/{windowId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    WindowDTO modifyWindowState(@PathVariable final long windowId, @RequestParam final boolean open, final boolean desiredState) {
-        return houseService.modifyWindowState(windowId, open, desiredState);
+    WindowDTO modifyWindowState(@PathVariable final long windowId, @RequestBody final ObjectNode objectNode) {
+        return houseService.modifyWindowState(windowId,
+                objectNode.get("open").asBoolean(),
+                objectNode.get("desiredState").asBoolean()
+        );
     }
 
     @GetMapping(value = "/{id}")
@@ -42,9 +58,5 @@ public class HouseController {
     HouseDTO getHouse(@PathVariable final long id) {
         return houseService.getHouse(id);
     }
-
-//    @GetMapping(value = "/house/houseLayout/{houseId}")
-//    public House getHouseLayout(@PathVariable final long houseId) {
-//        return simulationService.(houseId);
-//    }
+    
 }

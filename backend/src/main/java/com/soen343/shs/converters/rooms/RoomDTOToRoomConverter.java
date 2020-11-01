@@ -7,14 +7,18 @@ import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dto.RoomDTO;
 import org.springframework.core.convert.converter.Converter;
 
-public class RoomDTOToRoomConverter implements Converter<Room, RoomDTO> {
+public class RoomDTOToRoomConverter implements Converter<RoomDTO, Room> {
 
     @Override
-    public RoomDTO convert(final Room room) {
-        return RoomDTO.builder()
-                .doors(ConvertCollectionOfDoors.convertDoors(room.getDoors()))
-                .lights(ConvertCollectionOfLights.convertLights(room.getLights()))
-                .windows(ConvertCollectionOfWindows.convertWindows(room.getHouseWindows()))
+    public Room convert(final RoomDTO room) {
+        return Room.builder()
+                .doors(ConvertCollectionOfDoors.convertDoorDTOs(room.getDoors()))
+                .lights(ConvertCollectionOfLights.convertLightDTOs(room.getLights()))
+                .name(room.getName())
+                .temperature(room.getTemperature())
+                .houseWindows(ConvertCollectionOfWindows.convertWindowDTOs(room.getWindows()))
+                .userIds(room.getUserIds())
+                .id(room.getRoomId())
                 .build();
     }
 

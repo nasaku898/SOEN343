@@ -1,131 +1,165 @@
-import { Box, Grid, Menu, Typography, MenuItem, Button, TextField } from '@material-ui/core'
-import React, { useState } from 'react'
-import useStyles from './UserProfileStyle'
-import UpdateIcon from '@material-ui/icons/Update';
+import {
+  Box,
+  Button,
+  Grid,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import useStyles from "./UserProfileStyle";
+import UpdateIcon from "@material-ui/icons/Update";
 import "../../Utils/config";
-import RoleSelector from '../RoleSelector/RoleSelector';
-import LocationSelector from '../LocationSelector/LocationSelector';
-import { houseMemberNameModification, houseMemberRoleModification, houseMemberLocationChange } from '../../modules/UserProfileList/HouseMemberAPI';
-const UserProfile = ({ userProfile, editMode, rooms }) => {
+import RoleSelector from "../RoleSelector/RoleSelector";
+import LocationSelector from "../LocationSelector/LocationSelector";
+import { updateHouseMember } from "../../modules/UserProfileList/HouseMemberService";
+import { moveHouseMemberToRoom } from "../../modules/HouseOverview/SimulationService";
 
-    const classes = useStyles()
+const DefaultProfile = {
+  username: "",
+  location: null,
+  role: "",
+  isOutside: false,
+};
 
+const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
+  const [profile, setProfile] = useState(userProfile);
+  const classes = useStyles();
 
-    const [role, setRole] = useState(userProfile.role)
-    const [name, setName] = useState(userProfile.name)
-    const [room, setRoom] = useState(userProfile.roomName)
-    const [roomId, setRoomId] = useState(userProfile.roomId)
+  // this will send the PUT request to update the object, and will update our view with whichever fields have been modified
+  const handleUpdate = (event) => {
+    event.preventDefault();
 
-    const userProfileId = userProfile.id
+    (async () => {
+      const response = await updateHouseMember(profile);
+      setProfile({
+        profile,
+        ...response,
+      });
+    })();
+  };
 
-    //Temporary state when typing or selecting a role
-    const [nameField, setNameField] = useState(userProfile.name)
-    const [roleField, setRoleField] = useState(userProfile.role)
+  const handleLocationChange = (event) => {
+    event.preventDefault();
+    moveHouseMemberToRoom(profile.username, ~~profile.location.roomId)
+      .then((response) => {
+        setProfile({
+          profile,
+          ...response,
+        });
+      })
+      .catch((error) => {
+        alert(`Status: ${error.status}: ${error.message}`);
+      });
+  };
 
-    const handleNameModification = (event) => {
-        event.preventDefault()
+  const handleChange = (event) => {
+    event.preventDefault();
 
-        houseMemberNameModification(userProfileId, nameField).then(response => {
-            setName(response.name)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
-        })
+    setProfile({
+      ...profile,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  //Function for handling menu
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleEditButtonClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseEdit = () => {
+    setAnchorEl(null);
+  };
+
+  const [currentLocation, setCurrentLocation] = useState("");
+
+  useEffect(() => {
+    if (profile.location || profile.isOutside) {
+      setCurrentLocation(profile.isOutside ? "outside" : profile.location.name);
     }
+  }, [profile.location]);
 
-    const handleRoleModification = (event) => {
-        event.preventDefault()
-        houseMemberRoleModification(userProfileId, roleField).then(response => {
-            setRole(response.role)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
-        })
-    }
+  return (
+    <div className={classes.container}>
+      <Grid
+        container
+        direction="row"
+        spacing={0}
+        className={classes.userProfileWrapper}
+      >
+        <Grid item xs={3}>
+          <Typography>Name: {profile.username}</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography>Role: {profile.role}</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography>Location: {currentLocation}</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          {editMode ? (
+            <div>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleEditButtonClick}
+              >
+                Edit
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleCloseEdit}
+              >
+                <MenuItem>
+                  <TextField
+                    label="Name"
+                    value={profile.username}
+                    name="username"
+                    onChange={handleChange}
+                    autoComplete="off"
+                  />
+                  <Button onClick={handleUpdate}>
+                    <UpdateIcon />
+                  </Button>
+                </MenuItem>
 
-    const handleLocationChange = (event) => {
-        event.preventDefault()
-        houseMemberLocationChange(roomId, name).then(response => {
-            setName(response.name)
-            setRole(response.role)
-            setRoom(response.roomName)
-            setRoomId(response.roomId)
-        }).catch(error => {
-            alert(`Status: ${error.status}: ${error.message}`)
-        })
-    }
+                <MenuItem>
+                  <RoleSelector
+                    role={profile.role}
+                    handleChange={handleChange}
+                  />
+                  <Button onClick={handleUpdate}>
+                    <UpdateIcon />
+                  </Button>
+                </MenuItem>
 
-    const handleNameTyping = (event) => {
-        setNameField(event.target.value)
-    }
+                <MenuItem>
+                  {profile.location && (
+                    <LocationSelector
+                      currentRoom={profile.location.name}
+                      handleChange={handleChange}
+                      rooms={rooms}
+                    />
+                  )}
+                  <Button onClick={handleLocationChange}>
+                    <UpdateIcon />
+                  </Button>
+                </MenuItem>
+              </Menu>
+            </div>
+          ) : (
+            <Box />
+          )}
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
 
-    //Function for handling menu
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleEditButtonClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleCloseEdit = () => {
-        setAnchorEl(null);
-    };
-
-    return (
-        <div className={classes.container}>
-            <Grid container direction="row" spacing={0} className={classes.userProfileWrapper}>
-                <Grid item xs={3} >
-                    <Typography>Name: {name}</Typography>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>Role: {role}</Typography>
-                </Grid>
-                <Grid item xs={3}>
-                    <Typography>Location: {room}</Typography>
-                </Grid>
-                <Grid item xs={3}>
-                    {
-                        editMode ?
-                            <div>
-                                <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleEditButtonClick}>
-                                    Edit
-                                </Button>
-                                <Menu
-                                    id="simple-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleCloseEdit}>
-
-                                    <MenuItem >
-                                        <TextField label="Name" value={nameField} onChange={handleNameTyping} autoComplete="off" />
-                                        <Button onClick={handleNameModification}>
-                                            <UpdateIcon></UpdateIcon>
-                                        </Button>
-
-                                    </MenuItem>
-
-                                    <MenuItem>
-                                        <RoleSelector role={roleField} setRole={setRoleField}></RoleSelector>
-                                        <Button onClick={handleRoleModification}>
-                                            <UpdateIcon></UpdateIcon>
-                                        </Button>
-                                    </MenuItem>
-
-                                    <MenuItem>
-                                        <LocationSelector currentRoom={roomId} rooms={rooms} setRoomId={setRoomId}></LocationSelector>
-                                        <Button onClick={handleLocationChange}>
-                                            <UpdateIcon></UpdateIcon>
-                                        </Button>
-                                    </MenuItem>
-
-                                </Menu>
-                            </div>
-                            :
-                            <Box></Box>
-                    }
-                </Grid>
-
-            </Grid>
-        </div>
-    )
-}
-
-export default UserProfile
+export default UserProfile;

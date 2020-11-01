@@ -3,11 +3,9 @@ package com.soen343.shs.dal.service.helpers;
 import com.soen343.shs.dal.model.RealUser;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dto.RealUserDTO;
-
-import java.util.Collections;
+import com.soen343.shs.dto.RoomDTO;
 
 import static com.soen343.shs.dal.model.UserRole.PARENT;
-import static com.soen343.shs.dal.service.LoadSimulationServiceTest.ROOM_NAME;
 
 public class UserTestHelper {
     public static final Long USER_ID = 1L;
@@ -39,7 +37,7 @@ public class UserTestHelper {
                 .lastName(LAST_NAME)
                 .id(USER_ID)
                 .role(PARENT)
-                .roomId(Collections.singletonMap(1L, ROOM_NAME))
+                .location(RoomDTO.builder().build())
                 .isOutside(false)
                 .build();
     }

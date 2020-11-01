@@ -14,5 +14,8 @@ import java.util.Set;
 public class HouseDTO {
     private Long id;
     private Set<RoomDTO> rooms;
-    private CityDTO city;
+    private String city;
+    private Set<Long> parents;
+    private Set<Long> children;
+    private Set<Long> guests;
 }

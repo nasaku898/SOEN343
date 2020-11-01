@@ -6,7 +6,7 @@ import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
 import com.soen343.shs.dal.repository.LightRepository;
-import com.soen343.shs.dto.DoorDTO;
+import com.soen343.shs.dto.ExteriorDoorDTO;
 import com.soen343.shs.dto.LightDTO;
 import com.soen343.shs.dto.WindowDTO;
 import org.junit.jupiter.api.Assertions;
@@ -186,14 +186,14 @@ class HouseServiceTest {
                                                        final boolean finalLocked) {
         when(exteriorDoorRepository.findById(MOCK_HOUSE_EXTERIOR_DOOR_ID)).thenReturn(java.util.Optional.ofNullable(exteriorDoor));
 
-        when(mvcConversionService.convert(exteriorDoorRepository.save(exteriorDoor), DoorDTO.class))
-                .thenReturn(DoorDTO.builder()
+        when(mvcConversionService.convert(exteriorDoorRepository.save(exteriorDoor), ExteriorDoorDTO.class))
+                .thenReturn(ExteriorDoorDTO.builder()
                         .id(MOCK_HOUSE_EXTERIOR_DOOR_ID)
                         .open(finalOpen)
                         .locked(finalLocked)
                         .build());
 
-        final DoorDTO dto = houseService.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, doWeOpen ? finalOpen : finalLocked);
+        final ExteriorDoorDTO dto = (ExteriorDoorDTO) houseService.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, doWeOpen ? finalOpen : finalLocked);
 
         Assertions.assertEquals(dto.getId(), exteriorDoor.getId());
         Assertions.assertEquals(dto.getOpen(), exteriorDoor.getOpen());
