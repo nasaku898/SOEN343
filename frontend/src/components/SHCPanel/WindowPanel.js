@@ -1,11 +1,10 @@
 import React from "react";
 import FormControl from "@material-ui/core/FormControl";
-import { Checkbox, FormGroup, FormLabel } from "@material-ui/core";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormLabel } from "@material-ui/core";
 import WindowOpenSwitch from "./WindowOpenSwitch";
 import WindowBlockedSwitch from "./WindowBlockedSwitch";
 
-const WindowPanel = ({ windows, handleItemChange, classes }) => {
+const WindowPanel = ({ windows, classes }) => {
   console.log(windows);
   return (
     <>

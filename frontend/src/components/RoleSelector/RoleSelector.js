@@ -1,7 +1,7 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { InputLabel, MenuItem, Select } from "@material-ui/core";
 
-const RoleSelector = ({ role, name, handleChange }) => {
+const RoleSelector = ({ handleChange }) => {
   return (
     <div>
       <InputLabel>Role</InputLabel>

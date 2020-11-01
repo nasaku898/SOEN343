@@ -15,7 +15,6 @@ import { getAuthenticatedUser } from "./modules/UserProfileList/UserService";
 import { HouseContext } from "./context/CurrentHouse";
 import { useUserContext } from "./context/UserContext";
 import { getHouse } from "./modules/HouseOverview/HouseService";
-import { House } from "./entity/House";
 
 const App = () => {
   // we will use this to get/fetch authentication token

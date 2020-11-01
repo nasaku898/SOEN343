@@ -1,7 +1,6 @@
 import React from "react";
 import FormControl from "@material-ui/core/FormControl";
-import { Checkbox, FormGroup, FormLabel } from "@material-ui/core";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { FormLabel } from "@material-ui/core";
 import OpenDoorSwitch from "./OpenDoorSwitch";
 import LockDoorSwitch from "./LockDoorSwitch";
 
