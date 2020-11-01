@@ -1,6 +1,9 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.*;
+import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.HouseWindow;
+import com.soen343.shs.dal.model.InteriorDoor;
+import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dto.*;
 import org.junit.jupiter.api.Assertions;
@@ -15,8 +18,8 @@ import org.springframework.core.convert.ConversionService;
 import java.util.Collections;
 import java.util.Set;
 
+import static com.soen343.shs.dal.service.helpers.HouseHelper.*;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_NAME;
-import static com.soen343.shs.dal.service.helpers.RoomHelper.createRoomDTO;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -39,12 +42,9 @@ class LoadSimulationServiceTest {
     @InjectMocks
     private LoadSimulationService classUnderTest;
 
-
-    private static final String CITY_NAME = "Montreal";
-
     @Test
     void testLoadHouse() {
-        final House house = House.builder().id(1L).city("Montreal").parents(Collections.singleton(1L)).rooms(Collections.singleton(Room.builder().build())).build();
+        final House house = buildHouse();
         final RealUserDTO user = Mockito.mock(RealUserDTO.class);
         final LoadHouseDTO mockHouse = createLoadHouse();
 
@@ -72,16 +72,6 @@ class LoadSimulationServiceTest {
                 .build();
     }
 
-    private static HouseDTO createHouseDTO() {
-        return HouseDTO.builder()
-                .rooms(createRoomDTO())
-                .city(CITY_NAME)
-                .parents(Collections.singleton(1L))
-                .children(Collections.emptySet())
-                .guests(Collections.emptySet())
-                .id(1L)
-                .build();
-    }
 
     private static Set<LoadRoomDTO> createLoadRooms() {
         return Collections

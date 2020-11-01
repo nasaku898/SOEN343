@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 
+import static com.soen343.shs.dal.service.helpers.HouseHelper.buildHouse;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRoomDTO;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRooms;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,13 +40,12 @@ public class SecuritySystemServiceTest {
         final SecuritySystemDTO dto = buildSecuritySystemDTO();
 
         when(repository.save(any(SecuritySystem.class))).thenReturn(getEntity());
-        when(mvcConversionService.convert(any(SecuritySystem.class), any())).thenReturn(buildSecuritySystemDTO());
+        when(houseService.fetchHouse(1L)).thenReturn(buildHouse());
+        when(mvcConversionService.convert(any(SecuritySystem.class), any())).thenReturn(dto);
+
         final SecuritySystemDTO system = classUnderTest.createSecuritySystem(dto);
-        Assertions.assertNotNull(dto);
+        Assertions.assertNotNull(system);
     }
-//
-//    @Test
-//    void toggleAwayTest
 
     private static SecuritySystem getEntity() {
         return SecuritySystem.builder()
