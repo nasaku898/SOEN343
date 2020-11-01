@@ -2,6 +2,7 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseMember;
 import com.soen343.shs.dal.model.RealUser;
+import com.soen343.shs.dal.model.User;
 import com.soen343.shs.dal.repository.UserRepository;
 import com.soen343.shs.dal.repository.mapping.RealUserMapper;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
@@ -50,7 +51,7 @@ public class UserService {
      */
     public <DTO> DTO getUserByUsername(final String username, final Class<DTO> dtoClass) {
         return mvcConversionService.convert(
-                userRepository.findByUsername(RealUser.class, username)
+                userRepository.findByUsername(User.class, username)
                         .orElseThrow(() -> new SHSNotFoundException(getNotFoundExceptionMessage("username", username)))
                 , dtoClass);
     }

@@ -72,7 +72,7 @@ const SimulationForm = () => {
               <LocationChooser
                 name={"location"}
                 disabled={disabled}
-                locationName={house.rooms[0].name}
+                locationName={user.location.name}
                 rooms={house.rooms}
                 username={user.username}
               />

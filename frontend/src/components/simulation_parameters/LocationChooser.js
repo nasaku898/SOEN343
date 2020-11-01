@@ -5,13 +5,14 @@ import FormControl from "@material-ui/core/FormControl";
 export const LocationChooser = ({
   name = "location",
   disabled,
+  locationName,
   rooms = [],
 }) => {
   return (
     <div>
       <InputLabel>Location:</InputLabel>
       <FormControl>
-        <select name={name} disabled={disabled}>
+        <select name={name} disabled={disabled} defaultValue={locationName}>
           {rooms.map((room, index) => (
             <option key={index} value={room.name}>
               {room.name}

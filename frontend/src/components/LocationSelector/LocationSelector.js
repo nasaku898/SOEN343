@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 
-const LocationSelector = ({ rooms, handleChange, name = "location" }) => {
+const LocationSelector = ({ rooms, name = "location", handleChange }) => {
+  console.log(rooms);
   return (
     <div>
       <InputLabel>Location</InputLabel>
@@ -9,8 +10,9 @@ const LocationSelector = ({ rooms, handleChange, name = "location" }) => {
         <Select
           labelId="demo-customized-select-label"
           id="demo-customized-select"
-          name={name}
+          defaultValue={rooms[0].name}
           onChange={handleChange}
+          name={name}
         >
           {rooms.map((room, index) => (
             <MenuItem key={index} value={room}>

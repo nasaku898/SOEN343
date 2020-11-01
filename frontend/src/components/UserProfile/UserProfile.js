@@ -27,11 +27,14 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
   const [profile, setProfile] = useState(userProfile);
   const classes = useStyles();
 
+  console.log(rooms);
   // this will send the PUT request to update the object, and will update our view with whichever fields have been modified
   const handleUpdate = (event) => {
     event.preventDefault();
+
     (async () => {
-      const response = await updateHouseMember(userProfile);
+      console.log(profile);
+      const response = await updateHouseMember(profile);
       setProfile({
         profile,
         ...response,
@@ -40,12 +43,16 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
   };
 
   const handleLocationChange = (event) => {
-    moveHouseMemberToRoom(profile.username, profile.location.id)
+    event.preventDefault();
+    const room1 = rooms.find((room) => (room.name = event.target.value));
+
+    moveHouseMemberToRoom(profile.username, ~~profile.location.roomId)
       .then((response) => {
         setProfile({
           profile,
           ...response,
         });
+        console.log(response);
       })
       .catch((error) => {
         alert(`Status: ${error.status}: ${error.message}`);
@@ -53,6 +60,9 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
   };
 
   const handleChange = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+
     setProfile({
       ...profile,
       [event.target.name]: event.target.value,
@@ -70,6 +80,14 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
     setAnchorEl(null);
   };
 
+  const [currentLocation, setCurrentLocation] = useState("");
+
+  useEffect(() => {
+    if (profile.location || profile.isOutside) {
+      setCurrentLocation(profile.isOutside ? "outside" : profile.location.name);
+    }
+  }, [profile.location]);
+
   return (
     <div className={classes.container}>
       <Grid
@@ -85,10 +103,7 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
           <Typography>Role: {profile.role}</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>
-            Location:
-            {profile.isOutside ? "outside" : profile.location.name}
-          </Typography>
+          <Typography>Location: {currentLocation}</Typography>
         </Grid>
         <Grid item xs={3}>
           {editMode ? (
@@ -122,9 +137,8 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
 
                 <MenuItem>
                   <RoleSelector
-                    name="role"
                     role={profile.role}
-                    setRole={handleChange}
+                    handleChange={handleChange}
                   />
                   <Button onClick={handleUpdate}>
                     <UpdateIcon />
@@ -134,10 +148,9 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
                 <MenuItem>
                   {profile.location && (
                     <LocationSelector
-                      currentRoom={profile.location}
+                      currentRoom={profile.location.name}
+                      handleChange={handleChange}
                       rooms={rooms}
-                      name="location"
-                      setRoomId={handleChange}
                     />
                   )}
                   <Button onClick={handleLocationChange}>

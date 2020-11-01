@@ -54,6 +54,7 @@ const UserProfileList = () => {
   }, [house]);
 
   const handleChange = (event) => {
+    event.preventDefault();
     setHouseMember({
       ...houseMember,
       [event.target.name]: event.target.value,
@@ -121,7 +122,11 @@ const UserProfileList = () => {
 
       <br />
       <MenuItem>
-        <LocationSelector rooms={rooms} handleChange={handleChange} />
+        <LocationSelector
+          name="location"
+          rooms={rooms}
+          handleChange={handleChange}
+        />
       </MenuItem>
       <Button onClick={handleCreateNewHouseMember}>Create</Button>
     </div>
