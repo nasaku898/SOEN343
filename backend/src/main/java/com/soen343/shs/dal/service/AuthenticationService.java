@@ -1,9 +1,9 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.RealUser;
-import com.soen343.shs.dal.service.Login.LoginRequest;
-import com.soen343.shs.dal.service.Login.LoginResponse;
 import com.soen343.shs.dal.service.exceptions.user.SHSUserAlreadyExistsException;
+import com.soen343.shs.dal.service.login.LoginRequest;
+import com.soen343.shs.dal.service.login.LoginResponse;
 import com.soen343.shs.dal.service.validators.FieldValidator;
 import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RegistrationDTO;

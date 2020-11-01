@@ -1,9 +1,6 @@
 package com.soen343.shs.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -11,6 +8,7 @@ import java.util.Set;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class RoomDTO {
     private long roomId;
     private String name;

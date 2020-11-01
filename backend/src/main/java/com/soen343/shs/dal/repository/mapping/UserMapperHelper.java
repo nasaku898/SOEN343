@@ -49,8 +49,9 @@ public class UserMapperHelper {
     public static String mapStringField(final String fieldName, final String dtoString, final String userString) {
         if (!dtoString.equals(userString)) {
             validateStringField(fieldName, dtoString);
+            return dtoString;
         }
-        return dtoString;
+        return userString;
     }
 
     private static void validateStringField(final String fieldName, final String dtoString) {

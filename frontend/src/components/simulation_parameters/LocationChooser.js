@@ -4,7 +4,6 @@ import FormControl from "@material-ui/core/FormControl";
 
 export const LocationChooser = ({
   name = "location",
-  locationName,
   disabled,
   rooms = [],
 }) => {
@@ -14,7 +13,7 @@ export const LocationChooser = ({
       <FormControl>
         <select name={name} disabled={disabled}>
           {rooms.map((room, index) => (
-            <option key={index} value={room.id}>
+            <option key={index} value={room.name}>
               {room.name}
             </option>
           ))}

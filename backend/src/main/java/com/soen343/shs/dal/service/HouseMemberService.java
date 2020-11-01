@@ -28,18 +28,19 @@ public class HouseMemberService {
      * @return HouseMemberDTO object reflecting the changes made to the object
      */
     public HouseMemberDTO createNewHouseMember(final HouseMemberDTO houseMemberDTO) {
-        userRepository.save(HouseMember.builder()
+        final HouseMember houseMember = userRepository.save(HouseMember.builder()
                 .username(houseMemberDTO.getUsername())
-                .location((roomService
-                        .fetchRoom((houseMemberDTO
-                                .getLocation().getRoomId()))))
+                .location((roomService.fetchRoom((houseMemberDTO.getLocation().getRoomId()))))
                 .role(UserRole.valueOf(houseMemberDTO.getRole().name()))
+                .isOutside(houseMemberDTO.isOutside())
+                .houseIds(houseMemberDTO.getHouseIds())
                 .build());
-        return houseMemberDTO;
+
+        return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
     }
 
     public HouseMemberDTO updateHouseMember(final HouseMemberDTO houseMemberDTO) {
-        userRepository.save(mapper.mapUserDTOToUser(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
+        final HouseMember member = userRepository.save(mapper.mapUserDTOToUser(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
         return houseMemberDTO;
     }
 
@@ -56,10 +57,11 @@ public class HouseMemberService {
     /**
      * @return List of house member dto
      */
-    public List<HouseMemberDTO> findAllHouseMembers() {
+    public List<HouseMemberDTO> findAllHouseMembers(final Long houseId) {
         return userRepository.findAll()
                 .stream()
                 .filter(user -> user instanceof HouseMember)
+                .filter(houseMember -> houseMember.getHouseIds().contains(houseId))
                 .map(houseMember -> mvcConversionService.convert(houseMember, HouseMemberDTO.class))
                 .collect(Collectors.toCollection(LinkedList::new));
     }

@@ -1,31 +1,26 @@
-import React, {useState} from 'react'
-import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
+import React, { useState } from "react";
+import { Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 
-const LocationSelector = ({ rooms, setRoomId, currentRoom }) => {
+const LocationSelector = ({ rooms, handleChange, name = "location" }) => {
+  return (
+    <div>
+      <InputLabel>Location</InputLabel>
+      <FormControl>
+        <Select
+          labelId="demo-customized-select-label"
+          id="demo-customized-select"
+          name={name}
+          onChange={handleChange}
+        >
+          {rooms.map((room, index) => (
+            <MenuItem key={index} value={room}>
+              {room.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
+};
 
-    const [location, setLocation] = useState("")
-    const handleChange = (event) => {
-        setRoomId(event.target.value)
-        setLocation(event.target.value)
-    }
-
-    return (
-        <div>
-            <InputLabel>Location</InputLabel>
-            <FormControl>
-                <Select
-                    labelId="demo-customized-select-label"
-                    id="demo-customized-select"
-                    value={location}
-                    onChange={handleChange}
-                >
-                    {
-                        rooms.slice().map(room => <MenuItem key={room.roomId} value={room.roomId}>{room.name}</MenuItem>)
-                    }
-                </Select>
-            </FormControl>
-        </div>
-    )
-}
-
-export default LocationSelector
+export default LocationSelector;

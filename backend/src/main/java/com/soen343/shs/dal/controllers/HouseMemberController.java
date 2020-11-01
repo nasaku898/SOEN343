@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.HouseMemberService;
+import com.soen343.shs.dal.service.SimulationService;
 import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,24 +18,25 @@ import java.util.List;
 public class HouseMemberController {
 
     private final HouseMemberService houseMemberService;
+    private final SimulationService simulationService;
 
     @PostMapping(value = "/houseMember")
     @ResponseStatus(value = HttpStatus.CREATED)
     public HouseMemberDTO createNewHouseMember(@RequestBody final HouseMemberDTO houseMemberDTO) {
-        return houseMemberService.createNewHouseMember(houseMemberDTO);
+        return simulationService.createNewHouseMember(houseMemberDTO);
     }
 
-    @GetMapping(value = "/houseMember/all")
+    @GetMapping(value = "/house/{houseId}/houseMember/all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public List<HouseMemberDTO> findAllHouseMembers() {
-        return houseMemberService.findAllHouseMembers();
+    public List<HouseMemberDTO> findAllHouseMembers(@PathVariable final Long houseId) {
+        return houseMemberService.findAllHouseMembers(houseId);
     }
 
 
-    @PutMapping(path = "/user/update")
+    @PutMapping(path = "/houseMember/update")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    UserDTO updateHouseMemberLocation(@AuthenticationPrincipal @RequestBody final Authentication authentication, final HouseMemberDTO houseMember) {
+    UserDTO updateHouseMemberLocation(@AuthenticationPrincipal final Authentication authentication, @RequestBody final HouseMemberDTO houseMember) {
         return houseMemberService.updateHouseMember(houseMember);
     }
 

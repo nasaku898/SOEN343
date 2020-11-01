@@ -13,6 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import "../../Utils/config";
 import RoleSelector from "../RoleSelector/RoleSelector";
 import LocationSelector from "../LocationSelector/LocationSelector";
+import { useCurrentHouse } from "../../context/CurrentHouse";
 import {
   createNewHouseMember,
   findAllHouseMembers,
@@ -22,26 +23,35 @@ const UserProfileList = () => {
   const [editMode, SetEditMode] = useState(true);
   const [refresh, setRefresh] = useState(true);
   const classes = useStyles();
-
+  const { house } = useCurrentHouse();
   const [userProfileList, setUserProfileList] = useState([]);
   const [rooms, setRooms] = useState([]);
 
   const [houseMember, setHouseMember] = useState({
     username: "",
-    location: "",
+    location: {},
     role: "",
     isOutside: true,
   });
 
   useEffect(() => {
-    findAllHouseMembers()
-      .then((response) => {
-        setUserProfileList(response);
-      })
-      .catch((error) => {
-        alert(`Status: ${error.status}: ${error.message}`);
-      });
-  }, [refresh]);
+    if (house) {
+      console.log(house.id);
+      findAllHouseMembers(house.id)
+        .then((response) => {
+          setUserProfileList(response);
+        })
+        .catch((error) => {
+          alert(`Status: ${error.status}: ${error.message}`);
+        });
+    }
+  }, [house, refresh]);
+
+  useEffect(() => {
+    if (house) {
+      setRooms(house.rooms);
+    }
+  }, [house]);
 
   const handleChange = (event) => {
     setHouseMember({
@@ -51,7 +61,7 @@ const UserProfileList = () => {
   };
 
   const handleCreateNewHouseMember = () => {
-    if (!houseMember.name || !houseMember.role) {
+    if (!houseMember.username || !houseMember.role) {
       alert("Cannot leave field empty");
       return;
     }
@@ -61,13 +71,14 @@ const UserProfileList = () => {
         isOutside: false,
       });
     }
+    houseMember.houseIds = [house.id];
     createNewHouseMember(houseMember)
       .then(() => {
         setRefresh(!refresh);
         setHouseMember({
-          name: "",
+          username: "",
           role: "",
-          location: {},
+          location: null,
           isOutside: true,
         });
         handleCloseModal();
@@ -97,6 +108,7 @@ const UserProfileList = () => {
       <MenuItem>
         <TextField
           label="Name"
+          name="username"
           value={houseMember.username}
           onChange={handleChange}
         />
@@ -104,12 +116,12 @@ const UserProfileList = () => {
 
       <br />
       <MenuItem>
-        <RoleSelector role={houseMember.role} setRole={handleChange} />
+        <RoleSelector role={houseMember.role} handleChange={handleChange} />
       </MenuItem>
 
       <br />
       <MenuItem>
-        <LocationSelector rooms={rooms} setRoomId={handleChange} />
+        <LocationSelector rooms={rooms} handleChange={handleChange} />
       </MenuItem>
       <Button onClick={handleCreateNewHouseMember}>Create</Button>
     </div>

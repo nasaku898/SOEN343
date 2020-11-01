@@ -32,7 +32,6 @@ const SimulationForm = () => {
     if (house) {
       (async () => {
         setCity(await getCity(house.city));
-        console.log(house);
       })();
     }
   }, [house]);

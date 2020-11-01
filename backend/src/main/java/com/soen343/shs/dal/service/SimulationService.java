@@ -38,6 +38,13 @@ public class SimulationService {
         return addUserIdToHouse(user, houseId);
     }
 
+    public HouseMemberDTO createNewHouseMember(final HouseMemberDTO dto) {
+        final HouseMemberDTO newHouseMember = houseMemberService.createNewHouseMember(dto);
+        addUserIdToHouse(newHouseMember, dto.getHouseIds().iterator().next());
+        addHouseIdToUser(dto.getId(), dto.getHouseIds().iterator().next(), HouseMemberDTO.class);
+        return newHouseMember;
+    }
+
     /**
      * @param username username of user
      * @param roomId   a room id to transfer to
@@ -68,7 +75,8 @@ public class SimulationService {
         return Objects.requireNonNull(mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class)).getRooms();
     }
 
-    private boolean addUserIdToHouse(final UserDTO dto, final long houseId) {
+
+    public boolean addUserIdToHouse(final UserDTO dto, final long houseId) {
         final HouseDTO house = houseService.getHouse(houseId);
 
         switch (dto.getRole()) {
