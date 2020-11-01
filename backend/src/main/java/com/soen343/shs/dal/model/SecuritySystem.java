@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @Entity
-public class SHSSecurity {
+public class SecuritySystem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,5 +22,7 @@ public class SHSSecurity {
     private Set<Room> rooms;
     private Boolean away;
     private Boolean auto;
+    @OneToMany
+    private Set<Light> lights;
 
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SHSSecurityDTO {
+public class SecuritySystemDTO {
     private long id;
     private long houseId;
     private Set<RoomDTO> rooms;
