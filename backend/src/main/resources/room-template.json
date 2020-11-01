@@ -46,19 +46,13 @@
           "blocked": true,
           "open": false
         }
-      ],
-      "parents": [
-        {
-          "id": 8
-        }
-      ],
-      "city": [
-        {
-          "id": 0,
-          "name": "Montreal",
-          "temperature": 0.0
-        }
       ]
     }
-  ]
+  ],
+  "parents": [
+    {
+      "id": 2
+    }
+  ],
+  "city": "Montreal"
 }
