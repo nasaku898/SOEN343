@@ -61,24 +61,20 @@ public class SecuritySystemService {
 
         if (desiredState) {
             security.getRooms().forEach(
-
                     room -> {
                         if (!room.getUserIds().isEmpty()) {
                             throw new IllegalStateException("Away mode can only be set when the house is unoccupied!");
                         }
-
                         room.getDoors().forEach(
                                 door -> {
                                     door.setOpen(false);
                                     if (door instanceof ExteriorDoor) {
                                         ((ExteriorDoor) door).setLocked(true);
                                     }
-                                }
-                        );
+                                });
                         room.getHouseWindows().forEach(houseWindow -> houseWindow.setOpen(false));
                         roomRepository.save(room);
-                    }
-            );
+                    });
         }
         return mvcConversionService.convert(repository.save(security), SecuritySystemDTO.class);
     }

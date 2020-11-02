@@ -22,5 +22,4 @@ public class SecuritySystem {
     private Set<Room> rooms;
     private Boolean away;
     private Boolean auto;
-
 }

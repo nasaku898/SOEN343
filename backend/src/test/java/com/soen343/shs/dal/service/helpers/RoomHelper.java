@@ -21,6 +21,7 @@ public class RoomHelper {
         return Collections
                 .singleton(Room.builder()
                         .id(ROOM_ID)
+                        .userIds(Collections.emptySet())
                         .doors(Collections.singleton(ExteriorDoor.builder().build()))
                         .houseWindows(Collections.singleton(HouseWindow.builder().build()))
                         .lights(Collections.singleton(Light.builder().build()))
