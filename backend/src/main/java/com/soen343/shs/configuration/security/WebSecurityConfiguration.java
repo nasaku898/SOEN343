@@ -1,6 +1,7 @@
 package com.soen343.shs.configuration.security;
 
 import com.soen343.shs.converters.CityToCityDTOConverter;
+import com.soen343.shs.converters.SecuritySystemToSecuritySystemDTOConverter;
 import com.soen343.shs.converters.doors.ExteriorDoorToExteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.InteriorDoorToInteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.LoadExteriorDoorDTOToExteriorDoorConverter;
@@ -93,6 +94,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         mvcConversionService.addConverter(new RealUserToRealUserDTOConverter());
         mvcConversionService.addConverter(new RoomToRoomDTOConverter());
         mvcConversionService.addConverter(new RoomDTOToRoomConverter());
+        mvcConversionService.addConverter(new SecuritySystemToSecuritySystemDTOConverter());
         mvcConversionService.addConverter(new ExteriorDoorToExteriorDoorDTOConverter());
         mvcConversionService.addConverter(new InteriorDoorToInteriorDoorDTOConverter());
         mvcConversionService.addConverter(new LoadExteriorDoorDTOToExteriorDoorConverter());

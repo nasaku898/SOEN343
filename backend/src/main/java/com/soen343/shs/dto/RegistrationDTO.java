@@ -4,12 +4,12 @@ import com.soen343.shs.dal.service.validators.annotations.PasswordMatches;
 import com.soen343.shs.dal.service.validators.annotations.ValidEmail;
 import lombok.*;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @Builder
-@NoArgsConstructor
 @PasswordMatches
 @ValidEmail
 public class RegistrationDTO {

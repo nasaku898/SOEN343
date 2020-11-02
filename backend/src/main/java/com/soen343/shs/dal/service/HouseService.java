@@ -27,7 +27,6 @@ public class HouseService {
     private final ConversionService mvcConversionService;
 
     public HouseDTO getHouse(final long id) {
-        final House house = fetchHouse(id);
         return mvcConversionService.convert(fetchHouse(id), HouseDTO.class);
     }
 
