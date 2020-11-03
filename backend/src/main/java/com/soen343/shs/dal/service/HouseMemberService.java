@@ -40,8 +40,8 @@ public class HouseMemberService {
     }
 
     public HouseMemberDTO updateHouseMember(final HouseMemberDTO houseMemberDTO) {
-        final HouseMember member = userRepository.save(mapper.mapUserDTOToUser(houseMemberDTO, findHouseMember(houseMemberDTO.getId())));
-        return houseMemberDTO;
+        return mvcConversionService.convert(userRepository.save(mapper.mapUserDTOToUser(houseMemberDTO, findHouseMember(houseMemberDTO.getId()))),
+                HouseMemberDTO.class);
     }
 
     /**

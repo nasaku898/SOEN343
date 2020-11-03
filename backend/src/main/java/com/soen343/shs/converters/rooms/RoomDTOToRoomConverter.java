@@ -19,6 +19,7 @@ public class RoomDTOToRoomConverter implements Converter<RoomDTO, Room> {
                 .houseWindows(ConvertCollectionOfWindows.convertWindowDTOs(room.getWindows()))
                 .userIds(room.getUserIds())
                 .id(room.getRoomId())
+                .houseId(room.getHouseId())
                 .build();
     }
 

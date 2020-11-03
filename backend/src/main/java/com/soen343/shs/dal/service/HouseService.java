@@ -49,8 +49,7 @@ public class HouseService {
                 light -> {
                     checkForSameStateException(desiredState, light.getIsLightOn(), getSameStateExceptionErrorMessage(light.getClass(), id));
                     light.setIsLightOn(desiredState);
-                }
-        );
+                });
     }
 
     /**
@@ -72,8 +71,7 @@ public class HouseService {
                         checkForSameStateException(desiredState, door.getLocked(), sameStateExceptionErrorMessage);
                         door.setLocked(desiredState);
                     }
-                }
-        );
+                });
     }
 
     public DoorDTO modifyInteriorDoorState(final long id, final boolean desiredState) {
@@ -82,8 +80,7 @@ public class HouseService {
                     final String sameStateExceptionErrorMessage = getSameStateExceptionErrorMessage(door.getClass(), id);
                     checkForSameStateException(desiredState, door.getOpen(), sameStateExceptionErrorMessage);
                     door.setOpen(desiredState);
-                }
-        );
+                });
     }
 
     /**
@@ -105,8 +102,7 @@ public class HouseService {
                         checkForIllegalStateException(HouseWindow.class, id, window.getOpen());
                         window.setBlocked(desiredState);
                     }
-                }
-        );
+                });
     }
 
     private static void checkForSameStateException(final boolean desiredState, final boolean currentState, final String sameStateExceptionErrorMessage) {

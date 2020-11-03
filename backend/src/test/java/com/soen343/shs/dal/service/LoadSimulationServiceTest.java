@@ -1,9 +1,6 @@
 package com.soen343.shs.dal.service;
 
-import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.HouseWindow;
-import com.soen343.shs.dal.model.InteriorDoor;
-import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dto.*;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +15,8 @@ import org.springframework.core.convert.ConversionService;
 import java.util.Collections;
 import java.util.Set;
 
-import static com.soen343.shs.dal.service.helpers.HouseHelper.*;
+import static com.soen343.shs.dal.service.helpers.HouseHelper.CITY_NAME;
+import static com.soen343.shs.dal.service.helpers.HouseHelper.createHouseDTO;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_NAME;
 import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,18 +42,18 @@ class LoadSimulationServiceTest {
 
     @Test
     void testLoadHouse() {
-        final House house = buildHouse();
+        final House house = Mockito.mock(House.class);
         final RealUserDTO user = Mockito.mock(RealUserDTO.class);
         final LoadHouseDTO mockHouse = createLoadHouse();
 
         when(userService.getUserByUsername(USERNAME, RealUserDTO.class)).thenReturn(user);
-
         when(cityService.getCity(mockHouse.getCity())).thenReturn(CityDTO.builder().build());
-        when(houseRepository.save(any(House.class))).thenReturn(house);
+        when(house.getRooms()).thenReturn(Collections.singleton(Room.builder().build()));
 
         when(mvcConversionService.convert(any(LoadInteriorDoorDTO.class), any())).thenReturn(InteriorDoor.builder().build());
         when(mvcConversionService.convert(any(LoadHouseWindowDTO.class), any())).thenReturn(HouseWindow.builder().build());
         when(mvcConversionService.convert(any(LoadLightDTO.class), any())).thenReturn(Light.builder().build());
+        when(houseRepository.save(any(House.class))).thenReturn(house);
         when(mvcConversionService.convert(house, HouseDTO.class)).thenReturn(createHouseDTO());
 
         final HouseDTO dto = classUnderTest.loadHouse(mockHouse, USERNAME);

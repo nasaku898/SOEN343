@@ -12,12 +12,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SimulationService {
 
-    private final HouseService houseService;
     private final ConversionService mvcConversionService;
+    private final HouseService houseService;
     private final RoomService roomService;
     private final UserService userService;
     private final HouseMemberService houseMemberService;
-    
+
+
     /**
      * @param userId  id used to fetch user from db
      * @param houseId id used to fetch house from db
@@ -50,7 +51,6 @@ public class SimulationService {
      * @param roomId   a room id to transfer to
      * @return UserDTO object reflecting the changes made to the object
      */
-
     public <DTO extends UserDTO> UserDTO moveUserToRoom(final String username,
                                                         final long roomId,
                                                         final Class<DTO> dto) {
@@ -64,6 +64,7 @@ public class SimulationService {
         } else {
             houseMemberService.updateHouseMember((HouseMemberDTO) user);
         }
+        roomService.addUserToRoom(roomId, user.getId());
         return user;
     }
 
@@ -75,8 +76,12 @@ public class SimulationService {
         return Objects.requireNonNull(mvcConversionService.convert(houseService.fetchHouse(houseId), HouseDTO.class)).getRooms();
     }
 
-
-    public boolean addUserIdToHouse(final UserDTO dto, final long houseId) {
+    /**
+     * @param dto     user object to have the role checked
+     * @param houseId id of house to fetch from db
+     * @return boolean value letting the previous method know the operation was successful
+     */
+    private boolean addUserIdToHouse(final UserDTO dto, final long houseId) {
         final HouseDTO house = houseService.getHouse(houseId);
 
         switch (dto.getRole()) {
