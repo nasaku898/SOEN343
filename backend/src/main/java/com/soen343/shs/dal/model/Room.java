@@ -21,11 +21,12 @@ public class Room {
 
     private double temperature;
 
+    private long houseId;
+
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-
     private Set<Door> doors;
 
     @OneToMany(cascade = CascadeType.ALL)

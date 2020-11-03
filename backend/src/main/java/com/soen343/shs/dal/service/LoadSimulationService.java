@@ -31,17 +31,20 @@ public class LoadSimulationService {
     public HouseDTO loadHouse(final LoadHouseDTO loadHouseDTO, final String username) {
         final RealUserDTO owner = userService.getUserByUsername(username, RealUserDTO.class);
 
-        final House house = houseRepository.save(House.builder()
+        final House house = House.builder()
                 .rooms(loadRooms(loadHouseDTO.getRooms()))
                 .city(cityService.getCity(loadHouseDTO.getCity()).getName())
                 .parents(Sets.newHashSet(owner.getId()))
                 .children(Collections.emptySet())
                 .guests(Collections.emptySet())
-                .build());
+                .build();
 
-        owner.getHouseIds().add(house.getId());
+        final Long HOUSE_ID = house.getId();
+        house.getRooms().forEach(room -> room.setHouseId(HOUSE_ID));
+        owner.getHouseIds().add(HOUSE_ID);
+        
         userService.updateUser(owner);
-        return mvcConversionService.convert(house, HouseDTO.class);
+        return mvcConversionService.convert(houseRepository.save(house), HouseDTO.class);
     }
 
     /**

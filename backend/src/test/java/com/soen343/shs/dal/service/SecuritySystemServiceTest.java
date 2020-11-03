@@ -69,17 +69,17 @@ public class SecuritySystemServiceTest {
         Assertions.assertNotEquals(buildSecuritySystemDTO(), dto);
     }
 
-    private static SecuritySystem setUpAwayTest() {
-        final SecuritySystem system = getEntity();
-        system.getRooms().forEach(
-                r -> {
-                    r.getDoors().forEach(
-                            door -> {
-                                door.setOpen(true);
-                                if (door instanceof ExteriorDoor) {
-                                    ((ExteriorDoor) door).setLocked(false);
+        private static SecuritySystem setUpAwayTest() {
+            final SecuritySystem system = getEntity();
+            system.getRooms().forEach(
+                    r -> {
+                        r.getDoors().forEach(
+                                door -> {
+                                    door.setOpen(true);
+                                    if (door instanceof ExteriorDoor) {
+                                        ((ExteriorDoor) door).setLocked(false);
+                                    }
                                 }
-                            }
                     );
                     r.getHouseWindows().forEach(houseWindow -> houseWindow.setOpen(true));
                 }

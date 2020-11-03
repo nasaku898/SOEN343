@@ -4,16 +4,21 @@ import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.RoomDTO;
+import com.soen343.shs.interfaces.observer.Subject;
+import com.soen343.shs.interfaces.observer.Subscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
-public class RoomService {
+public class RoomService implements Subject {
 
     private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
+    private final List<Subscriber> subscribers;
 
     public RoomDTO getRoom(final long id) {
         return mvcConversionService.convert(fetchRoom(id), RoomDTO.class);
@@ -34,9 +39,16 @@ public class RoomService {
         return mvcConversionService.convert(roomRepository.save(room), RoomDTO.class);
     }
 
-    Room addUserToRoom(final Room room, final long userId) {
+    /**
+     * @param roomId id of the room to be updated
+     * @param userId id of the user to be added to the collection of user ids in the room
+     * @return DTO object showing the updated state of the room
+     */
+    RoomDTO addUserToRoom(final long roomId, final long userId) {
+        final Room room = fetchRoom(roomId);
         room.getUserIds().add(userId);
-        return roomRepository.save(room);
+        notifySubscribers(room.getHouseId());
+        return mvcConversionService.convert(roomRepository.save(room), RoomDTO.class);
     }
 
     public double getTemperatureOfRoom(final long roomId) {
@@ -45,5 +57,20 @@ public class RoomService {
 
     Room fetchRoom(final long id) {
         return roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(getRoomErrorMessage(id)));
+    }
+
+    @Override
+    public void addObserver(final Subscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void removeObserver(final Subscriber subscriber) {
+        subscribers.remove(subscriber);
+    }
+
+    @Override
+    public void notifySubscribers(final long houseId) {
+        subscribers.forEach(s -> s.update(houseId));
     }
 }

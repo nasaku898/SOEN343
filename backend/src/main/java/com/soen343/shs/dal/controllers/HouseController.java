@@ -29,6 +29,7 @@ public class HouseController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     DoorDTO modifyExteriorDoorState(@PathVariable final long doorId, @RequestBody final ObjectNode objectNode) {
+        
         return houseService
                 .modifyExteriorDoorState(
                         doorId,

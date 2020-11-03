@@ -7,13 +7,14 @@ import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.SecuritySystemDTO;
+import com.soen343.shs.interfaces.observer.Subscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SecuritySystemService {
+public class SecuritySystemService implements Subscriber {
 
     private final SecuritySystemRepository repository;
     private final ConversionService mvcConversionService;
@@ -77,5 +78,17 @@ public class SecuritySystemService {
                     });
         }
         return mvcConversionService.convert(repository.save(security), SecuritySystemDTO.class);
+    }
+
+    @Override
+    public void update(final long houseId) {
+        final SecuritySystem system = repository.findByHouseId(houseId).orElseThrow(() -> new SHSNotFoundException(String.format("Security system belonging to house with house id: %d does not exist!", houseId)));
+        if (system.getAway()) {
+            intruderDetectionMode();
+        }
+    }
+
+    private static void intruderDetectionMode() {
+        System.out.println("INTRUDER ALERT");
     }
 }
