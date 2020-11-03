@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.SimulationService;
+import com.soen343.shs.dal.service.TimeService;
 import com.soen343.shs.dto.HouseMemberDTO;
 import com.soen343.shs.dto.RealUserDTO;
 import com.soen343.shs.dto.RoomDTO;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class SimulationController {
 
     private final SimulationService simulationService;
+    private final TimeService timeService;
 
     @PutMapping(value = "/user/{username}/room/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -38,5 +40,15 @@ public class SimulationController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public Set<RoomDTO> findAllRoom(@PathVariable final long houseId) {
         return simulationService.findAllRooms(houseId);
+    }
+
+    @GetMapping(value = "/time")
+    public long getCurrentDate() {
+        return timeService.getCurrentDateInMilliseconds();
+    }
+
+    @PutMapping(value = "/time/{dateInMilliseconds}")
+    public long setNewDate(@PathVariable final long dateInMilliseconds) {
+        return timeService.setNewDate(dateInMilliseconds);
     }
 }
