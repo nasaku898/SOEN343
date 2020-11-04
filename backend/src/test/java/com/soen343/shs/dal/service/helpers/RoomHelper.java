@@ -26,6 +26,7 @@ public class RoomHelper {
                         .houseWindows(Collections.singleton(HouseWindow.builder().build()))
                         .lights(Collections.singleton(Light.builder().build()))
                         .name(ROOM_NAME)
+//                        .houseId(HOUSE_ID)
                         .build());
     }
 

@@ -2,24 +2,30 @@ package com.soen343.shs.dal.model;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Builder
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Entity
-public class SecuritySystem {
+public class SecuritySystem extends Observer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long houseId;
-    @OneToMany
-    private Set<Room> rooms;
     private Boolean away;
     private Boolean auto;
+    private Boolean alert;
+
+    @Override
+    public void update() {
+        alert = true;
+    }
 }

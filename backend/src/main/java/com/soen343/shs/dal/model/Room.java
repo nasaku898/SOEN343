@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Room {
+public class Room extends Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,8 +20,6 @@ public class Room {
     private String name;
 
     private double temperature;
-
-    private long houseId;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -37,4 +35,19 @@ public class Room {
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<HouseWindow> houseWindows;
+
+    @Override
+    public void addObserver(final Observer observer) {
+        getObservers().add(observer);
+    }
+
+    @Override
+    public void removeObserver(final Observer observer) {
+        getObservers().remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        getObservers().forEach(Observer::update);
+    }
 }

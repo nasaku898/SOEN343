@@ -1,7 +1,6 @@
 package com.soen343.shs.configuration.security;
 
 import com.soen343.shs.converters.CityToCityDTOConverter;
-import com.soen343.shs.converters.SecuritySystemToSecuritySystemDTOConverter;
 import com.soen343.shs.converters.doors.ExteriorDoorToExteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.InteriorDoorToInteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.LoadExteriorDoorDTOToExteriorDoorConverter;
@@ -14,6 +13,7 @@ import com.soen343.shs.converters.lights.LightToLightDTOConverter;
 import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
 import com.soen343.shs.converters.rooms.RoomDTOToRoomConverter;
 import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
+import com.soen343.shs.converters.securitySystem.SecuritySystemToSecuritySystemDTOConverter;
 import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
 import com.soen343.shs.converters.users.RealUserToRealUserDTOConverter;
 import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;

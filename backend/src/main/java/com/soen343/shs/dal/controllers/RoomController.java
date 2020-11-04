@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/room/{roomId}")
+@RequestMapping(path = "api/house/{houseId}/room/{roomId}")
 public class RoomController {
 
     private final RoomService roomService;
