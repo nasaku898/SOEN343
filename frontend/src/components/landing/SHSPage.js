@@ -1,17 +1,15 @@
 import { Grid } from "@material-ui/core";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState} from "react";
 import HouseLayout from "../HouseLayout/HouseLayout";
 import UserProfileList from "../UserProfileList/UserProfileList";
 import HouseOverview from "../HouseOverview/HouseOverview";
 import OutputConsole from "../OutputConsole/OutputConsole";
 import SimulationForm from "../simulation_parameters/SimulationForm";
-import { useCurrentHouse } from "../../context/CurrentHouse";
 const SHSPage = () => {
   const [outputData, setOutputData] = useState([
     { id: 1, date: new Date(), data: "This is a sample action log." },
   ]);
 
-  const { house } = useCurrentHouse();
 
   return (
     <div>

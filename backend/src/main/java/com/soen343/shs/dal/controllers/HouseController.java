@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/house")
@@ -58,5 +60,10 @@ public class HouseController {
     HouseDTO getHouse(@PathVariable final long id) {
         return houseService.getHouse(id);
     }
-    
+
+    @GetMapping(value = "/houses")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Set<HouseDTO> getAllHouses() {
+        return houseService.getAllHouses();
+    }
 }

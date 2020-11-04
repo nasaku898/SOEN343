@@ -14,13 +14,11 @@ import useStyles from "./NavbarStyle";
 import { AuthContext } from "../../context/Auth";
 import Axios from "axios";
 import "../../Utils/config";
-import { useHistory } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 
 const Navbar = (props) => {
   const [selectedTab, setSelectedTab] = React.useState(0);
   const classes = useStyles();
-  const history = useHistory();
 
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -41,7 +39,6 @@ const Navbar = (props) => {
     localStorage.removeItem("token");
     setUser(null);
     Axios.get(global.config.BACKEND_URL + `/logout`);
-    history.push("/login");
   };
 
   return (
@@ -58,7 +55,8 @@ const Navbar = (props) => {
               <Tab label="SHC" component={Link} to="/shc"></Tab>
               <Tab label="SHP"></Tab>
               <Tab label="SHH"></Tab>
-              <Tab label="+"></Tab>
+              <Tab label="Select House" component={Link} to="/houseSelect"></Tab>
+              <Tab label="+" component={Link} to="/newUpload"></Tab>
             </Tabs>
 
             {user ? (

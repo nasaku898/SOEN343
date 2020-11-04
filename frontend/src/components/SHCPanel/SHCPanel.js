@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./SHCPanelStyle";
 import { fetchLightsDoorsAndWindows } from "./LightsDoorsAndWindows";
 import { houseObjectStateChangeHandler } from "./HouseObjectStateChangeHandler";
-import { HOUSE_ID } from "./SHCPanelConstants";
 import DoorPanel from "./DoorPanel";
 import WindowPanel from "./WindowPanel";
 import LightPanel from "./LightPanel";
 import SHCHeader from "./SHCHeader";
 import { useCurrentHouse } from "../../context/CurrentHouse";
+import { getHouse } from "../../modules/HouseOverview/HouseService";
 
 const SHCPanel = () => {
-  const { house } = useCurrentHouse();
+  const {house, setHouse}  = useCurrentHouse();
   const classes = useStyles();
   const [itemSelected, setItemSelected] = useState("");
   const [data, setData] = useState(null);
@@ -34,6 +34,9 @@ const SHCPanel = () => {
   const handleItemChange = async (event, itemType) => {
     await houseObjectStateChangeHandler(event, itemType);
     await handleUpdateLightDoorsAndWindows();
+    getHouse(localStorage.getItem("houseID")).then((data)=>{
+      setHouse(data)
+    })
   };
 
   if (data) {

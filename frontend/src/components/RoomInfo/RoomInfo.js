@@ -18,7 +18,7 @@ import { getHouse } from "../../modules/HouseOverview/HouseService";
 const RoomInfo = ({ row }) => {
   const [modalTyping, setModalTyping] = useState(row.temperature);
   const [temperature, setTemperature] = useState(row.temperature);
-  const [setHouse, house] = useCurrentHouse();
+  const {setHouse, house} = useCurrentHouse();
 
   const roomId = row.roomId;
 

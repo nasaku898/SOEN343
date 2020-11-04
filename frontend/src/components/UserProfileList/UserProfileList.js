@@ -23,7 +23,7 @@ const UserProfileList = () => {
   const [editMode, SetEditMode] = useState(true);
   const [refresh, setRefresh] = useState(true);
   const classes = useStyles();
-  const [house ] = useCurrentHouse();
+  const { house } = useCurrentHouse();
   const [userProfileList, setUserProfileList] = useState([]);
   const [rooms, setRooms] = useState([]);
 
@@ -163,8 +163,8 @@ const UserProfileList = () => {
             </Modal>
           </div>
         ) : (
-          <Box />
-        )}
+            <Box />
+          )}
         <Button
           variant="contained"
           className={classes.editButton}

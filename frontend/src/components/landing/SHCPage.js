@@ -10,9 +10,7 @@ const SHCPage = () => {
   const [outputData, setOutputData] = useState([
     { id: 1, date: new Date(), data: "This is a sample action log." },
   ]);
-
-  const { house } = useCurrentHouse();
-  if (house) {
+ 
     return (
       <div>
         <Grid container direction="row">
@@ -34,8 +32,6 @@ const SHCPage = () => {
         </Grid>
       </div>
     );
-  }
-  return <></>;
 };
 
 export default SHCPage;
