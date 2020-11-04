@@ -7,14 +7,13 @@ import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.SecuritySystemDTO;
-import com.soen343.shs.interfaces.observer.Subscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SecuritySystemService implements Subscriber {
+public class SecuritySystemService {
 
     private final SecuritySystemRepository repository;
     private final ConversionService mvcConversionService;
@@ -40,12 +39,15 @@ public class SecuritySystemService implements Subscriber {
      * @return a DTO showing the properties of the newly created security system
      */
     public SecuritySystemDTO createSecuritySystem(final SecuritySystemDTO dto) {
+
+//        House house = houseService.fetchHouse(dto.getHouseId);
+        
         final SecuritySystem system = repository.save(SecuritySystem.builder()
                 .auto(dto.isAuto())
                 .houseId(dto.getHouseId())
                 .away(dto.isAway())
-                .rooms((houseService.fetchHouse(dto.getHouseId()).getRooms()))
                 .build());
+
 
         return mvcConversionService.convert(system, SecuritySystemDTO.class);
     }
@@ -61,34 +63,25 @@ public class SecuritySystemService implements Subscriber {
         security.setAway(desiredState);
 
         if (desiredState) {
-            security.getRooms().forEach(
-                    room -> {
-                        if (!room.getUserIds().isEmpty()) {
-                            throw new IllegalStateException("Away mode can only be set when the house is unoccupied!");
-                        }
-                        room.getDoors().forEach(
-                                door -> {
-                                    door.setOpen(false);
-                                    if (door instanceof ExteriorDoor) {
-                                        ((ExteriorDoor) door).setLocked(true);
-                                    }
-                                });
-                        room.getHouseWindows().forEach(houseWindow -> houseWindow.setOpen(false));
-                        roomRepository.save(room);
-                    });
+
+            houseService.fetchHouse(security.getId()).getRooms()
+                    .forEach(
+                            room -> {
+                                if (!room.getUserIds().isEmpty()) {
+                                    throw new IllegalStateException("Away mode can only be set when the house is unoccupied!");
+                                }
+                                room.getDoors().forEach(
+                                        door -> {
+                                            door.setOpen(false);
+                                            if (door instanceof ExteriorDoor) {
+                                                ((ExteriorDoor) door).setLocked(true);
+                                            }
+                                        });
+                                room.getHouseWindows().forEach(houseWindow -> houseWindow.setOpen(false));
+                                roomRepository.save(room);
+                            });
         }
         return mvcConversionService.convert(repository.save(security), SecuritySystemDTO.class);
     }
 
-    @Override
-    public void update(final long houseId) {
-        final SecuritySystem system = repository.findByHouseId(houseId).orElseThrow(() -> new SHSNotFoundException(String.format("Security system belonging to house with house id: %d does not exist!", houseId)));
-        if (system.getAway()) {
-            intruderDetectionMode();
-        }
-    }
-
-    private static void intruderDetectionMode() {
-        System.out.println("INTRUDER ALERT");
-    }
 }

@@ -18,7 +18,6 @@ public class SimulationService {
     private final UserService userService;
     private final HouseMemberService houseMemberService;
 
-
     /**
      * @param userId  id used to fetch user from db
      * @param houseId id used to fetch house from db
@@ -54,18 +53,27 @@ public class SimulationService {
     public <DTO extends UserDTO> UserDTO moveUserToRoom(final String username,
                                                         final long roomId,
                                                         final Class<DTO> dto) {
+
         final DTO user = userService.getUserByUsername(username, dto);
-        if (user.isOutside()) {
-            user.setOutside(false);
-        }
+        updatePreviousLocation(user);
         user.setLocation(roomService.getRoom(roomId));
+
         if (user instanceof RealUserDTO) {
             userService.updateUser((RealUserDTO) user);
         } else {
             houseMemberService.updateHouseMember((HouseMemberDTO) user);
         }
+
         roomService.addUserToRoom(roomId, user.getId());
-        return user;
+        return mvcConversionService.convert(user, dto);
+    }
+
+    private <DTO extends UserDTO> void updatePreviousLocation(final DTO user) {
+        if (user.isOutside()) {
+            user.setOutside(false);
+        } else {
+            roomService.removeUserFromRoom(user.getLocation().getRoomId(), user.getId());
+        }
     }
 
     /**
