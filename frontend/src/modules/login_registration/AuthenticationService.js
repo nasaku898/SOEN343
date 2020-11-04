@@ -6,7 +6,7 @@ const URL = global.config.BACKEND_URL;
 
 export const register = async (values) => {
   try {
-    const apiRes = await fetch(`${URL}/register`, {
+      await fetch(`${URL}/register`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -32,7 +32,6 @@ export const authenticate = async (values) => {
     });
     return await apiRes.json();
   } catch (error) {
-    console.log(error);
     return false;
   }
 };

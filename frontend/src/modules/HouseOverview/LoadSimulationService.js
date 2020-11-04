@@ -1,4 +1,3 @@
-import Axios from "axios";
 import "../../Utils/config";
 
 export const loadHouseLayout = async (requestBody) => {

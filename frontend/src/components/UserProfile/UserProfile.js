@@ -80,7 +80,7 @@ const UserProfile = ({ userProfile = DefaultProfile, editMode, rooms }) => {
     if (profile.location || profile.isOutside) {
       setCurrentLocation(profile.isOutside ? "outside" : profile.location.name);
     }
-  }, [profile.location]);
+  }, [profile.location, profile.isOutside]);
 
   return (
     <div className={classes.container}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 
 const LocationSelector = ({ rooms, name = "location", handleChange }) => {

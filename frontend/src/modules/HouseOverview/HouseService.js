@@ -97,3 +97,21 @@ export const modifyWindowState = async (windowId, open, desiredState) => {
     throw await error;
   }
 };
+
+export const getAllHouses = async () => {
+  try {
+    const response = await fetch(`${URL}/houses`, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "GET"
+    })
+    return response.json();
+  } catch (error) {
+    throw await error
+  }
+}
+
+export const localStorageHouseID = (houseID)=>{
+  localStorage.setItem("houseID", houseID)
+}

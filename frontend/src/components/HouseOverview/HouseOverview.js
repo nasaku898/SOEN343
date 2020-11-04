@@ -13,7 +13,7 @@ import useStyles from "./HouseOverviewStyle";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 
 const HouseOverview = () => {
-  const { house } = useCurrentHouse();
+  const [house] = useCurrentHouse();
   const [rows, setRows] = useState([]);
   const classes = useStyles();
   useEffect(() => {
@@ -43,8 +43,8 @@ const HouseOverview = () => {
               ))}
             </TableBody>
           ) : (
-            <></>
-          )}
+              <></>
+            )}
         </Table>
       </TableContainer>
     </div>
