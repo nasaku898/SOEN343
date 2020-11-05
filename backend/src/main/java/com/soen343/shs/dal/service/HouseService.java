@@ -5,6 +5,7 @@ import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.mapping.SHSHouseMapper;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
+import com.soen343.shs.dal.service.validators.helper.ErrorMessageGenerator;
 import com.soen343.shs.dto.HouseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -22,7 +23,7 @@ public class HouseService {
     }
 
     House fetchHouse(final long id) {
-        return houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException(ErrorHelper.getSHSNotFoundErrorMessage(id, House.class)));
+        return houseRepository.findById(id).orElseThrow(() -> new HouseNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(id, House.class)));
     }
 
     public HouseDTO updateHouse(final HouseDTO dto) {

@@ -2,6 +2,7 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.repository.HouseWindowRepository;
+import com.soen343.shs.dal.service.validators.StateValidator;
 import com.soen343.shs.dto.WindowDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,13 @@ public class WindowService {
     public WindowDTO modifyWindowState(final long id, final boolean open, final boolean desiredState) {
         return roomService.changeStateOfRoomObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
                 window -> {
-                    final String sameStateExceptionErrorMessage = ErrorHelper.getSameStateExceptionErrorMessage(window.getClass(), id);
                     if (open) {
-                        ErrorHelper.checkForSameStateException(desiredState, window.getOpen(), sameStateExceptionErrorMessage);
-                        ErrorHelper.checkForIllegalStateException(HouseWindow.class, id, window.getBlocked());
+                        StateValidator.validateState(desiredState, window.getOpen(), id, window.getClass());
+                        StateValidator.checkForIllegalStateException(HouseWindow.class, id, window.getBlocked());
                         window.setOpen(desiredState);
                     } else {
-                        ErrorHelper.checkForSameStateException(desiredState, window.getBlocked(), sameStateExceptionErrorMessage);
-                        ErrorHelper.checkForIllegalStateException(HouseWindow.class, id, window.getOpen());
+                        StateValidator.validateState(desiredState, window.getBlocked(), id, window.getClass());
+                        StateValidator.checkForIllegalStateException(HouseWindow.class, id, window.getOpen());
                         window.setBlocked(desiredState);
                     }
                 });

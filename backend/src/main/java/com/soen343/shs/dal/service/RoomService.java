@@ -2,7 +2,9 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.RoomRepository;
+import com.soen343.shs.dal.service.events.UserEntersRoomPublisher;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
+import com.soen343.shs.dal.service.validators.helper.ErrorMessageGenerator;
 import com.soen343.shs.dto.RoomDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -17,13 +19,10 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
+    private final UserEntersRoomPublisher userEntersRoomPublisher;
 
     public RoomDTO getRoom(final long id) {
         return mvcConversionService.convert(fetchRoom(id), RoomDTO.class);
-    }
-
-    private static String getRoomErrorMessage(final long id) {
-        return String.format("Room with id: %d was not found", id);
     }
 
     /**
@@ -45,7 +44,7 @@ public class RoomService {
     RoomDTO addUserToRoom(final long roomId, final long userId) {
         final Room room = fetchRoom(roomId);
         room.getUserIds().add(userId);
-        room.notifyObservers();
+        userEntersRoomPublisher.publishEvent(roomId, room.getHouseId());
         return mvcConversionService.convert(roomRepository.save(room), RoomDTO.class);
     }
 
@@ -60,7 +59,7 @@ public class RoomService {
     }
 
     Room fetchRoom(final long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(getRoomErrorMessage(id)));
+        return roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(id, Room.class)));
     }
 
 
@@ -80,7 +79,7 @@ public class RoomService {
                                               final CrudRepository<Entity, Long> repository,
                                               final Consumer<Entity> consumer) {
 
-        final Entity entity = repository.findById(id).orElseThrow(() -> new SHSNotFoundException(ErrorHelper.getSHSNotFoundErrorMessage(id, entityClassType)));
+        final Entity entity = repository.findById(id).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(id, entityClassType)));
         consumer.accept(entity);
         return mvcConversionService.convert(repository.save(entity), dtoClassType);
     }

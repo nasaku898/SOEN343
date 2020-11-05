@@ -1,4 +1,4 @@
-package com.soen343.shs.dal.service;
+package com.soen343.shs.dal.service.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +14,4 @@ import org.springframework.stereotype.Component;
 public class UserEntersRoomEvent {
     private long roomId;
     private long houseId;
-
 }

@@ -4,6 +4,7 @@ import com.soen343.shs.dal.model.ExteriorDoor;
 import com.soen343.shs.dal.model.InteriorDoor;
 import com.soen343.shs.dal.repository.ExteriorDoorRepository;
 import com.soen343.shs.dal.repository.InteriorDoorRepository;
+import com.soen343.shs.dal.service.validators.StateValidator;
 import com.soen343.shs.dto.DoorDTO;
 import com.soen343.shs.dto.ExteriorDoorDTO;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,13 @@ public class DoorService {
     public ExteriorDoorDTO modifyExteriorDoorState(final long id, final boolean open, final boolean desiredState) {
         return roomService.changeStateOfRoomObject(id, ExteriorDoor.class, ExteriorDoorDTO.class, exteriorDoorRepository,
                 door -> {
-                    final String sameStateExceptionErrorMessage = ErrorHelper.getSameStateExceptionErrorMessage(door.getClass(), id);
                     if (open) {
-                        ErrorHelper.checkForIllegalStateException(ExteriorDoor.class, id, door.getLocked());
-                        ErrorHelper.checkForSameStateException(desiredState, door.getOpen(), sameStateExceptionErrorMessage);
+                        StateValidator.checkForIllegalStateException(ExteriorDoor.class, id, door.getLocked());
+                        StateValidator.validateState(desiredState, door.getOpen(), id, door.getClass());
                         door.setOpen(desiredState);
                     } else {
-                        ErrorHelper.checkForIllegalStateException(ExteriorDoor.class, id, door.getOpen());
-                        ErrorHelper.checkForSameStateException(desiredState, door.getLocked(), sameStateExceptionErrorMessage);
+                        StateValidator.checkForIllegalStateException(ExteriorDoor.class, id, door.getOpen());
+                        StateValidator.validateState(desiredState, door.getLocked(), id, door.getClass());
                         door.setLocked(desiredState);
                     }
                 });
@@ -41,8 +41,7 @@ public class DoorService {
     public DoorDTO modifyInteriorDoorState(final long id, final boolean desiredState) {
         return roomService.changeStateOfRoomObject(id, InteriorDoor.class, DoorDTO.class, interiorDoorRepository,
                 door -> {
-                    final String sameStateExceptionErrorMessage = ErrorHelper.getSameStateExceptionErrorMessage(door.getClass(), id);
-                    ErrorHelper.checkForSameStateException(desiredState, door.getOpen(), sameStateExceptionErrorMessage);
+                    StateValidator.validateState(desiredState, door.getOpen(), id, door.getClass());
                     door.setOpen(desiredState);
                 });
     }

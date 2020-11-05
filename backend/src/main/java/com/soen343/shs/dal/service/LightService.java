@@ -2,6 +2,7 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.LightRepository;
+import com.soen343.shs.dal.service.validators.StateValidator;
 import com.soen343.shs.dto.LightDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,9 @@ public class LightService {
     public LightDTO modifyLightState(final long id, final boolean desiredState) {
         return roomService.changeStateOfRoomObject(id, Light.class, LightDTO.class, lightRepository,
                 light -> {
-                    ErrorHelper.checkForSameStateException(desiredState, light.getIsLightOn(), ErrorHelper.getSameStateExceptionErrorMessage(light.getClass(), id));
+                    StateValidator.validateState(desiredState, light.getIsLightOn(), id, light.getClass());
                     light.setIsLightOn(desiredState);
                 });
     }
+
 }

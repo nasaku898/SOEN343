@@ -23,8 +23,7 @@ public class RoomController {
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @RequestBody final double newTemperature) {
-        final RoomDTO room = roomService.setTemperatureOfRoom(roomId, newTemperature);
-        return room;
+        return roomService.setTemperatureOfRoom(roomId, newTemperature);
     }
 
     @GetMapping(value = "/temperature")

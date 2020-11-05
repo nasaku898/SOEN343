@@ -1,4 +1,4 @@
-package com.soen343.shs.dal.service;
+package com.soen343.shs.dal.service.events;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
