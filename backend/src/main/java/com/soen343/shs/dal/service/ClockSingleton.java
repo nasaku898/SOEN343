@@ -10,6 +10,10 @@ public class ClockSingleton {
 
     }
 
+    /**
+     *
+     * @return singleton instance of Clock
+     */
     public static Clock getClock() {
         if (clock == null) {
             clock = Clock.system(ZoneId.of("Canada/Eastern"));

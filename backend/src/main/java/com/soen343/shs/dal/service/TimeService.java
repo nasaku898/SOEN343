@@ -14,10 +14,19 @@ public class TimeService {
         clock = ClockSingleton.getClock();
     }
 
+    /**
+     *
+     * @return time in millisecond corresponding to the time elapse since 1 January 1970, 00:00 UTC
+     */
     public long getCurrentDateInMilliseconds() {
         return clock.millis();
     }
 
+    /**
+     *
+     * @param newTime new time time in millisecond corresponding to the time elapse since 1 January 1970, 00:00 UTC
+     * @return time in millisecond corresponding to the time elapse since 1 January 1970, 00:00 UTC
+     */
     public long setNewDate(final long newTime) {
         final long currentTime = getCurrentDateInMilliseconds();
         final long offSet = newTime - currentTime;
@@ -25,7 +34,10 @@ public class TimeService {
         return clock.millis();
     }
 
-    // 0 correspond to midnight and 1440000 24h
+    /**
+     *
+     * @return time in millisecond corresponding the number of milliseconds in a day, 0 ms correspond to midnight.
+     */
     public long getCurrentTimeInMilliseconds() {
         final LocalDateTime localDateTime = LocalDateTime.now(clock);
         final long hoursInMilliseconds = localDateTime.getHour() * 60000;
