@@ -63,7 +63,6 @@ public class SimulationService {
         } else {
             houseMemberService.updateHouseMember((HouseMemberDTO) user);
         }
-
         roomService.addUserToRoom(roomId, user.getId());
         return mvcConversionService.convert(user, dto);
     }

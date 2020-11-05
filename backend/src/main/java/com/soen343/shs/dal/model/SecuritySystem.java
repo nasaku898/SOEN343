@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @ToString
 @Entity
-public class SecuritySystem extends Observer {
+public class SecuritySystem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,9 +23,4 @@ public class SecuritySystem extends Observer {
     private Boolean away;
     private Boolean auto;
     private Boolean alert;
-
-    @Override
-    public void update() {
-        alert = true;
-    }
 }

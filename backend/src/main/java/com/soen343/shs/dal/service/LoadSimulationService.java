@@ -23,6 +23,7 @@ public class LoadSimulationService {
     private final ConversionService mvcConversionService;
     private final UserService userService;
     private final CityService cityService;
+    private final SecuritySystemService securitySystemService;
 
     /**
      * @param loadHouseDTO data transfer object representing the house layout
@@ -42,9 +43,13 @@ public class LoadSimulationService {
                 .build());
 
         final Long id = house.getId();
-        owner.getHouseIds().add(id);
 
+        owner.getHouseIds().add(id);
+        rooms.forEach(room -> room.setHouseId(id));
+
+        securitySystemService.createSecuritySystem(id);
         userService.updateUser(owner);
+
         return mvcConversionService.convert(house, HouseDTO.class);
     }
 

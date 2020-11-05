@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Room extends Subject {
+public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,28 +26,15 @@ public class Room extends Subject {
             CascadeType.MERGE
     })
     private Set<Door> doors;
-
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Light> lights;
 
     @ElementCollection
     private Set<Long> userIds;
 
+    private long houseId;
+
     @OneToMany(cascade = CascadeType.ALL)
     private Set<HouseWindow> houseWindows;
 
-    @Override
-    public void addObserver(final Observer observer) {
-        getObservers().add(observer);
-    }
-
-    @Override
-    public void removeObserver(final Observer observer) {
-        getObservers().remove(observer);
-    }
-
-    @Override
-    public void notifyObservers() {
-        getObservers().forEach(Observer::update);
-    }
 }

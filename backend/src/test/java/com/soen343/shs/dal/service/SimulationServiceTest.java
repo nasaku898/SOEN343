@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.soen343.shs.dal.service.helpers.HouseMemberHelper.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,6 +55,7 @@ class SimulationServiceTest {
         when(dto.getLocation()).thenReturn(roomDTO);
 
         when(houseMemberService.updateHouseMember(dto)).thenReturn(HouseMemberDTO.builder().location(roomDTO).build());
+        when(mvcConversionService.convert(any(), any())).thenReturn(dto);
 
         final UserDTO houseMemberDTO = classUnderTest.moveUserToRoom(MOCK_HOUSE_MEMBER_NAME, MOCK_ROOM_ID, HouseMemberDTO.class);
 

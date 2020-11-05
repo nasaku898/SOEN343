@@ -25,6 +25,6 @@ public class SecuritySystemController {
     public SecuritySystemDTO setAwayMode(@PathVariable final long id, @RequestBody final boolean desiredState) {
         return securityService.toggleAway(desiredState, id);
     }
-
+    
 
 }
