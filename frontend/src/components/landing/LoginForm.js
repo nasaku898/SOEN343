@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import FormInput from "./form_components/FormInput.js";
-// import { Button } from "./form_components/Button.js";
 import useFormValidation from "./validators/UseFormValidation";
 import ValidateAuthentication from "./validators/ValidateAuthentication";
 import { authenticate } from "../../modules/login_registration/AuthenticationService.js";
@@ -17,16 +16,13 @@ const INITIAL_STATE = {
 
 const LoginForm = () => {
   const { setAuthTokens } = useAuth();
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
   const history = useHistory();
   const loginUser = async (fields) => {
     const result = await authenticate(fields);
     setUser(await result.user);
     setAuthTokens(await result.token);
-
-    if (user) {
-      history.push("/shs");
-    }
+    history.push("/");
   };
 
   const {

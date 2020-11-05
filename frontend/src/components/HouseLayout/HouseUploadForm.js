@@ -1,23 +1,26 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { Box, Input, Typography } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import useStyles from "./HouseLayoutStyle";
 import { loadHouseLayout } from "../../modules/HouseOverview/LoadSimulationService";
-import SHSPage from "../landing/SHSPage";
-
+import { useCurrentHouse } from "../../context/CurrentHouse";
+import { useHistory } from "react-router-dom";
+import { localStorageHouseID } from "../../modules/HouseOverview/HouseService";
 // TODO: Ideally this should be a modal..
 const HouseUploadForm = () => {
   const classes = useStyles();
-
+  const {setHouse} = useCurrentHouse();
+  const history = useHistory();
   const handleHouseLayoutUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
 
     reader.onload = (event) => {
       loadHouseLayout(JSON.parse(event.target.result))
-        .then(() => {
-          return <Redirect to="/shs" component={SHSPage} />;
+        .then((data) => {
+          setHouse(data)
+          localStorageHouseID(data.id)
+          history.push("/")
         })
         .catch((error) => {
           alert(`Status: ${error.status}: ${error.message}`);

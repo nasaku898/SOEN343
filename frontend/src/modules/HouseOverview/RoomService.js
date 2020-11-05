@@ -1,4 +1,3 @@
-import Axios from "axios";
 const URL = `${global.config.BACKEND_URL}/api/room`;
 
 export const getRoom = async (id) => {

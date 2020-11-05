@@ -163,8 +163,8 @@ const UserProfileList = () => {
             </Modal>
           </div>
         ) : (
-          <Box />
-        )}
+            <Box />
+          )}
         <Button
           variant="contained"
           className={classes.editButton}

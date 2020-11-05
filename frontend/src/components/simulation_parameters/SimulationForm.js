@@ -30,7 +30,7 @@ const SimulationForm = () => {
         setLocationName(user.location.name);
       }
     }
-  }, [user]);
+  }, [user, disabled]);
 
   useEffect(() => {}, [user]);
 

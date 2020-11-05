@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 
 import {
@@ -18,7 +18,7 @@ import { getHouse } from "../../modules/HouseOverview/HouseService";
 const RoomInfo = ({ row }) => {
   const [modalTyping, setModalTyping] = useState(row.temperature);
   const [temperature, setTemperature] = useState(row.temperature);
-  const { setHouse, house } = useCurrentHouse();
+  const {setHouse, house} = useCurrentHouse();
 
   const roomId = row.roomId;
 
@@ -88,9 +88,8 @@ const RoomInfo = ({ row }) => {
         </TableCell>
         <TableCell align="right">
           {row.lights.map((light) => (
-            <Typography key={light.id}>{`Light ID: ${
-              light.id
-            }, LightOn: ${Boolean(light.lightOn).toString()}`}</Typography>
+            <Typography key={light.id}>{`Light ID: ${light.id
+              }, LightOn: ${Boolean(light.lightOn).toString()}`}</Typography>
           ))}
         </TableCell>
         <TableCell align="right">
@@ -102,13 +101,12 @@ const RoomInfo = ({ row }) => {
         </TableCell>
         <TableCell align="right">
           {row.windows.map((houseWindow) => (
-            <Typography key={houseWindow.id}>{`Window ID: ${
-              houseWindow.id
-            }, Blocked: ${Boolean(
-              houseWindow.blocked
-            ).toString()}, Open: ${Boolean(
-              houseWindow.open
-            ).toString()}`}</Typography>
+            <Typography key={houseWindow.id}>{`Window ID: ${houseWindow.id
+              }, Blocked: ${Boolean(
+                houseWindow.blocked
+              ).toString()}, Open: ${Boolean(
+                houseWindow.open
+              ).toString()}`}</Typography>
           ))}
         </TableCell>
       </TableRow>

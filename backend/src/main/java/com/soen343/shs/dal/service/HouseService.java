@@ -13,6 +13,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 @Service
@@ -26,6 +28,45 @@ public class HouseService {
     private final InteriorDoorRepository interiorDoorRepository;
     private final ConversionService mvcConversionService;
 
+    private static void checkForSameStateException(final boolean desiredState, final boolean currentState, final String sameStateExceptionErrorMessage) {
+        if (desiredState && currentState || (!desiredState && !currentState)) {
+            throw new SHSSameStateException(sameStateExceptionErrorMessage);
+        }
+    }
+
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
+    private static <Entity> String getSHSNotFoundErrorMessage(final long id, final Class<Entity> classType) {
+        return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s id.", classType.getName(), id, classType.getName());
+    }
+
+    /**
+     * @param id        id of the object
+     * @param classType class type of object
+     * @param <Entity>  class of object
+     * @return new string formatted to return our error message
+     */
+    private static <Entity> String getSameStateExceptionErrorMessage(final Class<Entity> classType, final long id) {
+        return String.format("Error: object: %s with id: %d is already in the expected state", classType.getName(), id);
+    }
+
+    /**
+     * @param classType
+     * @param id
+     * @param stateToCheck
+     * @param <Entity>
+     */
+    private static <Entity> void checkForIllegalStateException(final Class<Entity> classType, final long id, final boolean stateToCheck) {
+        final String ERROR_MSG = String.format("Error: object: %s with id: %d cannot be opened since it is blocked.", classType.getName(), id);
+        if (stateToCheck) {
+            throw new IllegalStateException(String.format(ERROR_MSG, id));
+        }
+    }
+
     public HouseDTO getHouse(final long id) {
         return mvcConversionService.convert(fetchHouse(id), HouseDTO.class);
     }
@@ -37,6 +78,15 @@ public class HouseService {
     public HouseDTO updateHouse(final HouseDTO dto) {
         houseRepository.save(SHSHouseMapper.mapHouseDTOToHouse(dto, fetchHouse(dto.getId())));
         return dto;
+    }
+
+
+    public Set<HouseDTO> getAllHouses() {
+        Set<HouseDTO> houseDTOS = new HashSet<>();
+        houseRepository.findAll().forEach(house -> {
+            houseDTOS.add(mvcConversionService.convert(house, HouseDTO.class));
+        });
+        return houseDTOS;
     }
 
     /**
@@ -107,45 +157,6 @@ public class HouseService {
                     }
                 }
         );
-    }
-
-    private static void checkForSameStateException(final boolean desiredState, final boolean currentState, final String sameStateExceptionErrorMessage) {
-        if (desiredState && currentState || (!desiredState && !currentState)) {
-            throw new SHSSameStateException(sameStateExceptionErrorMessage);
-        }
-    }
-
-    /**
-     * @param id        id of the object
-     * @param classType class type of object
-     * @param <Entity>  class of object
-     * @return new string formatted to return our error message
-     */
-    private static <Entity> String getSHSNotFoundErrorMessage(final long id, final Class<Entity> classType) {
-        return String.format("Error: %s with ID: %d does not exist. Please enter a valid %s id.", classType.getName(), id, classType.getName());
-    }
-
-    /**
-     * @param id        id of the object
-     * @param classType class type of object
-     * @param <Entity>  class of object
-     * @return new string formatted to return our error message
-     */
-    private static <Entity> String getSameStateExceptionErrorMessage(final Class<Entity> classType, final long id) {
-        return String.format("Error: object: %s with id: %d is already in the expected state", classType.getName(), id);
-    }
-
-    /**
-     * @param classType
-     * @param id
-     * @param stateToCheck
-     * @param <Entity>
-     */
-    private static <Entity> void checkForIllegalStateException(final Class<Entity> classType, final long id, final boolean stateToCheck) {
-        final String ERROR_MSG = String.format("Error: object: %s with id: %d cannot be opened since it is blocked.", classType.getName(), id);
-        if (stateToCheck) {
-            throw new IllegalStateException(String.format(ERROR_MSG, id));
-        }
     }
 
     /**
