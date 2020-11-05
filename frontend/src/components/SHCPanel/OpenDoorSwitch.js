@@ -5,20 +5,29 @@ import {
   modifyExteriorDoorState,
   modifyInteriorDoorState,
 } from "../../modules/HouseOverview/HouseService";
+import { useOutputData } from "../../context/OutputData";
 
 const OpenDoorSwitch = ({ door }) => {
   const [desiredState, setDesiredState] = useState(false);
+  const { outputData, setOutputData } = useOutputData();
+
   useEffect(() => {
     setDesiredState(door.open);
   }, [door]);
 
   const lockDoor = async () => {
-    if (door.locked === undefined) {
-      await modifyInteriorDoorState(door.id, !desiredState);
-    } else {
-      await modifyExteriorDoorState(door.id, true, !desiredState);
+    try {
+      if (door.locked === undefined) {
+        await modifyInteriorDoorState(door.id, !desiredState);
+        setOutputData(outputData => [...outputData, {id: outputData.length + 1, date: new Date(), data: `Door ${door.id} was ${!desiredState === true ? 'opened' : 'closed'}`}])
+      } else {
+        await modifyExteriorDoorState(door.id, true, !desiredState);
+        setOutputData(outputData => [...outputData, {id: outputData.length + 1, date: new Date(), data: `Door ${door.id} was ${!desiredState === true ? 'opened' : 'closed'}`}])
+      }
+      setDesiredState(!desiredState);
+    } catch (error) {
+      setOutputData(outputData => [...outputData, {id: outputData.length + 1, date: new Date(), data: `There was an error ${!desiredState === true ? 'opening' : 'closing'} Door ${door.id}`}])
     }
-    setDesiredState(!desiredState);
   };
 
   return (
