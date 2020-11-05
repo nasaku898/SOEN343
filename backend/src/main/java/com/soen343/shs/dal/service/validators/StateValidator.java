@@ -5,6 +5,13 @@ import com.soen343.shs.dal.service.exceptions.state.SHSSameStateException;
 
 public class StateValidator {
 
+    /**
+     * @param desiredState desired state of object
+     * @param currentState current state of object
+     * @param id           id of object
+     * @param classType    class type of object
+     * @param <Entity>     generic class
+     */
     public static <Entity> void validateState(final boolean desiredState, final boolean currentState, final long id, final Class<Entity> classType) {
         if (desiredState && currentState || (!desiredState && !currentState)) {
             throw new SHSSameStateException(getSameStateExceptionErrorMessage(classType, id));
@@ -12,10 +19,10 @@ public class StateValidator {
     }
 
     /**
-     * @param classType
-     * @param id
-     * @param stateToCheck
-     * @param <Entity>
+     * @param classType    class of object
+     * @param id           id of object
+     * @param stateToCheck state to check
+     * @param <Entity>     generic class
      */
     public static <Entity> void checkForIllegalStateException(final Class<Entity> classType, final long id, final boolean stateToCheck) {
         final String ERROR_MSG = String.format("Error: object: %s with id: %d cannot be opened since it is blocked.", classType.getName(), id);

@@ -40,7 +40,7 @@ public class SecuritySystemService {
     }
 
     /**
-     * @param dto containing the security system we want to create
+     * @param houseId the id of the house the security system belongs to
      * @return a DTO showing the properties of the newly created security system
      */
     public SecuritySystemDTO createSecuritySystem(final long houseId) {
@@ -85,6 +85,11 @@ public class SecuritySystemService {
     }
 
 
+    /**
+     * This method listens for an event to occur and then fires off the following code
+     *
+     * @param event event that will trigger our listener
+     */
     @EventListener
     public void userEntersRoomListener(final UserEntersRoomEvent event) {
         final SecuritySystem system = getSecuritySystem(event.getHouseId());
