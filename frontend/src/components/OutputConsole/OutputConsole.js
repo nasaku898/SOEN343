@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import './OutputConsole.css';
 import { animateScroll } from "react-scroll";
+import { useOutputData } from "../../context/OutputData";
 
 const OutputConsole = (props) => {
+  const { outputData } = useOutputData();
 
   const scrollToBottom = () => {
     animateScroll.scrollToBottom({
@@ -20,7 +22,7 @@ const OutputConsole = (props) => {
       <h4 className="outputConsoleTitle">Output Console</h4>
       <ul className="outputConsoleList">
         {
-          props.outputData.map(item => {
+          outputData.map(item => {
             return <li key={item.id} className="outputConsoleListItem">{`Log[${item.date.getHours()}:${item.date.getMinutes()}]: ${item.data}`}</li>
           })
         }

@@ -7,10 +7,7 @@ import SHCPanel from "../SHCPanel/SHCPanel";
 import SimulationForm from "../simulation_parameters/SimulationForm";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 const SHCPage = () => {
-  const [outputData, setOutputData] = useState([
-    { id: 1, date: new Date(), data: "This is a sample action log." },
-  ]);
- 
+
     return (
       <div>
         <Grid container direction="row">
@@ -27,7 +24,7 @@ const SHCPage = () => {
             <SHCPanel></SHCPanel>
           </Grid>
           <Grid item xs={12} lg={3}>
-            <OutputConsole outputData={outputData}></OutputConsole>
+            <OutputConsole></OutputConsole>
           </Grid>
         </Grid>
       </div>

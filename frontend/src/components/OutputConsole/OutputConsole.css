@@ -1,6 +1,6 @@
 #outputConsoleContainer {
   /* width: 300px; TODO (once dashboard components are complete) - update the width and height values so that it fits with the rest of the components on the dashboard */
-  height: 100%;
+  height: 250px;
   background-color: #424242;
   color: white;
   padding: 10px 15px;

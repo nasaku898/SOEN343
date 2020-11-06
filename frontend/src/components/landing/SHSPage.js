@@ -6,10 +6,6 @@ import HouseOverview from "../HouseOverview/HouseOverview";
 import OutputConsole from "../OutputConsole/OutputConsole";
 import SimulationForm from "../simulation_parameters/SimulationForm";
 const SHSPage = () => {
-  const [outputData, setOutputData] = useState([
-    { id: 1, date: new Date(), data: "This is a sample action log." },
-  ]);
-
 
   return (
     <div>
@@ -27,7 +23,7 @@ const SHSPage = () => {
           <HouseOverview></HouseOverview>
         </Grid>
         <Grid item xs={12} lg={3}>
-          <OutputConsole outputData={outputData}></OutputConsole>
+          <OutputConsole></OutputConsole>
         </Grid>
       </Grid>
     </div>
