@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseMember;
+import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.UserRole;
 import com.soen343.shs.dal.repository.UserRepository;
 import com.soen343.shs.dal.repository.mapping.HouseMemberMapper;
@@ -35,7 +36,8 @@ public class HouseMemberService {
                 .isOutside(houseMemberDTO.isOutside())
                 .houseIds(houseMemberDTO.getHouseIds())
                 .build());
-
+        Room room = roomService.fetchRoom(houseMemberDTO.getLocation().getRoomId());
+        roomService.addUserToRoom(room, houseMemberDTO.getId());
         return mvcConversionService.convert(houseMember, HouseMemberDTO.class);
     }
 
