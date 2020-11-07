@@ -15,6 +15,8 @@ import { useUserContext } from "./context/UserContext";
 import HouseSelector from "./components/HouseSelector/HouseSelector";
 import { getHouse, localStorageHouseID } from "./modules/HouseOverview/HouseService";
 import { OutputDataContext } from "./context/OutputData";
+import { getCurrentDate } from "./modules/HouseOverview/SimulationService";
+import { DateContext } from "./context/DateContext";
 const App = () => {
   // we will use this to get/fetch authentication token
   const [authTokens, setAuthTokens] = useState(
@@ -28,10 +30,12 @@ const App = () => {
   const [outputData, setOutputData] = useState([
     { id: 1, date: new Date(), data: "This is a sample action log." },
   ]);
+  const [currentDate, setCurrentDate] = useState(0)
 
   const userValue = useMemo(() => ({ user, setUser }), [user, setUser]);
   const houseValue = useMemo(() => ({ house, setHouse }), [house, setHouse]);
   const outputValue = useMemo(() => ({ outputData, setOutputData }), [outputData, setOutputData]);
+  const currentDateValue = useMemo(() => ({ currentDate, setCurrentDate }), [currentDate, setCurrentDate]);
 
   const setTokens = (data) => {
     localStorage.setItem("token", JSON.stringify(data));
@@ -71,11 +75,20 @@ const App = () => {
     }
   }, [houseId])
 
+  useEffect(() => {
+    getCurrentDate().then(data=>{
+      setCurrentDate(data)
+    }).catch(error=>{
+      alert(error)
+    })
+  }, [])
+
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
       <useUserContext.Provider value={userValue}>
         <HouseContext.Provider value={houseValue}>
-          <OutputDataContext.Provider value={outputValue}>  
+          <OutputDataContext.Provider value={outputValue}>
+            <DateContext.Provider value={currentDateValue}>
             <Router>
               <div>
                 <Navbar authTokens={authTokens} />
@@ -91,6 +104,7 @@ const App = () => {
                 </Switch>
               </div>
             </Router>
+            </DateContext.Provider>
           </OutputDataContext.Provider>
         </HouseContext.Provider>
       </useUserContext.Provider>

@@ -17,6 +17,7 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import BorderAllIcon from "@material-ui/icons/BorderAll";
 import BorderBottomIcon from "@material-ui/icons/BorderBottom";
 import useStyles from "./DraggableRoomStyle";
+import PersonIcon from '@material-ui/icons/Person';
 
 const DraggableRoom = ({ room }) => {
   const [name] = useState(room.name);
@@ -29,7 +30,7 @@ const DraggableRoom = ({ room }) => {
   const [doorOpen, setDoorOpen] = useState(false);
   const [windowOpen, setWindowOpen] = useState(false);
   const [windowBlocked, setBlocked] = useState(false);
-
+  const [numberOfHouseMember] = useState(room.userIds.length)
   const classes = useStyles();
 
   useEffect(() => {
@@ -157,6 +158,16 @@ const DraggableRoom = ({ room }) => {
               ).toString()} Blocked: ${Boolean(window.blocked).toString()}`}
             ></ListItemText>
           ))}
+        </ListItem>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <PersonIcon/>
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText>
+            {numberOfHouseMember}
+          </ListItemText>
         </ListItem>
       </List>
     </div>
