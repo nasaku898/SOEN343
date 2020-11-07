@@ -44,7 +44,7 @@ public class RoomService {
     RoomDTO addUserToRoom(final long roomId, final long userId) {
         final Room room = fetchRoom(roomId);
         room.getUserIds().add(userId);
-        userEntersRoomPublisher.publishEvent(roomId, room.getHouseId());
+//        userEntersRoomPublisher.publishEvent(roomId, room.getHouse().getId());
         return mvcConversionService.convert(roomRepository.save(room), RoomDTO.class);
     }
 

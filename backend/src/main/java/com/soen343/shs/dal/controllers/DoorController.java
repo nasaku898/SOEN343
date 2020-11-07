@@ -5,6 +5,8 @@ import com.soen343.shs.dal.service.DoorService;
 import com.soen343.shs.dto.DoorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,13 +16,37 @@ public class DoorController {
 
     private final DoorService doorService;
 
-    @PutMapping(value = "/exteriorDoor/{doorId}")
+    @PutMapping(value = "/exteriorDoor/{doorId}/test")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    DoorDTO modifyExteriorDoorState(@PathVariable final long doorId, @RequestBody final ObjectNode objectNode) {
+    DoorDTO modifyExteriorDoorState(@PathVariable final long houseId,
+                                    @PathVariable final long roomId,
+                                    @PathVariable final long doorId,
+                                    @RequestBody final ObjectNode objectNode) {
 
         return doorService
                 .modifyExteriorDoorState(
+                        objectNode.get("username").asText(),
+                        roomId,
+                        doorId,
+                        objectNode.get("open").asBoolean(),
+                        objectNode.get("desiredState").asBoolean()
+                );
+    }
+
+    @PutMapping(value = "/exteriorDoor/{doorId}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    DoorDTO modifyExteriorDoorState(@PathVariable final long houseId,
+                                    @PathVariable final long roomId,
+                                    @PathVariable final long doorId,
+                                    @AuthenticationPrincipal final Authentication auth,
+                                    @RequestBody final ObjectNode objectNode) {
+
+        return doorService
+                .modifyExteriorDoorState(
+                        auth.getName(),
+                        roomId,
                         doorId,
                         objectNode.get("open").asBoolean(),
                         objectNode.get("desiredState").asBoolean()
@@ -30,7 +56,33 @@ public class DoorController {
     @PutMapping(value = "/interiorDoor/{doorId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    DoorDTO modifyInteriorDoorState(@PathVariable final long doorId, @RequestBody final boolean desiredState) {
-        return doorService.modifyInteriorDoorState(doorId, desiredState);
+    DoorDTO modifyInteriorDoorState(@PathVariable final long houseId,
+                                    @PathVariable final long roomId,
+                                    @PathVariable final long doorId,
+                                    @RequestBody final ObjectNode objectNode) {
+        return doorService
+                .modifyInteriorDoorState(
+                        objectNode.get("username").asText(),
+                        roomId,
+                        doorId,
+                        objectNode.get("desiredState").asBoolean()
+                );
+    }
+
+    @PutMapping(value = "/interiorDoor/{doorId}/test")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    DoorDTO modifyInteriorDoorState(@PathVariable final long houseId,
+                                    @PathVariable final long roomId,
+                                    @PathVariable final long doorId,
+                                    @AuthenticationPrincipal final Authentication auth,
+                                    @RequestBody final ObjectNode objectNode) {
+        return doorService
+                .modifyInteriorDoorState(
+                        auth.getName(),
+                        roomId,
+                        doorId,
+                        objectNode.get("desiredState").asBoolean()
+                );
     }
 }

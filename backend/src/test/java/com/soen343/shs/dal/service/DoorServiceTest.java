@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_ID;
+import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -76,7 +78,7 @@ class DoorServiceTest {
                         .locked(!doWeOpen && finalLocked)
                         .build());
 
-        final ExteriorDoorDTO dto = classUnderTest.modifyExteriorDoorState(MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, !doWeOpen && finalLocked);
+        final ExteriorDoorDTO dto = classUnderTest.modifyExteriorDoorState(USERNAME, ROOM_ID, MOCK_HOUSE_EXTERIOR_DOOR_ID, doWeOpen, !doWeOpen && finalLocked);
 
         Assertions.assertEquals(dto.getId(), exteriorDoor.getId());
         Assertions.assertEquals(finalOpen, dto.getOpen());

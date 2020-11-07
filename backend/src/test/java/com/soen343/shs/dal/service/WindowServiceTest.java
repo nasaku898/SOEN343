@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_ID;
+import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -75,7 +77,13 @@ public class WindowServiceTest {
                         .open(finalOpen)
                         .blocked(finalBlocked)
                         .build());
-        final WindowDTO dto = classUnderTest.modifyWindowState(MOCK_HOUSE_WINDOW_ID, doWeOpen, doWeOpen ? finalOpen : finalBlocked);
+        final WindowDTO dto = classUnderTest
+                .modifyWindowState(
+                        USERNAME,
+                        ROOM_ID,
+                        MOCK_HOUSE_WINDOW_ID,
+                        doWeOpen,
+                        doWeOpen ? finalOpen : finalBlocked);
         Assertions.assertEquals(dto.getId(), mockHouseWindow.getId());
         Assertions.assertEquals(dto.isOpen(), finalOpen);
         Assertions.assertEquals(dto.isBlocked(), finalBlocked);
