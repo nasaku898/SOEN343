@@ -59,7 +59,12 @@ export const modifyExteriorDoorState = async (doorId, open, desiredState) => {
       method: "PUT",
       body: JSON.stringify(args),
     });
-    return response.json();
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Door is blocked");
+    }
   } catch (error) {
     throw await error;
   }
@@ -92,7 +97,11 @@ export const modifyWindowState = async (windowId, open, desiredState) => {
       method: "PUT",
       body: JSON.stringify(args),
     });
-    return response.json();
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Door is blocked");
+    }
   } catch (error) {
     throw await error;
   }
