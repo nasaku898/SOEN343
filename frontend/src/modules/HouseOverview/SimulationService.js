@@ -45,3 +45,31 @@ export const moveUserToRoom = async (username, roomId) => {
     throw error.response.data;
   }
 };
+
+export const getCurrentDate = async () => {
+  try {
+    const response = await fetch(`${URL}/time`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    });
+    return response.json();
+  } catch (error) {
+    throw error.response.data
+  }
+}
+
+export const setNewDate = async (newTime) => {
+  try {
+    const response = await fetch(`${URL}/time/${newTime}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    return response.json()
+  } catch (error) {
+    throw error.response.data
+  }
+}

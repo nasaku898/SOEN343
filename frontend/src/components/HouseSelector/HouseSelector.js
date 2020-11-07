@@ -20,7 +20,6 @@ const HouseSelector = () => {
         event.preventDefault()
         setSelectedHouse(event.target.value)
         getHouse(event.target.value).then(data => {
-            console.log(data)
             setHouse(data)
             localStorageHouseID(data.id)
         }).catch(error => {

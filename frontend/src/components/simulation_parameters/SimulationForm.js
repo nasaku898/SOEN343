@@ -10,6 +10,7 @@ import { LocationChooser } from "./LocationChooser";
 import { useCurrentHouse } from "../../context/CurrentHouse";
 import { useUser } from "../../context/UserContext";
 import { moveUserToRoom } from "../../modules/HouseOverview/SimulationService";
+import Time from "../Time/Time";
 
 const SimulationForm = () => {
   const { house } = useCurrentHouse();
@@ -32,7 +33,7 @@ const SimulationForm = () => {
     }
   }, [user, disabled]);
 
-  useEffect(() => {}, [user]);
+  useEffect(() => { }, [user]);
 
   useEffect(() => {
     if (house) {
@@ -74,25 +75,17 @@ const SimulationForm = () => {
           {outside ? (
             <p>is outside</p>
           ) : (
-            house.rooms.length && (
-              <LocationChooser
-                name={"location"}
-                disabled={disabled}
-                locationName={locationName}
-                rooms={house.rooms}
-                username={user.username}
-              />
-            )
-          )}
-
-          <SimulationField
-            name="date"
-            id="date"
-            type="text"
-            onChange={handleDateChange}
-            value={date}
-            disabled={disabled}
-          />
+              house.rooms.length && (
+                <LocationChooser
+                  name={"location"}
+                  disabled={disabled}
+                  locationName={locationName}
+                  rooms={house.rooms}
+                  username={user.username}
+                />
+              )
+            )}
+          <Time time={1523104441258} disabled={disabled}></Time>
           <br />
           <SimulationField
             name="temperature"
@@ -113,8 +106,8 @@ const SimulationForm = () => {
               Edit Parameters
             </button>
           ) : (
-            <button type="submit">Submit</button>
-          )}
+              <button type="submit">Submit</button>
+            )}
         </form>
       </>
     );
