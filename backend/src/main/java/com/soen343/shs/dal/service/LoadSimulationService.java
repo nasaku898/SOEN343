@@ -45,9 +45,9 @@ public class LoadSimulationService {
         final Long id = house.getId();
 
         owner.getHouseIds().add(id);
-//        rooms.forEach(room -> room.setHouse(house));
+        rooms.forEach(room -> room.setHouseId(id));
 
-        securitySystemService.createSecuritySystem(id);
+        securitySystemService.createSecuritySystem(id, 30000); // default delay is 30s
         userService.updateUser(owner);
 
         return mvcConversionService.convert(house, HouseDTO.class);

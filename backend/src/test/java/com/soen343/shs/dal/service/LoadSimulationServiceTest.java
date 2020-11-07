@@ -58,7 +58,7 @@ class LoadSimulationServiceTest {
 
         when(mvcConversionService.convert(any(LoadInteriorDoorDTO.class), any())).thenReturn(InteriorDoor.builder().build());
         when(mvcConversionService.convert(any(LoadHouseWindowDTO.class), any())).thenReturn(HouseWindow.builder().build());
-        when(securitySystemService.createSecuritySystem(HOUSE_ID)).thenReturn(SecuritySystemDTO.builder().build());
+        when(securitySystemService.createSecuritySystem(HOUSE_ID, 30000)).thenReturn(SecuritySystemDTO.builder().build());
         when(mvcConversionService.convert(any(LoadLightDTO.class), any())).thenReturn(Light.builder().build());
         when(houseRepository.save(any(House.class))).thenReturn(house);
         when(mvcConversionService.convert(house, HouseDTO.class)).thenReturn(createHouseDTO());

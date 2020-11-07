@@ -32,6 +32,8 @@ public class Room {
 
     @ElementCollection
     private Set<Long> userIds;
+    
+    private Long houseId;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<HouseWindow> houseWindows;

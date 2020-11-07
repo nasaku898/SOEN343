@@ -32,7 +32,12 @@ public class UserService {
      * @return dto representing the change of state to our user
      */
     public RealUserDTO updateUser(final RealUserDTO dto) {
-        return mvcConversionService.convert(userRepository.save(mapper.mapRealUserDTOToRealUser(dto, fetchById(dto.getId()))), RealUserDTO.class);
+        return mvcConversionService
+                .convert(userRepository
+                                // Convert after mapping is taken care of
+                                .save(mapper
+                                        .mapRealUserDTOToRealUser(dto, fetchById(dto.getId()))),
+                        RealUserDTO.class);
     }
 
     /**

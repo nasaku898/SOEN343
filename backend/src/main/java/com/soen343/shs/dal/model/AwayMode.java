@@ -6,20 +6,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Entity
 @Builder
-public class Light {
+@Entity
+public class AwayMode {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Boolean isLightOn;
-    private Boolean awayMode;
-    private LocalTime start;
-    private LocalTime end;
+    private Boolean active;
+    private Long intruderDetectionDelay;
 }

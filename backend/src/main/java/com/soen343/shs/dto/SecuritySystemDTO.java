@@ -14,4 +14,5 @@ public class SecuritySystemDTO {
     private long houseId;
     private boolean away;
     private boolean auto;
+    private long intruderDetectionDelay;
 }

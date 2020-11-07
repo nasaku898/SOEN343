@@ -49,7 +49,7 @@ public class SecuritySystemServiceTest {
         when(repository.save(any(SecuritySystem.class))).thenReturn(getEntity());
         when(mvcConversionService.convert(any(SecuritySystem.class), any())).thenReturn(dto);
 
-        final SecuritySystemDTO system = classUnderTest.createSecuritySystem(HOUSE_ID);
+        final SecuritySystemDTO system = classUnderTest.createSecuritySystem(HOUSE_ID, 30000);
         Assertions.assertEquals(dto, system);
     }
 
