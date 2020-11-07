@@ -45,7 +45,7 @@ public class LoadSimulationService {
         final Long id = house.getId();
 
         owner.getHouseIds().add(id);
-        rooms.forEach(room -> room.setHouseId(id));
+//        rooms.forEach(room -> room.setHouse(house));
 
         securitySystemService.createSecuritySystem(id);
         userService.updateUser(owner);

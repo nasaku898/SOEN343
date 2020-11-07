@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.soen343.shs.dal.service.helpers.RoomHelper.ROOM_ID;
+import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -56,7 +58,7 @@ public class LightServiceTest {
                 .build());
 
 
-        final LightDTO dto = classUnderTest.modifyLightState(MOCK_HOUSE_LIGHT_ID, desiredState);
+        final LightDTO dto = classUnderTest.modifyLightState(USERNAME, ROOM_ID, MOCK_HOUSE_LIGHT_ID, desiredState);
 
         Assertions.assertEquals(dto.getId(), mockLight.getId());
         Assertions.assertEquals(dto.isLightOn(), desiredState);

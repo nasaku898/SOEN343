@@ -23,11 +23,13 @@ public class SimulationController {
     private final TimeService timeService;
     private final UserEntersRoomPublisher publisher;
 
+
     @PutMapping(value = "/user/{username}/room/{roomId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     @ResponseBody
     public UserDTO moveUserToRoom(@NotNull @PathVariable final String username, @PathVariable final long roomId) {
         publisher.publishEvent(roomId, 3);
+
         return simulationService.moveUserToRoom(username, roomId, RealUserDTO.class);
     }
 
