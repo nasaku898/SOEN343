@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static com.soen343.shs.dal.service.helpers.HouseHelper.HOUSE_ID;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRooms;
+import static com.soen343.shs.dal.service.helpers.UserTestHelper.USERNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -64,7 +65,7 @@ public class SecuritySystemServiceTest {
         when(repository.save(any(SecuritySystem.class))).thenReturn(SecuritySystem.builder().build());
         when(mvcConversionService.convert(any(), any())).thenReturn(SecuritySystemDTO.builder().away(false).build());
 
-        final SecuritySystemDTO dto = classUnderTest.toggleAway(true, SECURITY_ID);
+        final SecuritySystemDTO dto = classUnderTest.toggleAway(USERNAME, true, SECURITY_ID);
         Assertions.assertNotEquals(buildSecuritySystemDTO(), dto);
     }
 

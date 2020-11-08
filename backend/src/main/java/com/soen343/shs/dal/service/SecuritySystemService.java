@@ -6,6 +6,7 @@ import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.events.UserEntersRoomEvent;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
+import com.soen343.shs.dal.service.validators.PermissionValidator;
 import com.soen343.shs.dal.service.validators.helper.ErrorMessageGenerator;
 import com.soen343.shs.dto.SecuritySystemDTO;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class SecuritySystemService {
     private final SecuritySystemRepository repository;
     private final ConversionService mvcConversionService;
     private final HouseService houseService;
+    private final PermissionValidator permissionValidator;
     private final RoomRepository roomRepository;
     private final RoomService roomService;
     private final TimeService timeService;
@@ -65,18 +67,23 @@ public class SecuritySystemService {
      * @param id           id of the security system
      * @return SHSSecurityDTO showing the state of the security system after the new update
      */
-    public SecuritySystemDTO toggleAway(final boolean desiredState, final long id) {
+    public SecuritySystemDTO toggleAway(final String username, final boolean desiredState, final long id) {
         final SecuritySystem securitySystem = getSecuritySystem(id);
         securitySystem.getAwayMode().setActive(desiredState);
-
+        permissionValidator.validateAwayModePermmissions(username);
         if (desiredState) {
+
             houseService.fetchHouse(securitySystem.getHouseId()).getRooms()
                     .forEach(
                             room -> {
                                 if (!room.getUserIds().isEmpty()) {
-                                    throw new IllegalStateException("Away mode can only be set when the house is unoccupied!");
-                                }
 
+                                    throw new IllegalStateException(
+                                            String.format("Away mode can only be set when the house is unoccupied, " +
+                                                            "user with userId: %d detected in room with roomId: %d",
+                                                    room.getUserIds().iterator().next(),
+                                                    room.getId()));
+                                }
                                 room.getDoors().forEach(
                                         door -> {
                                             door.setOpen(false);
@@ -99,12 +106,27 @@ public class SecuritySystemService {
     }
 
 
+    /**
+     * @param id           of the security system to be fetched
+     * @param desiredState desired state for auto mode after the toggle
+     * @return updated state of the security system after changes
+     */
     public SecuritySystemDTO toggleAutoMode(final long id, final boolean desiredState) {
         final SecuritySystem securitySystem = getSecuritySystem(id);
         securitySystem.setAuto(desiredState);
         return saveSecuritySystemDTO(securitySystem);
     }
 
+    /**
+     * @param id    of the security system to be fetched
+     * @param delay the new amount of time to delay notifying the authorities
+     * @return updated state of the security system after changes
+     */
+    public SecuritySystemDTO updateIntruderDetectionDelay(final long id, final long delay) {
+        final SecuritySystem securitySystem = getSecuritySystem(id);
+        securitySystem.getAwayMode().setIntruderDetectionDelay(delay * 60000);
+        return saveSecuritySystemDTO(securitySystem);
+    }
 
     /**
      * This method listens for an event to occur and then fires off the following code
@@ -139,7 +161,9 @@ public class SecuritySystemService {
 
     private boolean compareTime(final LocalTime start, final LocalTime end) {
         final LocalTime current = timeService.getLocalTime();
-        return start.isBefore(current) && end.isAfter(current);
+
+        return (start.isBefore(current) && end.isAfter(current))
+                || (start.isAfter(current) && end.isBefore(current));
     }
 
     private SecuritySystemDTO saveSecuritySystemDTO(final SecuritySystem securitySystem) {

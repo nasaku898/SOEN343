@@ -64,11 +64,13 @@ public class LightService {
      * @param desiredState desired state to set the away mode to
      * @return LightDTO containing the updated state of the object
      */
-    public LightDTO toggleAwayMode(final long lightId, final boolean desiredState) {
+    public LightDTO toggleAwayMode(final String username, final long lightId, final boolean desiredState) {
         final Light light = fetchLight(lightId);
 
+        permissionValidator.validateAwayModePermmissions(username);
         StateValidator.validateState(desiredState, light.getAwayMode(), lightId, Light.class);
         light.setAwayMode(desiredState);
+
         return saveLight(light);
     }
 

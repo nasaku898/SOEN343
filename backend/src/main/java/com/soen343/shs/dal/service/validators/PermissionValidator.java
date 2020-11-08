@@ -34,7 +34,7 @@ public class PermissionValidator {
         }
     }
 
-    private void validateAwayModePermmissions(final String username) {
+    public void validateAwayModePermmissions(final String username) {
         final RealUserDTO user = userService.getUserByUsername(username, RealUserDTO.class);
         if ((user.getRole() == UserRole.valueOf("PARENT") || user.getRole() == UserRole.valueOf("CHILD")) && !user.isOutside()) {
             throw new IllegalRequestException(String.format("User: %s cannot change the state of away mode because they are already in the house", username));

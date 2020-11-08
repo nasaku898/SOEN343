@@ -67,7 +67,7 @@ public class LightController {
                             @AuthenticationPrincipal final Authentication auth,
                             @RequestBody final boolean desiredState) {
 
-        return lightService.toggleAwayMode(lightId, desiredState);
+        return lightService.toggleAwayMode(auth.getName(), lightId, desiredState);
     }
 
 
