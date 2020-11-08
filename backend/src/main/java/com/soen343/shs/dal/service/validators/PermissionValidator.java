@@ -19,8 +19,18 @@ public class PermissionValidator {
         final HouseMemberDTO user = userService.getUserByUsername(username, HouseMemberDTO.class);
         final RoomDTO room = roomService.getRoom(roomId);
 
+        if (user.getRole() == UserRole.valueOf("STRANGER")) {
+            throw new IllegalRequestException(
+                    String.format("User: %s cannot change the state of any room entities in house: %d, because they are a stranger!",
+                            username,
+                            room.getHouseId()));
+        }
+
         if (user.getRole() != UserRole.valueOf("PARENT") && !user.getLocation().equals(room)) {
-            throw new IllegalRequestException(String.format("User : %s cannot change the state of room %s's entities, because they are not in that room!", username, room.getName()));
+            throw new IllegalRequestException(
+                    String.format("User : %s cannot change the state of room %s's entities, because they are not in that room!",
+                            username,
+                            room.getName()));
         }
     }
 }
