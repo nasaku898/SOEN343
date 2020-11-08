@@ -2,10 +2,10 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.AwayMode;
 import com.soen343.shs.dal.model.House;
-import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.SecuritySystem;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.SecuritySystemRepository;
+import com.soen343.shs.dal.service.validators.PermissionValidator;
 import com.soen343.shs.dto.AwayModeDTO;
 import com.soen343.shs.dto.SecuritySystemDTO;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +39,8 @@ public class SecuritySystemServiceTest {
     @Mock
     private RoomRepository roomRepository;
 
+    @Mock
+    private PermissionValidator validator;
 
     @InjectMocks
     private SecuritySystemService classUnderTest;
@@ -59,14 +61,13 @@ public class SecuritySystemServiceTest {
     @Test
     void toggleAwayTest() {
         final SecuritySystem system = mock(SecuritySystem.class);
+        final House house = mock(House.class);
 
         when(repository.findById(SECURITY_ID)).thenReturn(Optional.ofNullable(system));
         when(system.getHouseId()).thenReturn(HOUSE_ID);
-        when(houseService.fetchHouse(HOUSE_ID)).thenReturn(House.builder().rooms(createRooms()).build());
-        when(roomRepository.save(any(Room.class))).thenReturn(Room.builder().build());
-        when(repository.save(any(SecuritySystem.class))).thenReturn(SecuritySystem.builder().build());
-        when(mvcConversionService.convert(any(), any())).thenReturn(SecuritySystemDTO.builder().awayMode(AwayModeDTO.builder().build()).build());
-
+        when(system.getAwayMode()).thenReturn(AwayMode.builder().build());
+        when(houseService.fetchHouse(HOUSE_ID)).thenReturn(house);
+        when(house.getRooms()).thenReturn(createRooms());
         final SecuritySystemDTO dto = classUnderTest.toggleAway(USERNAME, true, SECURITY_ID);
         Assertions.assertNotEquals(buildSecuritySystemDTO(), dto);
     }
