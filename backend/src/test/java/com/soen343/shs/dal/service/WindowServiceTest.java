@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.HouseWindow;
+import com.soen343.shs.dal.service.validators.PermissionValidator;
 import com.soen343.shs.dto.WindowDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,9 @@ public class WindowServiceTest {
     @Mock
     private RoomService roomService;
 
+    @Mock
+    private PermissionValidator validator;
+    
     @InjectMocks
     private WindowService classUnderTest;
 
