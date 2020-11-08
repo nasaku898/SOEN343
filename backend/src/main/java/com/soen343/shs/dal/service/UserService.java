@@ -51,6 +51,17 @@ public class UserService {
     }
 
     /**
+     * @param username of the user we wish to make leave the house
+     * @return updated user who is now not located inside of the house
+     */
+    public RealUserDTO leaveHouse(final String username) {
+        final RealUserDTO dto = getUserByUsername(username, RealUserDTO.class);
+        dto.setLocation(null);
+        dto.setOutside(true);
+        return updateUser(dto);
+    }
+
+    /**
      * @param username String value used to fetch from repository by username
      * @return UserDTO corresponding to the unique given username, or throw UsernameNotFoundException
      */
