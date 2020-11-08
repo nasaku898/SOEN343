@@ -68,5 +68,6 @@ public class LightController {
                             @RequestBody final boolean desiredState) {
 
         return lightService.toggleAwayMode(lightId, desiredState);
+    }
 
 }
