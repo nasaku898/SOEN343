@@ -1,5 +1,6 @@
 package com.soen343.shs.dal.service;
 
+import com.google.common.collect.Sets;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.HouseRepository;
@@ -10,6 +11,9 @@ import com.soen343.shs.dto.HouseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +46,12 @@ public class HouseService {
                 .mapToDouble(Room::getTemperature)
                 .average()
                 .orElse(0);
+    }
+
+    public Set<HouseDTO> getAllHouses() {
+        return Sets.newHashSet(houseRepository.findAll())
+                .stream()
+                .map(house -> mvcConversionService.convert(house, HouseDTO.class))
+                .collect(Collectors.toSet());
     }
 }

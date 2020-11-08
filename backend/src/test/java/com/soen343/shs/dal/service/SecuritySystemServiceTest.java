@@ -1,10 +1,12 @@
 package com.soen343.shs.dal.service;
 
+import com.soen343.shs.dal.model.AwayMode;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.SecuritySystem;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.SecuritySystemRepository;
+import com.soen343.shs.dto.AwayModeDTO;
 import com.soen343.shs.dto.SecuritySystemDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -63,7 +65,7 @@ public class SecuritySystemServiceTest {
         when(houseService.fetchHouse(HOUSE_ID)).thenReturn(House.builder().rooms(createRooms()).build());
         when(roomRepository.save(any(Room.class))).thenReturn(Room.builder().build());
         when(repository.save(any(SecuritySystem.class))).thenReturn(SecuritySystem.builder().build());
-        when(mvcConversionService.convert(any(), any())).thenReturn(SecuritySystemDTO.builder().away(false).build());
+        when(mvcConversionService.convert(any(), any())).thenReturn(SecuritySystemDTO.builder().awayMode(AwayModeDTO.builder().build()).build());
 
         final SecuritySystemDTO dto = classUnderTest.toggleAway(USERNAME, true, SECURITY_ID);
         Assertions.assertNotEquals(buildSecuritySystemDTO(), dto);
@@ -73,7 +75,7 @@ public class SecuritySystemServiceTest {
     private static SecuritySystem getEntity() {
         return SecuritySystem.builder()
                 .auto(false)
-                .away(false)
+                .awayMode(AwayMode.builder().build())
                 .houseId(HOUSE_ID)
                 .id(SECURITY_ID)
                 .build();
@@ -82,7 +84,7 @@ public class SecuritySystemServiceTest {
     private static SecuritySystemDTO buildSecuritySystemDTO() {
         return SecuritySystemDTO.builder()
                 .auto(false)
-                .away(false)
+                .awayMode(AwayModeDTO.builder().build())
                 .id(SECURITY_ID)
                 .houseId(1L)
                 .build();

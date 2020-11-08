@@ -12,7 +12,6 @@ import lombok.*;
 public class SecuritySystemDTO {
     private long id;
     private long houseId;
-    private boolean away;
     private boolean auto;
-    private long intruderDetectionDelay;
+    private AwayModeDTO awayMode;
 }
