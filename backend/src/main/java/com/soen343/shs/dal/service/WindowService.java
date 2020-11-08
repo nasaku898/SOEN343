@@ -21,7 +21,12 @@ public class WindowService {
      * @param desiredState boolean referring to the desired state of the object
      * @return WindowDTO object reflecting the changes made to the object
      */
-    public WindowDTO modifyWindowState(final String username, final long roomId, final long id, final boolean open, final boolean desiredState) {
+    public WindowDTO modifyWindowState(final String username,
+                                       final long roomId,
+                                       final long id,
+                                       final boolean open,
+                                       final boolean desiredState) {
+
         validator.validatePermissions(username, roomId);
         return roomService.changeStateOfRoomObject(id, HouseWindow.class, WindowDTO.class, houseWindowRepository,
                 window -> {

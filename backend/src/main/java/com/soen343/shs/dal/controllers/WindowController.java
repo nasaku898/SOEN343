@@ -11,29 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/api/house/{houseId}/room/{roomId}/window")
 public class WindowController {
 
     private final WindowService windowService;
 
-//
-//    @PutMapping(value = "/{windowId}")
-//    @ResponseStatus(value = HttpStatus.ACCEPTED)
-//    public @ResponseBody
-//    WindowDTO modifyWindowState(@PathVariable final long houseId,
-//                                @PathVariable final long roomId,
-//                                @PathVariable final long windowId,
-//                                @RequestBody final ObjectNode objectNode) {
-//        return windowService.modifyWindowState(
-//                objectNode.get("username").asText(),
-//                roomId,
-//                windowId,
-//                objectNode.get("open").asBoolean(),
-//                objectNode.get("desiredState").asBoolean()
-//        );
-//    }
-
-    @PutMapping(value = "/{windowId}")
+    @PutMapping(value = "/api/house/{houseId}/room/{roomId}/window/{windowId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     WindowDTO modifyWindowState(@PathVariable final long houseId,

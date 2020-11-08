@@ -13,6 +13,7 @@ public class LightDTO {
     private Long id;
     private boolean isLightOn;
     private boolean awayMode;
+    private long roomId;
     private LocalTime start;
     private LocalTime end;
 }

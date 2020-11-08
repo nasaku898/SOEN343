@@ -1,5 +1,6 @@
 package com.soen343.shs.dal.service;
 
+import com.soen343.shs.dal.service.events.UserEntersRoomPublisher;
 import com.soen343.shs.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -17,6 +18,7 @@ public class SimulationService {
     private final RoomService roomService;
     private final UserService userService;
     private final HouseMemberService houseMemberService;
+    private final UserEntersRoomPublisher publisher;
 
     /**
      * @param userId  id used to fetch user from db
@@ -64,6 +66,7 @@ public class SimulationService {
             houseMemberService.updateHouseMember((HouseMemberDTO) user);
         }
         roomService.addUserToRoom(roomId, user.getId());
+        publisher.publishEvent(roomId, user.getHouseIds().iterator().next());
         return mvcConversionService.convert(user, dto);
     }
 

@@ -20,6 +20,7 @@ public class Light {
     private Long id;
     private Boolean isLightOn;
     private Boolean awayMode;
+    private Long roomId;
     private LocalTime start;
     private LocalTime end;
 }

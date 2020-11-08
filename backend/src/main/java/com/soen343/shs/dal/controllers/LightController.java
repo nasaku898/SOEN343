@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api/house/{houseId}/room/{roomId}/light")
@@ -24,28 +26,35 @@ public class LightController {
                               @PathVariable final long lightId,
                               @AuthenticationPrincipal final Authentication auth,
                               @RequestBody final ObjectNode objectNode) {
-        return lightService
-                .modifyLightState(
-                        auth.getName(),
-                        roomId,
-                        lightId,
-                        objectNode.get("desiredState").asBoolean()
-                );
+
+        return lightService.modifyLightState(
+                auth.getName(),
+                roomId,
+                lightId,
+                objectNode.get("desiredState").asBoolean());
     }
 
-    @PutMapping(value = "/{lightId}/test")
+    @PutMapping(value = "/{lightId}/startTime")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    LightDTO modifyLightState(@PathVariable final long houseId,
-                              @PathVariable final long roomId,
-                              @PathVariable final long lightId,
-                              @RequestBody final ObjectNode objectNode) {
-        return lightService
-                .modifyLightState(
-                        objectNode.get("username").asText(),
-                        roomId,
-                        lightId,
-                        objectNode.get("desiredState").asBoolean()
-                );
+    LightDTO updateStartTime(@PathVariable final long houseId,
+                             @PathVariable final long roomId,
+                             @PathVariable final long lightId,
+                             @AuthenticationPrincipal final Authentication auth,
+                             @RequestBody final LocalTime startTime) {
+
+        return lightService.updateStartTime(lightId, startTime);
+    }
+
+    @PutMapping(value = "/{lightId}/endTime")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    LightDTO updateEndTime(@PathVariable final long houseId,
+                           @PathVariable final long roomId,
+                           @PathVariable final long lightId,
+                           @AuthenticationPrincipal final Authentication auth,
+                           @RequestBody final LocalTime endTime) {
+
+        return lightService.updateEndTime(lightId, endTime);
     }
 }

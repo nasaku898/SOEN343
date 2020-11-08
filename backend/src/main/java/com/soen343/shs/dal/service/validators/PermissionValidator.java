@@ -22,6 +22,5 @@ public class PermissionValidator {
         if (user.getRole() != UserRole.valueOf("PARENT") && !user.getLocation().equals(room)) {
             throw new IllegalRequestException(String.format("User : %s cannot change the state of room %s's entities, because they are not in that room!", username, room.getName()));
         }
-
     }
 }

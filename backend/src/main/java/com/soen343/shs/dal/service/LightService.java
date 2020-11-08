@@ -2,11 +2,16 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.LightRepository;
+import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dal.service.validators.PermissionValidator;
 import com.soen343.shs.dal.service.validators.StateValidator;
+import com.soen343.shs.dal.service.validators.helper.ErrorMessageGenerator;
 import com.soen343.shs.dto.LightDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +20,7 @@ public class LightService {
     private final LightRepository lightRepository;
     private final RoomService roomService;
     private final PermissionValidator validator;
+    private final ConversionService mvcConversionService;
 
     /**
      * @param id           id of light object to modify
@@ -28,6 +34,24 @@ public class LightService {
                     StateValidator.validateState(desiredState, light.getIsLightOn(), id, light.getClass());
                     light.setIsLightOn(desiredState);
                 });
+    }
+
+    public LightDTO updateStartTime(final long lightId, final LocalTime startTime) {
+        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(lightId, Light.class)));
+        light.setStart(startTime);
+
+        return saveLight(light);
+    }
+
+    public LightDTO updateEndTime(final long lightId, final LocalTime endTime) {
+        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(lightId, Light.class)));
+        light.setEnd(endTime);
+
+        return saveLight(light);
+    }
+
+    private LightDTO saveLight(final Light light) {
+        return mvcConversionService.convert(lightRepository.save(light), LightDTO.class);
     }
 
 

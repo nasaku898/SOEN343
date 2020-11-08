@@ -3,6 +3,7 @@ package com.soen343.shs.dal.service;
 import com.google.common.collect.Sets;
 import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.HouseRepository;
+import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dto.HouseDTO;
 import com.soen343.shs.dto.LoadHouseDTO;
 import com.soen343.shs.dto.LoadRoomDTO;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class LoadSimulationService {
 
     private final HouseRepository houseRepository;
+    private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
     private final UserService userService;
     private final CityService cityService;
@@ -45,10 +47,16 @@ public class LoadSimulationService {
         final Long id = house.getId();
 
         owner.getHouseIds().add(id);
-        rooms.forEach(room -> room.setHouseId(id));
+
+        rooms.forEach(room -> {
+            room.setHouseId(id);
+            room.getLights().forEach(light -> light.setRoomId(room.getId()));
+            room.getHouseWindows().forEach(window -> window.setRoomId(room.getId()));
+        });
 
         securitySystemService.createSecuritySystem(id, 30000); // default delay is 30s
         userService.updateUser(owner);
+        roomRepository.saveAll(rooms);
 
         return mvcConversionService.convert(house, HouseDTO.class);
     }
