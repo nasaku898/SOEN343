@@ -21,6 +21,7 @@ public class LightService {
     private final RoomService roomService;
     private final PermissionValidator validator;
     private final ConversionService mvcConversionService;
+    private final PermissionValidator permissionValidator;
 
     /**
      * @param id           id of light object to modify
@@ -65,6 +66,7 @@ public class LightService {
      */
     public LightDTO toggleAwayMode(final long lightId, final boolean desiredState) {
         final Light light = fetchLight(lightId);
+
         StateValidator.validateState(desiredState, light.getAwayMode(), lightId, Light.class);
         light.setAwayMode(desiredState);
         return saveLight(light);

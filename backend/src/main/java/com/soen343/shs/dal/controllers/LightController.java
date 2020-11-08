@@ -70,4 +70,5 @@ public class LightController {
         return lightService.toggleAwayMode(lightId, desiredState);
     }
 
+
 }
