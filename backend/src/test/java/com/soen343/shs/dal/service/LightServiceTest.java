@@ -1,6 +1,8 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.Light;
+import com.soen343.shs.dal.repository.LightRepository;
+import com.soen343.shs.dal.service.validators.PermissionValidator;
 import com.soen343.shs.dto.LightDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.convert.ConversionService;
 
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -25,6 +28,15 @@ public class LightServiceTest {
 
     @Mock
     private RoomService roomService;
+
+    @Mock
+    private LightRepository lightRepository;
+
+    @Mock
+    private PermissionValidator permissionValidator;
+
+    @Mock
+    private ConversionService mvcConversionService;
 
     @InjectMocks
     private LightService classUnderTest;
