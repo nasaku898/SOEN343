@@ -71,8 +71,7 @@ public class SecuritySystemServiceTest {
         final SecuritySystemDTO dto = classUnderTest.toggleAway(USERNAME, true, SECURITY_ID);
         Assertions.assertNotEquals(buildSecuritySystemDTO(), dto);
     }
-
-
+    
     private static SecuritySystem getEntity() {
         return SecuritySystem.builder()
                 .auto(false)

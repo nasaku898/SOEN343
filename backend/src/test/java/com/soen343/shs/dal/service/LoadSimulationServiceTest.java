@@ -5,6 +5,7 @@ import com.soen343.shs.dal.model.HouseWindow;
 import com.soen343.shs.dal.model.InteriorDoor;
 import com.soen343.shs.dal.model.Light;
 import com.soen343.shs.dal.repository.HouseRepository;
+import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ class LoadSimulationServiceTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private RoomRepository roomRepository;
 
     @Mock
     private CityService cityService;
