@@ -31,23 +31,32 @@ public class LightService {
         validator.validatePermissions(username, roomId);
         return roomService.changeStateOfRoomObject(id, Light.class, LightDTO.class, lightRepository,
                 light -> {
-                    StateValidator.validateState(desiredState, light.getIsLightOn(), id, light.getClass());
+                    StateValidator.validateState(desiredState, light.getIsLightOn(), id, Light.class);
                     light.setIsLightOn(desiredState);
                 });
     }
 
     public LightDTO updateStartTime(final long lightId, final LocalTime startTime) {
-        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(lightId, Light.class)));
+        final Light light = fetchLight(lightId);
         light.setStart(startTime);
-
         return saveLight(light);
     }
 
     public LightDTO updateEndTime(final long lightId, final LocalTime endTime) {
-        final Light light = lightRepository.findById(lightId).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(lightId, Light.class)));
+        final Light light = fetchLight(lightId);
         light.setEnd(endTime);
-
         return saveLight(light);
+    }
+
+    public LightDTO toggleAwayMode(final long lightId, final boolean desiredState) {
+        final Light light = fetchLight(lightId);
+        StateValidator.validateState(desiredState, light.getAwayMode(), lightId, Light.class);
+        light.setAwayMode(desiredState);
+        return saveLight(light);
+    }
+
+    private Light fetchLight(final long lightId) {
+        return lightRepository.findById(lightId).orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(lightId, Light.class)));
     }
 
     private LightDTO saveLight(final Light light) {

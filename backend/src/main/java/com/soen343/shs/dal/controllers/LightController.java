@@ -13,12 +13,12 @@ import java.time.LocalTime;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/api/house/{houseId}/room/{roomId}/light")
+@RequestMapping(path = "/api/house/{houseId}/room/{roomId}/light/{lightId}")
 public class LightController {
 
     private final LightService lightService;
 
-    @PutMapping(value = "/{lightId}")
+    @PutMapping(value = "/")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     LightDTO modifyLightState(@PathVariable final long houseId,
@@ -34,7 +34,7 @@ public class LightController {
                 objectNode.get("desiredState").asBoolean());
     }
 
-    @PutMapping(value = "/{lightId}/startTime")
+    @PutMapping(value = "/startTime")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     LightDTO updateStartTime(@PathVariable final long houseId,
@@ -46,7 +46,7 @@ public class LightController {
         return lightService.updateStartTime(lightId, startTime);
     }
 
-    @PutMapping(value = "/{lightId}/endTime")
+    @PutMapping(value = "/endTime")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
     LightDTO updateEndTime(@PathVariable final long houseId,
@@ -57,4 +57,16 @@ public class LightController {
 
         return lightService.updateEndTime(lightId, endTime);
     }
+
+    @PutMapping(value = "/away")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public @ResponseBody
+    LightDTO toggleAwayMode(@PathVariable final long houseId,
+                            @PathVariable final long roomId,
+                            @PathVariable final long lightId,
+                            @AuthenticationPrincipal final Authentication auth,
+                            @RequestBody final boolean desiredState) {
+
+        return lightService.toggleAwayMode(lightId, desiredState);
+
 }
