@@ -36,18 +36,33 @@ public class LightService {
                 });
     }
 
+    /**
+     * @param lightId   id of light to be modified
+     * @param startTime new start time for away mode
+     * @return LightDTO containing the updated state of the object
+     */
     public LightDTO updateStartTime(final long lightId, final LocalTime startTime) {
         final Light light = fetchLight(lightId);
         light.setStart(startTime);
         return saveLight(light);
     }
 
+    /**
+     * @param lightId id of light to be modified
+     * @param endTime new start time for away mode
+     * @return LightDTO containing the updated state of the object
+     */
     public LightDTO updateEndTime(final long lightId, final LocalTime endTime) {
         final Light light = fetchLight(lightId);
         light.setEnd(endTime);
         return saveLight(light);
     }
 
+    /**
+     * @param lightId      id of light to be modified
+     * @param desiredState desired state to set the away mode to
+     * @return LightDTO containing the updated state of the object
+     */
     public LightDTO toggleAwayMode(final long lightId, final boolean desiredState) {
         final Light light = fetchLight(lightId);
         StateValidator.validateState(desiredState, light.getAwayMode(), lightId, Light.class);

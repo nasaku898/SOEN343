@@ -2,7 +2,6 @@ package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.repository.RoomRepository;
-import com.soen343.shs.dal.service.events.UserEntersRoomPublisher;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dal.service.validators.helper.ErrorMessageGenerator;
 import com.soen343.shs.dto.RoomDTO;
@@ -19,7 +18,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
-    private final UserEntersRoomPublisher userEntersRoomPublisher;
 
     public RoomDTO getRoom(final long id) {
         return mvcConversionService.convert(fetchRoom(id), RoomDTO.class);
@@ -44,7 +42,6 @@ public class RoomService {
     RoomDTO addUserToRoom(final long roomId, final long userId) {
         final Room room = fetchRoom(roomId);
         room.getUserIds().add(userId);
-//        userEntersRoomPublisher.publishEvent(roomId, room.getHouse().getId());
         return mvcConversionService.convert(roomRepository.save(room), RoomDTO.class);
     }
 
