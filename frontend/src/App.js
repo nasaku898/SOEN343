@@ -17,6 +17,7 @@ import { getHouse, localStorageHouseID } from "./modules/HouseOverview/HouseServ
 import { OutputDataContext } from "./context/OutputData";
 import { getCurrentDate } from "./modules/HouseOverview/SimulationService";
 import { DateContext } from "./context/DateContext";
+import SHPPage from "./components/landing/SHPPage";
 const App = () => {
   // we will use this to get/fetch authentication token
   const [authTokens, setAuthTokens] = useState(
@@ -101,6 +102,7 @@ const App = () => {
                   <Route path="/upload" render={() => (user && house) ? <Redirect to="/" /> : <HouseUploadForm />} />
                   <Route path="/newUpload" render={() => user ? <HouseUploadForm /> : <Redirect to="login" />} />
                   <Route path="/houseSelect" render={() => user ? <HouseSelector /> : <Redirect to="/login" />} />
+                  <Route path="/shp" render={() => user ? (house ? <SHPPage /> : <Redirect to="/upload" />) : <Redirect to="/login" />} />
                 </Switch>
               </div>
             </Router>
