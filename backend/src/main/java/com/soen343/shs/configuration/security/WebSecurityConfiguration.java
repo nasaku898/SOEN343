@@ -1,6 +1,7 @@
 package com.soen343.shs.configuration.security;
 
 import com.soen343.shs.converters.CityToCityDTOConverter;
+import com.soen343.shs.converters.SecuritySystemToSecuritySystemDTOConverter;
 import com.soen343.shs.converters.doors.ExteriorDoorToExteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.InteriorDoorToInteriorDoorDTOConverter;
 import com.soen343.shs.converters.doors.LoadExteriorDoorDTOToExteriorDoorConverter;
@@ -13,7 +14,6 @@ import com.soen343.shs.converters.lights.LightToLightDTOConverter;
 import com.soen343.shs.converters.lights.LoadLightDTOToLightConverter;
 import com.soen343.shs.converters.rooms.RoomDTOToRoomConverter;
 import com.soen343.shs.converters.rooms.RoomToRoomDTOConverter;
-import com.soen343.shs.converters.securitySystem.SecuritySystemToSecuritySystemDTOConverter;
 import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
 import com.soen343.shs.converters.users.RealUserToRealUserDTOConverter;
 import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;
@@ -37,6 +37,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Timer;
 
 @Configuration
 @EnableWebSecurity
@@ -107,6 +108,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         mvcConversionService.addConverter(new HouseToHouseDTOConverter());
         mvcConversionService.addConverter(new HouseDTOToHouseConverter());
         mvcConversionService.addConverter(new CityToCityDTOConverter());
+    }
+
+    @Bean
+    public Timer getTimer() {
+        return new Timer();
     }
 
     @Bean

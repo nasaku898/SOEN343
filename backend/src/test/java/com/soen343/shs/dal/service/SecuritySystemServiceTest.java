@@ -3,6 +3,7 @@ package com.soen343.shs.dal.service;
 import com.soen343.shs.dal.model.AwayMode;
 import com.soen343.shs.dal.model.House;
 import com.soen343.shs.dal.model.SecuritySystem;
+import com.soen343.shs.dal.repository.AwayModeRepository;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.validators.PermissionValidator;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.Optional;
+import java.util.Timer;
 
 import static com.soen343.shs.dal.service.helpers.HouseHelper.HOUSE_ID;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRooms;
@@ -41,6 +43,18 @@ public class SecuritySystemServiceTest {
 
     @Mock
     private PermissionValidator validator;
+
+    @Mock
+    private RoomService roomService;
+
+    @Mock
+    private TimeService timeService;
+
+    @Mock
+    private Timer timer;
+
+    @Mock
+    private AwayModeRepository awayModeRepository;
 
     @InjectMocks
     private SecuritySystemService classUnderTest;

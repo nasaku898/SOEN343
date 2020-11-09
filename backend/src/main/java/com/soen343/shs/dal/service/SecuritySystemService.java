@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.*;
+import com.soen343.shs.dal.repository.AwayModeRepository;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.events.UserEntersRoomEvent;
@@ -30,6 +31,7 @@ public class SecuritySystemService {
     private final RoomRepository roomRepository;
     private final RoomService roomService;
     private final TimeService timeService;
+    private final AwayModeRepository awayModeRepository;
     private final Timer timer;
 
     /**
@@ -40,12 +42,6 @@ public class SecuritySystemService {
         return mvcConversionService.convert(getSecuritySystem(id), SecuritySystemDTO.class);
     }
 
-    private SecuritySystem getSecuritySystem(final long id) {
-        return repository
-                .findById(id)
-                .orElseThrow(() -> new SHSNotFoundException(ErrorMessageGenerator.getSHSNotFoundErrorMessage(id, SecuritySystem.class)));
-    }
-
     /**
      * @param houseId the id of the house the security system belongs to
      * @return a DTO showing the properties of the newly created security system
@@ -54,9 +50,7 @@ public class SecuritySystemService {
         final SecuritySystem system = repository.save(SecuritySystem.builder()
                 .auto(false)
                 .houseId(houseId)
-                .awayMode(AwayMode.builder()
-                        .active(false)
-                        .build())
+                .awayMode(createAwayMode())
                 .build());
 
         return mvcConversionService.convert(system, SecuritySystemDTO.class);
@@ -77,7 +71,6 @@ public class SecuritySystemService {
                     .forEach(
                             room -> {
                                 if (!room.getUserIds().isEmpty()) {
-
                                     throw new IllegalStateException(
                                             String.format("Away mode can only be set when the house is unoccupied, " +
                                                             "user with userId: %d detected in room with roomId: %d",
@@ -117,6 +110,14 @@ public class SecuritySystemService {
         return saveSecuritySystemDTO(securitySystem);
     }
 
+    public AwayMode createAwayMode() {
+        return awayModeRepository
+                .save(AwayMode.builder()
+                        .intruderDetectionDelay(30000L)
+                        .active(false)
+                        .build());
+    }
+
     /**
      * @param id    of the security system to be fetched
      * @param delay the new amount of time to delay notifying the authorities
@@ -135,7 +136,7 @@ public class SecuritySystemService {
      */
     @EventListener
     public String userEntersRoomListener(final UserEntersRoomEvent event) {
-        final SecuritySystem system = getSecuritySystem(event.getHouseId());
+        final SecuritySystem system = fetchSecuritySystemFromHouseId(event.getHouseId());
 
         if (system.getAwayMode().getActive()) {
             final TimerTask timerTask = new TimerTask() {
@@ -164,6 +165,22 @@ public class SecuritySystemService {
 
         return (start.isBefore(current) && end.isAfter(current))
                 || (start.isAfter(current) && end.isBefore(current));
+    }
+
+    private SecuritySystem getSecuritySystem(final long id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new SHSNotFoundException(getShsNotFoundErrorMessage(id)));
+    }
+
+    private SecuritySystem fetchSecuritySystemFromHouseId(final long houseId) {
+        return repository
+                .findByHouseId(houseId)
+                .orElseThrow(() -> new SHSNotFoundException(getShsNotFoundErrorMessage(houseId)));
+    }
+
+    private static String getShsNotFoundErrorMessage(final long houseId) {
+        return ErrorMessageGenerator.getSHSNotFoundErrorMessage(houseId, SecuritySystem.class);
     }
 
     private SecuritySystemDTO saveSecuritySystemDTO(final SecuritySystem securitySystem) {
