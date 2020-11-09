@@ -53,7 +53,7 @@ const Navbar = (props) => {
             <Tabs value={selectedTab} onChange={handleChange}>
               <Tab label="SHS" component={Link} to="/shs"></Tab>
               <Tab label="SHC" component={Link} to="/shc"></Tab>
-              <Tab label="SHP"></Tab>
+              <Tab label="SHP" component={Link} to="/shp"></Tab>
               <Tab label="SHH"></Tab>
               <Tab label="Select House" component={Link} to="/houseSelect"></Tab>
               <Tab label="+" component={Link} to="/newUpload"></Tab>
