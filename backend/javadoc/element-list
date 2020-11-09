@@ -1,5 +1,7 @@
 com.soen343.shs
 com.soen343.shs.configuration.security
+com.soen343.shs.converters
+com.soen343.shs.converters.collections
 com.soen343.shs.converters.doors
 com.soen343.shs.converters.houses
 com.soen343.shs.converters.houseWindows
@@ -9,15 +11,14 @@ com.soen343.shs.converters.users
 com.soen343.shs.dal.controllers
 com.soen343.shs.dal.model
 com.soen343.shs.dal.repository
+com.soen343.shs.dal.repository.mapping
 com.soen343.shs.dal.service
 com.soen343.shs.dal.service.exceptions
 com.soen343.shs.dal.service.exceptions.house
-com.soen343.shs.dal.service.exceptions.houseWindow
-com.soen343.shs.dal.service.exceptions.room
 com.soen343.shs.dal.service.exceptions.state
 com.soen343.shs.dal.service.exceptions.user
 com.soen343.shs.dal.service.helpers
-com.soen343.shs.dal.service.Login
+com.soen343.shs.dal.service.login
 com.soen343.shs.dal.service.validators
 com.soen343.shs.dal.service.validators.annotations
 com.soen343.shs.dal.service.validators.exceptions
