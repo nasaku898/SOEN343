@@ -7,7 +7,5 @@ import java.util.Optional;
 
 public interface SecuritySystemRepository extends JpaRepository<SecuritySystem, Long> {
     Optional<SecuritySystem> findByHouseId(long houseId);
-
-//    Optional<SecuritySystem> findByRoom(Room room);
 }
 
