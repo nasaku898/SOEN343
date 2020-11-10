@@ -63,20 +63,13 @@ public class SecuritySystemService {
      */
     public SecuritySystemDTO toggleAway(final String username, final boolean desiredState, final long id) {
         final SecuritySystem securitySystem = getSecuritySystem(id);
-        securitySystem.getAwayMode().setActive(desiredState);
         permissionValidator.validateAwayModePermmissions(username);
+        securitySystem.getAwayMode().setActive(desiredState);
         if (desiredState) {
-
             houseService.fetchHouse(securitySystem.getHouseId()).getRooms()
                     .forEach(
                             room -> {
-                                if (!room.getUserIds().isEmpty()) {
-                                    throw new IllegalStateException(
-                                            String.format("Away mode can only be set when the house is unoccupied, " +
-                                                            "user with userId: %d detected in room with roomId: %d",
-                                                    room.getUserIds().iterator().next(),
-                                                    room.getId()));
-                                }
+                                validateRoomIsEmpty(room);
                                 room.getDoors().forEach(
                                         door -> {
                                             door.setOpen(false);
@@ -98,6 +91,15 @@ public class SecuritySystemService {
         return saveSecuritySystemDTO(securitySystem);
     }
 
+    private static void validateRoomIsEmpty(final Room room) {
+        if (!room.getUserIds().isEmpty()) {
+            throw new IllegalStateException(
+                    String.format("Away mode can only be set when the house is unoccupied, " +
+                                    "user with userId: %d detected in room with roomId: %d",
+                            room.getUserIds().iterator().next(),
+                            room.getId()));
+        }
+    }
 
     /**
      * @param id           of the security system to be fetched
@@ -123,7 +125,8 @@ public class SecuritySystemService {
      * @param delay the new amount of time to delay notifying the authorities
      * @return updated state of the security system after changes
      */
-    public SecuritySystemDTO updateIntruderDetectionDelay(final long id, final long delay) {
+    public SecuritySystemDTO updateIntruderDetectionDelay(final String username, final long id, final long delay) {
+        permissionValidator.validateAwayModePermmissions(username);
         final SecuritySystem securitySystem = getSecuritySystem(id);
         securitySystem.getAwayMode().setIntruderDetectionDelay(delay * 60000);
         return saveSecuritySystemDTO(securitySystem);
@@ -133,6 +136,7 @@ public class SecuritySystemService {
      * This method listens for an event to occur and then fires off the following code
      *
      * @param event event that will trigger our listener
+     * @return String notifying our homeowner of the motion sensor being triggered
      */
     @EventListener
     public String userEntersRoomListener(final UserEntersRoomEvent event) {

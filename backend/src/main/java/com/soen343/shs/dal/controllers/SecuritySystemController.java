@@ -30,6 +30,25 @@ public class SecuritySystemController {
 
         return securityService.toggleAway(auth.getName(), desiredState, id);
     }
-    
+
+    @PutMapping(value = "/{id}/auto")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public SecuritySystemDTO setAutoMode(@PathVariable final long id,
+                                         @RequestBody final boolean desiredState) {
+
+        return securityService.toggleAutoMode(id, desiredState);
+    }
+
+    @PutMapping(value = "/{id}/delay")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public SecuritySystemDTO updateDelay(@PathVariable final long id,
+                                         @AuthenticationPrincipal final Authentication auth,
+                                         @RequestBody final long delay) {
+
+        return securityService.updateIntruderDetectionDelay(auth.getName(), id, delay);
+    }
+
 
 }
