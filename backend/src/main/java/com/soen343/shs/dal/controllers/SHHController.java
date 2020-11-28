@@ -17,6 +17,11 @@ public class SHHController {
         return SHHService.createZone(houseId);
     }
 
+    @PutMapping(value = "/zone/{zoneId}/room/{roomId}")
+    public ZoneDTO addRoomToZone(@PathVariable final long zoneId, @PathVariable final long roomId){
+       return SHHService.addRoomToZone(zoneId, roomId);
+    }
+
     @PutMapping(value = "/zone/{zoneId}")
     public ZoneDTO setZoneTemperature(@PathVariable final long zoneId, @RequestParam final double temperature){
         return SHHService.setZoneTemperature(zoneId,temperature);

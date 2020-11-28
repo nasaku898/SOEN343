@@ -20,7 +20,7 @@ public class House {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Room> rooms;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Zone> zones;
 
     @ElementCollection

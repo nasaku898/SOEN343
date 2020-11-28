@@ -3,6 +3,7 @@ package com.soen343.shs.dal.service;
 import com.soen343.shs.dal.model.*;
 import com.soen343.shs.dal.repository.CityRepository;
 import com.soen343.shs.dal.repository.HouseRepository;
+import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.ZoneRepository;
 import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
@@ -26,6 +27,7 @@ public class SHHService {
     private final CityRepository cityRepository;
     private final TimeService timeService;
     private final ConversionService mvcConversionService;
+    private final RoomRepository roomRepository;
 
     public ZoneDTO createZone(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
@@ -34,7 +36,7 @@ public class SHHService {
         final Zone zone = Zone.builder()
                 .temperature(getCity(house.getCity()).getTemperatureOutside())
                 .zoneState(ZoneState.ZONE)
-                .rooms(house.getRooms())
+                .rooms(new HashSet<Room>())
                 .build();
         zones.add(zone);
 
@@ -43,6 +45,14 @@ public class SHHService {
 
         return mvcConversionService.convert(zone, ZoneDTO.class);
     }
+
+    public ZoneDTO addRoomToZone(final long zoneId, final long roomId){
+        final Zone zone = getZone(zoneId);
+        final Room room = roomRepository.findById(roomId).orElseThrow(() -> new SHSNotFoundException("Room Not Found"));
+        zone.getRooms().add(room);
+        return mvcConversionService.convert(zoneRepository.save(zone), ZoneDTO.class);
+    }
+
 
     public double getZoneTemperature(final long zoneId) {
         final Zone zone = getZone(zoneId);
