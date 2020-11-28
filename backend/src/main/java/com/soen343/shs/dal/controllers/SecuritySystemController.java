@@ -23,8 +23,14 @@ public class SecuritySystemController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public SecuritySystemDTO setAwayMode(@PathVariable final long id, @RequestBody final boolean desiredState) {
-        return securityService.toggleAway(desiredState, id);
+        SecuritySystemDTO securitySystemDTO = securityService.toggleAway(desiredState, id);
+        securityService.notifySHH(id);
+        return securitySystemDTO;
     }
 
-
+    @PostMapping(value = "/")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public SecuritySystemDTO createSecuritySystem(@RequestBody final SecuritySystemDTO securitySystemDTO) {
+        return securityService.createSecuritySystem(securitySystemDTO);
+    }
 }

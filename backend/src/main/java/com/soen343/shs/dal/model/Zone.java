@@ -5,21 +5,22 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
-@Builder
+@Entity
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@Entity
-public class SecuritySystem {
+@Builder
+public class Zone {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Long houseId;
+    private long id;
+
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Room> rooms;
-    private Boolean away;
-    private Boolean auto;
+
+    private double temperature;
+
+    private ZoneState zoneState;
+
 }

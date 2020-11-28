@@ -18,6 +18,7 @@ import com.soen343.shs.converters.users.HouseMemberToHouseMemberDTOConverter;
 import com.soen343.shs.converters.users.RealUserToRealUserDTOConverter;
 import com.soen343.shs.converters.users.RegistrationDTOToUserConverter;
 import com.soen343.shs.converters.users.RegistrationDTOToUserDTOConverter;
+import com.soen343.shs.converters.zones.ZoneToZoneDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -107,6 +108,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
         mvcConversionService.addConverter(new HouseToHouseDTOConverter());
         mvcConversionService.addConverter(new HouseDTOToHouseConverter());
         mvcConversionService.addConverter(new CityToCityDTOConverter());
+        mvcConversionService.addConverter(new ZoneToZoneDTO());
+        mvcConversionService.addConverter(new SecuritySystemToSecuritySystemDTOConverter());
     }
 
     @Bean

@@ -14,6 +14,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ConversionService mvcConversionService;
+    private final SHHService SHHService;
 
     public RoomDTO getRoom(final long id) {
         return mvcConversionService.convert(fetchRoom(id), RoomDTO.class);
@@ -45,5 +46,9 @@ public class RoomService {
 
     Room fetchRoom(final long id) {
         return roomRepository.findById(id).orElseThrow(() -> new SHSNotFoundException(getRoomErrorMessage(id)));
+    }
+
+    public void notifySHH(final long zoneId){
+        SHHService.update(zoneId);
     }
 }

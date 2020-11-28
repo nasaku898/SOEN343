@@ -20,6 +20,9 @@ public class House {
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Room> rooms;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Zone> zones;
+
     @ElementCollection
     private Set<Long> parents;
 
@@ -30,4 +33,11 @@ public class House {
     private Set<Long> guests;
 
     private String city;
+
+    private double WINTER_TEMPERATURE;
+
+    private double SUMMER_TEMPERATURE;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private SecuritySystem securitySystem;
 }
