@@ -17,7 +17,7 @@ public class House {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Room> rooms;
 
     @ManyToMany(cascade = CascadeType.ALL)
