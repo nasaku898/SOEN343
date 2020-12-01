@@ -22,5 +22,4 @@ public class Zone {
     private double temperature;
 
     private ZoneState zoneState;
-
 }

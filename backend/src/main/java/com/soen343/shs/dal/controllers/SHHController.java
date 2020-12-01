@@ -1,6 +1,7 @@
 package com.soen343.shs.dal.controllers;
 
 import com.soen343.shs.dal.service.SHHService;
+import com.soen343.shs.dto.HouseTemperatureStatusDTO;
 import com.soen343.shs.dto.ZoneDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +31,25 @@ public class SHHController {
     @GetMapping(value = "/zone/{zoneId}")
     public Double getZoneTemperature(@PathVariable final long zoneId){
         return SHHService.getZoneTemperature(zoneId);
+    }
+
+    @GetMapping(value = "/monitor/house/{houseId}")
+    public HouseTemperatureStatusDTO monitorTemperature(@PathVariable final long houseId){
+        return SHHService.monitorTemperature(houseId);
+    }
+
+    @PutMapping(value = "/house/{houseId}/havc/on")
+    public void turnOnHAVC(@RequestParam final String cityName, @PathVariable final long houseId){
+        SHHService.turnOnHAVC(cityName,houseId);
+    }
+
+    @PutMapping(value = "/house/{houseId}/havc/off")
+    public void turnOffHAVC(@RequestParam final String cityName, @PathVariable final long houseId){
+        SHHService.turnOffHAVC(cityName,houseId);
+    }
+
+    @PutMapping(value = "/time")
+    public boolean speedTime(@RequestParam final long timeMultiplier){
+        return SHHService.speedTime(timeMultiplier);
     }
 }
