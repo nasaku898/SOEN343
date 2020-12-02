@@ -39,7 +39,6 @@ const MonthSelector = () => {
       firstEnd = parseInt(firstEnd) + 12;
       secondEnd = parseInt(secondEnd) + 12;
     }
-    console.log(firstStart, firstEnd, secondStart, secondEnd)
     return (firstStart >= secondStart && firstStart <= secondEnd) || (firstEnd >= secondStart && firstEnd <= secondEnd)
   }
 
