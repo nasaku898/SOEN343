@@ -11,6 +11,7 @@ import { useCurrentHouse } from "../../context/CurrentHouse";
 import { useUser } from "../../context/UserContext";
 import { moveUserToRoom } from "../../modules/HouseOverview/SimulationService";
 import Time from "../Time/Time";
+import MonthSelector from "../MonthSelector/MonthSelector";
 
 const SimulationForm = () => {
   const { house } = useCurrentHouse();
@@ -86,6 +87,8 @@ const SimulationForm = () => {
               )
             )}
           <Time time={1523104441258} disabled={disabled}></Time>
+          <br />
+          <MonthSelector />
           <br />
           <SimulationField
             name="temperature"

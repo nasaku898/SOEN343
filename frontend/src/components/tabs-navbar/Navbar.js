@@ -37,6 +37,10 @@ const Navbar = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem('summerStart');
+    localStorage.removeItem('summerEnd');
+    localStorage.removeItem('winterStart');
+    localStorage.removeItem('winterEnd');
     setUser(null);
     Axios.get(global.config.BACKEND_URL + `/logout`);
   };
