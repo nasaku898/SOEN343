@@ -35,6 +35,11 @@ public class SHHService {
     private final HouseService houseService;
     private final TimeService timeService;
 
+    /**
+     *
+     * @param houseId A house id number
+     * @return ZoneDTO reflecting a Zone model
+     */
     public ZoneDTO createZone(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
 
@@ -52,11 +57,22 @@ public class SHHService {
         return mvcConversionService.convert(zone, ZoneDTO.class);
     }
 
+    /**
+     *
+     * @param houseId A house id number
+     * @return Set of ZoneDTO reflecting the zone fetched
+     */
     public Set<Zone> fetchZones(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
         return house.getZones();
     }
 
+    /**
+     *
+     * @param zoneId A zone id number
+     * @param roomId A room id number
+     * @return ZoneDTO reflecting the zone
+     */
     public ZoneDTO addRoomToZone(final long zoneId, final long roomId) {
         final Zone zone = getZone(zoneId);
         final Room room = roomRepository.findById(roomId).orElseThrow(() -> new SHSNotFoundException("Room Not Found"));
@@ -65,11 +81,22 @@ public class SHHService {
     }
 
 
+    /**
+     *
+     * @param zoneId A zone id number
+     * @return the temperature of the zone
+     */
     public double getZoneTemperature(final long zoneId) {
         final Zone zone = getZone(zoneId);
         return zone.getTemperature();
     }
 
+    /**
+     *
+     * @param zoneId A zone id number
+     * @param temperature new temperature for zone
+     * @return ZoneDTO reflecting the zone
+     */
     public ZoneDTO setZoneTemperature(final long zoneId, final double temperature) {
         final Zone zone = getZone(zoneId);
         zone.setTemperature(temperature);
@@ -90,6 +117,10 @@ public class SHHService {
         });
     }
 
+    /**
+     *
+     * @param houseId A house id number
+     */
     public void updateDefaultZoneTemperature(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
         final Set<Zone> zones = house.getZones();
@@ -112,6 +143,11 @@ public class SHHService {
         });
     }
 
+    /**
+     *
+     * @param houseId A house id number
+     * @return HouseTemperatureStatusDTO reflecting the status of the monitoring
+     */
     public HouseTemperatureStatusDTO monitorTemperature(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
         double insideTemperature = getInsideTemperature(houseId);
@@ -147,6 +183,11 @@ public class SHHService {
         return houseTemperatureStatusDTO;
     }
 
+    /**
+     *
+     * @param cityName String representing the cityName
+     * @param houseId A house id number
+     */
     @Async
     public void turnOnHAVC(final String cityName, final long houseId) {
         try {
@@ -172,6 +213,11 @@ public class SHHService {
         }
     }
 
+    /**
+     *
+     * @param cityName String representing the cityName
+     * @param houseId A house id number
+     */
     @Async
     public void turnOffHAVC(final String cityName, final long houseId) {
         isHAVCOn = false;
@@ -223,6 +269,11 @@ public class SHHService {
     private double getOutsideTemperature(final String cityName){
         return getCity(cityName).getTemperatureOutside();
     }
+
+    /**
+     *
+     * @param period String as key representing the period
+     */
     public void monitorPeriod(String period) {
         zoneRepository.findAll().forEach(zone -> {
             if (period.equalsIgnoreCase("Morning")) {
@@ -238,16 +289,29 @@ public class SHHService {
         });
     }
 
+    /**
+     *
+     * @param multiplier timeMultiplier value
+     * @return boolean representing the success
+     */
     public boolean speedTime(final long multiplier) {
         timeMultiplier = multiplier;
         return true;
     }
 
+    /**
+     *
+     * @param zoneId A zone id number
+     */
     public void update(final long zoneId) {
         updateZoneStatus(zoneId);
     }
 
-    private Zone getZone(final long zoneId) {
+    /**
+     *
+     * @param zoneId A zone id number
+     */
+    public Zone getZone(final long zoneId) {
         return zoneRepository.findById(zoneId).orElseThrow(() -> new SHSNotFoundException("Zone not found"));
     }
 
