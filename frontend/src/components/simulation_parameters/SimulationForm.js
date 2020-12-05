@@ -16,7 +16,7 @@ const SimulationForm = () => {
   const { house } = useCurrentHouse();
   const { user } = useUser();
 
-  const [date, setDate] = useState(new Date());
+  const [setDate] = useState(new Date());
   const [disabled, setDisabled] = useState(true);
 
   const [city, setCity] = useState(null);

@@ -33,6 +33,7 @@ public class SHHService {
     private final ConversionService mvcConversionService;
     private final RoomRepository roomRepository;
     private final HouseService houseService;
+    private final TimeService timeService;
 
     public ZoneDTO createZone(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
@@ -49,6 +50,11 @@ public class SHHService {
         houseRepository.save(house);
 
         return mvcConversionService.convert(zone, ZoneDTO.class);
+    }
+
+    public Set<Zone> fetchZones(final long houseId) {
+        final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
+        return house.getZones();
     }
 
     public ZoneDTO addRoomToZone(final long zoneId, final long roomId) {
@@ -209,6 +215,21 @@ public class SHHService {
         } catch (InterruptedException e) {
             //
         }
+    }
+
+    public void monitorPeriod(String period) {
+        zoneRepository.findAll().forEach(zone -> {
+            if (period.equalsIgnoreCase("Morning")) {
+                double temperature = zone.getPeriods().get("Morning");
+                setZoneTemperature(zone.getId(), temperature);
+            } else if (period.equalsIgnoreCase("Afternoon")) {
+                double temperature = zone.getPeriods().get("Afternoon");
+                setZoneTemperature(zone.getId(), temperature);
+            } else if (period.equalsIgnoreCase("Night")) {
+                double temperature = zone.getPeriods().get("Night");
+                setZoneTemperature(zone.getId(), temperature);
+            }
+        });
     }
 
     public boolean speedTime(final long multiplier) {

@@ -1,10 +1,13 @@
 package com.soen343.shs.dal.controllers;
 
+import com.soen343.shs.dal.model.Zone;
 import com.soen343.shs.dal.service.SHHService;
 import com.soen343.shs.dto.HouseTemperatureStatusDTO;
 import com.soen343.shs.dto.ZoneDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,5 +54,10 @@ public class SHHController {
     @PutMapping(value = "/time")
     public boolean speedTime(@RequestParam final long timeMultiplier){
         return SHHService.speedTime(timeMultiplier);
+    }
+
+    @GetMapping(value = "/house/{houseId}/zone")
+    public Set<Zone> fetchZones(@PathVariable final long houseId){
+        return SHHService.fetchZones(houseId);
     }
 }

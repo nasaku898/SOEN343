@@ -3,6 +3,8 @@ package com.soen343.shs.dal.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,4 +24,8 @@ public class Zone {
     private double temperature;
 
     private ZoneState zoneState;
+
+    @Transient
+    private HashMap<String, Double> periods;
+
 }

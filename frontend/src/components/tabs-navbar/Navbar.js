@@ -54,7 +54,7 @@ const Navbar = (props) => {
               <Tab label="SHS" component={Link} to="/shs"></Tab>
               <Tab label="SHC" component={Link} to="/shc"></Tab>
               <Tab label="SHP" component={Link} to="/shp"></Tab>
-              <Tab label="SHH"></Tab>
+              <Tab label="SHH" component={Link} to="/shh"></Tab>
               <Tab label="Select House" component={Link} to="/houseSelect"></Tab>
               <Tab label="+" component={Link} to="/newUpload"></Tab>
             </Tabs>
