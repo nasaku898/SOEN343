@@ -40,7 +40,7 @@ public class SHHService {
 
         Set<Zone> zones = house.getZones();
         final Zone zone = Zone.builder()
-                .temperature(getCity(house.getCity()).getTemperatureOutside())
+                .temperature(getOutsideTemperature(house.getCity()))
                 .zoneState(ZoneState.ZONE)
                 .rooms(new HashSet<Room>())
                 .build();
@@ -114,8 +114,8 @@ public class SHHService {
 
     public HouseTemperatureStatusDTO monitorTemperature(final long houseId) {
         final House house = houseRepository.findById(houseId).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
-        double insideTemperature = houseService.getTemperatureInside(houseId);
-        double outsideTemperature = getCity(house.getCity()).getTemperatureOutside();
+        double insideTemperature = getInsideTemperature(houseId);
+        double outsideTemperature = getOutsideTemperature(house.getCity());
 
         final HouseTemperatureStatusDTO houseTemperatureStatusDTO = new HouseTemperatureStatusDTO();
 
@@ -151,12 +151,11 @@ public class SHHService {
     public void turnOnHAVC(final String cityName, final long houseId) {
         try {
             isHAVCOn = true;
-            double insideTemperature = houseService.getTemperatureInside(houseId);
-            double outsideTemperature = getCity(cityName).getTemperatureOutside();
+            double insideTemperature = getInsideTemperature(houseId);
+            double outsideTemperature = getOutsideTemperature(cityName);
             final List<Room> rooms = roomRepository.findAll();
 
             while (isHAVCOn && insideTemperature > outsideTemperature) {
-                System.out.println("Changing temp");
                 rooms.forEach(room -> {
                     room.setTemperature(room.getTemperature() - 0.1);
                 });
@@ -165,8 +164,8 @@ public class SHHService {
 
                 Thread.sleep(1000 / timeMultiplier);
 
-                insideTemperature = houseService.getTemperatureInside(houseId);
-                outsideTemperature = getCity(cityName).getTemperatureOutside();
+                insideTemperature = getInsideTemperature(houseId);
+                outsideTemperature = getOutsideTemperature(cityName);
             }
         } catch (InterruptedException e) {
             //
@@ -177,14 +176,14 @@ public class SHHService {
     public void turnOffHAVC(final String cityName, final long houseId) {
         isHAVCOn = false;
         try {
-            double insideTemperature = houseService.getTemperatureInside(houseId);
-            double outsideTemperature = getCity(cityName).getTemperatureOutside();
+            double insideTemperature = getInsideTemperature(houseId);
+            double outsideTemperature = getOutsideTemperature(cityName);
+
             final List<Room> rooms = roomRepository.findAll();
 
             while (!isHAVCOn) {
                 if (insideTemperature > outsideTemperature) {
                     while (!isHAVCOn && insideTemperature > outsideTemperature) {
-                        System.out.println("Changing temp");
                         rooms.forEach(room -> {
                             room.setTemperature(room.getTemperature() - 0.05);
                         });
@@ -193,8 +192,8 @@ public class SHHService {
 
                         Thread.sleep(1 / timeMultiplier);
 
-                        insideTemperature = houseService.getTemperatureInside(houseId);
-                        outsideTemperature = getCity(cityName).getTemperatureOutside();
+                        insideTemperature = getInsideTemperature(houseId);
+                        outsideTemperature = getOutsideTemperature(cityName);
                     }
                 } else {
                     while (!isHAVCOn && insideTemperature < outsideTemperature) {
@@ -207,8 +206,8 @@ public class SHHService {
 
                         Thread.sleep(1 / timeMultiplier);
 
-                        insideTemperature = houseService.getTemperatureInside(houseId);
-                        outsideTemperature = getCity(cityName).getTemperatureOutside();
+                        insideTemperature = getInsideTemperature(houseId);
+                        outsideTemperature = getOutsideTemperature(cityName);
                     }
                 }
             }
@@ -217,6 +216,13 @@ public class SHHService {
         }
     }
 
+    private double getInsideTemperature(final long houseId){
+        return houseService.getTemperatureInside(houseId);
+    }
+
+    private double getOutsideTemperature(final String cityName){
+        return getCity(cityName).getTemperatureOutside();
+    }
     public void monitorPeriod(String period) {
         zoneRepository.findAll().forEach(zone -> {
             if (period.equalsIgnoreCase("Morning")) {
