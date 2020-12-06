@@ -1,18 +1,24 @@
-import { FormControl, FormControlLabel, FormGroup, FormLabel, Switch } from '@material-ui/core'
-import { light } from '@material-ui/core/styles/createPalette'
-import React, { useEffect, useState } from 'react'
+import { Button, FormControl, FormControlLabel, FormGroup, Switch } from '@material-ui/core'
+import React, { useState } from 'react'
 import { useCurrentHouse } from '../../context/CurrentHouse'
-import LightSwitch from '../SHCPanel/LightSwitch'
+import { createSecurity, setAwayMode as turnOnAway } from '../../modules/SHP/SHPService'
 
 const SHPPanel = () => {
     const { house } = useCurrentHouse()
     const [awayMode, setAwayMode] = useState(false)
+
     const onChange = () => {
+        turnOnAway(16, !awayMode)
         setAwayMode(!awayMode)
     }
-    
+
+    const handleCreateSecurity = () => {
+        createSecurity(house.id)
+    }
+
     return (
         <div>
+            <Button onClick={handleCreateSecurity}>Turn On Security</Button>
             <FormControl>
                 <FormGroup>
                     <FormControlLabel

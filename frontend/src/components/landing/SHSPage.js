@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React, { useState} from "react";
+import React from "react";
 import HouseLayout from "../HouseLayout/HouseLayout";
 import UserProfileList from "../UserProfileList/UserProfileList";
 import HouseOverview from "../HouseOverview/HouseOverview";

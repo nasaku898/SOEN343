@@ -1,15 +1,21 @@
 package com.soen343.shs.dal.service;
 
 import com.soen343.shs.dal.model.ExteriorDoor;
+import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.Room;
 import com.soen343.shs.dal.model.SecuritySystem;
+import com.soen343.shs.dal.repository.HouseRepository;
 import com.soen343.shs.dal.repository.RoomRepository;
 import com.soen343.shs.dal.repository.SecuritySystemRepository;
 import com.soen343.shs.dal.service.exceptions.IllegalStateException;
+import com.soen343.shs.dal.service.exceptions.house.HouseNotFoundException;
 import com.soen343.shs.dal.service.exceptions.state.SHSNotFoundException;
 import com.soen343.shs.dto.SecuritySystemDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -19,6 +25,8 @@ public class SecuritySystemService {
     private final ConversionService mvcConversionService;
     private final HouseService houseService;
     private final RoomRepository roomRepository;
+    private final SHHService SHHService;
+    private final HouseRepository houseRepository;
 
     /**
      * @param id of the security system
@@ -39,14 +47,19 @@ public class SecuritySystemService {
      * @return a DTO showing the properties of the newly created security system
      */
     public SecuritySystemDTO createSecuritySystem(final SecuritySystemDTO dto) {
-        final SecuritySystem system = repository.save(SecuritySystem.builder()
+
+        final House house = houseRepository.findById(dto.getHouseId()).orElseThrow(() -> new HouseNotFoundException("House Not Found"));
+
+        final SecuritySystem system = SecuritySystem.builder()
                 .auto(dto.isAuto())
                 .houseId(dto.getHouseId())
                 .away(dto.isAway())
-                .rooms((houseService.fetchHouse(dto.getHouseId()).getRooms()))
-                .build());
+                .rooms(house.getRooms())
+                .build();
 
-        return mvcConversionService.convert(system, SecuritySystemDTO.class);
+        house.setSecuritySystem(system);
+
+        return mvcConversionService.convert(houseRepository.save(house).getSecuritySystem(), SecuritySystemDTO.class);
     }
 
     /**
@@ -77,5 +90,10 @@ public class SecuritySystemService {
                     });
         }
         return mvcConversionService.convert(repository.save(security), SecuritySystemDTO.class);
+    }
+
+    public void notifySHH(final long id){
+        final SecuritySystem security = getSecuritySystem(id);
+        SHHService.updateDefaultZoneTemperature(security.getHouseId());
     }
 }

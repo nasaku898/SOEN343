@@ -19,11 +19,12 @@ public class RoomController {
         return roomService.getRoom(roomId);
     }
 
-    @PutMapping(value = "/temperature")
+    @PutMapping(value = "/temperature/zone/{zoneId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public @ResponseBody
-    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @RequestBody final double newTemperature) {
+    RoomDTO modifyRoomTemperature(@PathVariable final long roomId, @RequestBody final double newTemperature, @PathVariable final long zoneId) {
         final RoomDTO room = roomService.setTemperatureOfRoom(roomId, newTemperature);
+        roomService.notifySHH(zoneId);
         return room;
     }
 

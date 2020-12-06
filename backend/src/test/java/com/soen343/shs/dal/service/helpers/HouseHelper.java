@@ -1,9 +1,11 @@
 package com.soen343.shs.dal.service.helpers;
 
 import com.soen343.shs.dal.model.House;
+import com.soen343.shs.dal.model.Zone;
 import com.soen343.shs.dto.HouseDTO;
 
 import java.util.Collections;
+import java.util.HashSet;
 
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRoomDTO;
 import static com.soen343.shs.dal.service.helpers.RoomHelper.createRooms;
@@ -18,6 +20,7 @@ public class HouseHelper {
                 .city(CITY_NAME)
                 .parents(Collections.singleton(1L))
                 .rooms(createRooms())
+                .zones(new HashSet<Zone>())
                 .build();
     }
 

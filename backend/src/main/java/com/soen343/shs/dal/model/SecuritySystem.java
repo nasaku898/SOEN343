@@ -18,7 +18,7 @@ public class SecuritySystem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long houseId;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Room> rooms;
     private Boolean away;
     private Boolean auto;

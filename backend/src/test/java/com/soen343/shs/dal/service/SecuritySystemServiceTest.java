@@ -41,7 +41,7 @@ public class SecuritySystemServiceTest {
     private SecuritySystemService classUnderTest;
 
     public static final long SECURITY_ID = 1L;
-
+/**
     @Test
     void createSecuritySystemTest() {
         final SecuritySystemDTO dto = buildSecuritySystemDTO();
@@ -53,7 +53,7 @@ public class SecuritySystemServiceTest {
         final SecuritySystemDTO system = classUnderTest.createSecuritySystem(dto);
         Assertions.assertEquals(dto, system);
     }
-
+**/
     @Test
     void toggleAwayTest() {
         final SecuritySystem system = getEntity();
